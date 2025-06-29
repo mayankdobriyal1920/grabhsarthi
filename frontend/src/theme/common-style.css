@@ -1,0 +1,62 @@
+body,html,#root{
+    font-family: 'Poppins', sans-serif;
+}
+
+.welcome-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    text-align: center;
+}
+.welcome-page-inner{
+    background: url('img/bg-color.svg') center center no-repeat;
+    background-size: cover;
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.welcome-logo {
+    width: 15rem;
+    margin-top: 3rem;
+}
+
+.welcome-heading {
+    font-size: var(--font-size-1);
+    color: var(--color-heading);
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-top: 24px;
+}
+
+.welcome-tagline {
+    font-size: var(--font-size-3);
+    color: var(--color-body);
+    margin-top: 16px;
+}
+
+.welcome-description {
+    font-size: 1rem;
+    color: var(--color-body);
+    margin: 20px 0;
+}
+
+.start-button {
+    background: var(--color-primary);
+    color: #fff;
+    font-size: var(--font-size-2);
+    border-radius: 50px;
+    padding: 1.2rem 3rem;
+    border: none;
+    margin-top: 2rem;
+    outline: none;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.start-button:hover {
+    background: #c64d65; /* Slightly darker for hover */
+    cursor: pointer;
+}
