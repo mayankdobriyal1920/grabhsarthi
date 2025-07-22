@@ -19,10 +19,11 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/common-style.css';
 import {useDispatch,useSelector} from "react-redux";
-import {actionToConnectSocketServer, actionToGetUserSessionData} from "./redux/CommonAction";
+import {actionToConnectSocketServer} from "./redux/CommonAction";
 import {IonReactRouter} from "@ionic/react-router";
 import {Redirect, Route} from "react-router";
 import WithoutLoginHomePage from "./pages/WithoutLoginHomePage";
+import LoginPage from "./pages/LoginPage";
 setupIonicReact();
 
 const AppEnterMainPage = () => {
@@ -46,6 +47,7 @@ const PublicRoutes = () => {
         <IonReactRouter>
             <IonRouterOutlet>
                 <Route path="/home" exact={true} component={WithoutLoginHomePage} />
+                <Route path="/login" exact={true} component={LoginPage} />
                 <Redirect  exact from="/"  to="/home" />
                 <Route render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>

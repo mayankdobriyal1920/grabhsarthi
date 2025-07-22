@@ -1,5 +1,5 @@
 body,html,#root{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif!important;
 }
 
 .welcome-page {
@@ -60,3 +60,111 @@ body,html,#root{
     background: #c64d65; /* Slightly darker for hover */
     cursor: pointer;
 }
+
+
+
+/*/////// LOGIN PAGE //////////*/
+.login-content {
+    --background: #fffaf9;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.login-tabs {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: var(--font-size-2);
+    position: relative;
+}
+
+.active-tab {
+    border-bottom: 3px solid #c97e79;
+    padding-bottom: 4px;
+    color: #000;
+}
+
+.inactive-tab {
+    color: #bbb;
+}
+
+.logo-wrapper {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.logo-img {
+    width: 100px;
+    height: 100px;
+}
+
+.logo-tagline {
+    font-size: 14px;
+    margin-top: 8px;
+    color: #444;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 40px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.input-icon {
+    font-size: var(--font-size-2);
+    margin-right: 10px;
+    color: #c97e79;
+}
+
+.custom-input {
+    border: none;
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+}
+
+.continue-btn {
+    background: #c97e79;
+    border-radius: 20px;
+    margin-top: 24px;
+    font-weight: bold;
+    font-size: var(--font-size-2);
+    text-transform: none;
+}
+
+.partner-login {
+    margin-top: 20px;
+    font-size: var(--font-size-4);
+    color: #444;
+}
+
+.footer-links {
+    margin-top: auto;
+    font-size: var(--font-size-3);
+    color: #888;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.footer-links a {
+    color: #666;
+    text-decoration: none;
+}
+
+/*/////// LOGIN PAGE //////////*/
+

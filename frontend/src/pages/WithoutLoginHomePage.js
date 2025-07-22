@@ -1,10 +1,12 @@
 import React from 'react';
 import { IonPage, IonContent } from '@ionic/react';
 import logoImg from '../theme/img/app-logo.png';
+import {useHistory} from "react-router-dom";
 
 const WithoutLoginHomePage = () => {
+    const history = useHistory();
     const handleStart = () => {
-        console.log('Start button clicked');
+        history.replace('/login');
     };
 
     return (
