@@ -55,8 +55,12 @@ const AppEntryTabsPage = () => {
 
     return (
         <IonTabs>
-            <IonRouterOutlet>c
-                <Route exact path="/dashboard/home" component={PregnantDashboardPage} />
+            <IonRouterOutlet>
+                <Route
+                    exact
+                    path="/dashboard/home"
+                    render={() => <PregnantDashboardPage />}
+                />
                 <Redirect exact from="/dashboard" to="/dashboard/home" />
             </IonRouterOutlet>
 

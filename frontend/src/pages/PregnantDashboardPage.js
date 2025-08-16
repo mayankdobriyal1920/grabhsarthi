@@ -4,7 +4,7 @@ import {IonContent, IonPage} from "@ionic/react";
 export default function PregnantDashboardPage(){
     return (
         <IonPage>
-            <IonContent fullscreen>
+            <IonContent>
                 PregnantDashboardPage
             </IonContent>
         </IonPage>

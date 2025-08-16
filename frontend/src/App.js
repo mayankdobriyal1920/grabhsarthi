@@ -54,7 +54,7 @@ const PublicRoutes = () => {
                 <Route path="/choose-role" exact={true} component={ChooseRolePageAfterLoginComponent} />
                 <Route path="/create-profile" exact={true} component={CreateRoleBasedFormPage} />
                 <Route path="/dashboard" component={AppEntryTabsPage} />
-                <Redirect exact from="/"  to="/home" />
+                <Redirect exact from="/" to="/home" />
                 <Route render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
         </IonReactRouter>
