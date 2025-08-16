@@ -170,7 +170,7 @@ const CreateRoleBasedFormPage = () => {
                         </select>
                     </div>
 
-                    <button type="submit" onClick={()=>goToPage('/dashboard/')} className="submit-btn">Save & Continue</button>
+                    <button type="submit" onClick={()=>goToPage('/dashboard')} className="submit-btn">Save & Continue</button>
                 </form>
             </IonContent>
         </IonPage>
