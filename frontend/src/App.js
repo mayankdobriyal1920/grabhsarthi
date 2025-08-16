@@ -24,6 +24,9 @@ import {IonReactRouter} from "@ionic/react-router";
 import {Redirect, Route} from "react-router";
 import WithoutLoginHomePage from "./pages/WithoutLoginHomePage";
 import LoginPage from "./pages/LoginPage";
+import ChooseRolePageAfterLoginComponent from "./pages/ChooseRolePageAfterLoginComponent";
+import CreateRoleBasedFormPage from "./pages/CreateRoleBasedFormPage";
+import AppEntryTabsPage from "./pages/AppEntryTabsPage";
 setupIonicReact();
 
 const AppEnterMainPage = () => {
@@ -48,7 +51,10 @@ const PublicRoutes = () => {
             <IonRouterOutlet>
                 <Route path="/home" exact={true} component={WithoutLoginHomePage} />
                 <Route path="/login" exact={true} component={LoginPage} />
-                <Redirect  exact from="/"  to="/home" />
+                <Route path="/choose-role" exact={true} component={ChooseRolePageAfterLoginComponent} />
+                <Route path="/create-profile" exact={true} component={CreateRoleBasedFormPage} />
+                <Route path="/dashboard" component={AppEntryTabsPage} />
+                <Redirect exact from="/"  to="/home" />
                 <Route render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
         </IonReactRouter>
@@ -56,9 +62,9 @@ const PublicRoutes = () => {
 };
 
 const App = () => {
-    const dispatch = useDispatch();
-    const userSession = useSelector((state) => state.userSession);
-    const {userInfo} = useSelector((state) => state.userAuthDetail);
+    // const dispatch = useDispatch();
+    // const userSession = useSelector((state) => state.userSession);
+    // const {userInfo} = useSelector((state) => state.userAuthDetail);
 
     // useEffect(() => {
     //     dispatch(actionToGetUserSessionData());

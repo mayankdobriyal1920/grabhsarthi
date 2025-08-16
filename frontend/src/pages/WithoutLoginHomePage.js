@@ -13,19 +13,20 @@ const WithoutLoginHomePage = () => {
         <IonPage>
             <IonContent className="welcome-page">
                 <div className={"welcome-page-inner"}>
-                    <img
-                        src={logoImg}
-                        alt="GarbhSarthi Logo"
-                        className="welcome-logo"
-                    />
+                    <div className={"welcome-logo"}>
+                        <img
+                            src={logoImg}
+                            alt="GarbhSarthi Logo"
+                        />
+                    </div>
 
-                    <h1 className="welcome-heading">Welcome to GarbhSarthi</h1>
+                    <h1 className="welcome-heading heading">Welcome to GarbhSarthi</h1>
 
                     <p className="welcome-tagline">
                         Your Companion Through Pregnancy
                     </p>
 
-                    <button className="start-button" onClick={handleStart}>
+                    <button className="submit-btn" onClick={handleStart}>
                         START
                     </button>
                 </div>

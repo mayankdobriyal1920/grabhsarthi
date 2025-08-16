@@ -9,13 +9,4 @@
     <rect width="1440" height="1024" fill="url(#grad1)" />
 
     <!-- Organic petal blobs -->
-    <path d="M400 200 C300 50 550 0 650 200 C750 400 500 400 400 200 Z" fill="#FADADD" fill-opacity="0.35"/>
-
-    <path d="M1200 300 C1100 200 1350 150 1400 300 C1450 450 1250 500 1200 300 Z" fill="#FADADD" fill-opacity="0.3"/>
-
-    <path d="M200 800 C100 700 400 600 500 800 C600 1000 300 1000 200 800 Z" fill="#FADADD" fill-opacity="0.25"/>
-
-    <path d="M1000 800 C900 650 1200 600 1250 750 C1300 900 1100 950 1000 800 Z" fill="#FADADD" fill-opacity="0.3"/>
-
-    <path d="M700 500 C600 350 900 300 950 500 C1000 700 800 700 700 500 Z" fill="#FADADD" fill-opacity="0.2"/>
 </svg>

@@ -1,44 +1,41 @@
 import React from 'react';
-import {IonPage, IonContent, IonInput, IonButton, IonIcon} from '@ionic/react';
-import logoImg from "../theme/img/app-logo.png";
+import {IonPage, IonContent, IonIcon} from '@ionic/react';
+import logoImg from "../theme/img/app-full-logo.png";
 import {phonePortraitOutline} from "ionicons/icons";
+import {useHistory} from "react-router-dom";
 
 const LoginPage = () => {
+    const history = useHistory();
+    const goToPage = (page)=>{
+        history.replace(page);
+    }
+
     return (
         <IonPage>
             <IonContent fullscreen className="login-content">
                 <div className="login-container">
-                    {/* Tabs */}
-                    <div className="login-tabs">
-                        <span className="active-tab">Login</span>
-                        <span className="inactive-tab">Signup</span>
-                    </div>
 
                     {/* Logo */}
                     <div className="logo-wrapper">
                         <img src={logoImg} alt="logo" className="logo-img" />
-                        <p className="logo-tagline">Your Womb Chariot</p>
                     </div>
 
                     {/* Input */}
-                    <div className="input-wrapper">
+                    <div className="input-wrapper card">
                         <span className="input-icon">
                             <IonIcon icon={phonePortraitOutline}/>
                         </span>
-                        <IonInput
+                        <input
                             type="text"
-                            placeholder="Mobile or Email"
+                            placeholder="Phone Number"
                             className="custom-input"
                         />
                     </div>
 
                     {/* Continue Button */}
-                    <IonButton expand="block" className="continue-btn">
-                        Continue
-                    </IonButton>
-
-                    {/* Partner login */}
-                    <p className="partner-login">Login as Partner</p>
+                    <button onClick={()=>goToPage('/choose-role')} className="start-button submit-btn">
+                        Get OTP
+                    </button>
 
                     {/* Footer Links */}
                     <div className="footer-links">
