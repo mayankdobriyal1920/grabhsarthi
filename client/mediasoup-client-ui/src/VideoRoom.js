@@ -6,6 +6,7 @@ import {
     actionToSendVideoChunkDataToServer,
     actionToSendVideoChunkDataToServerFinishProcess,
 } from "./api/CommonApiHelper";
+import ParticipantThumbnail from "./ParticipantThumbnail";
 
 const SOCKET_URL = "https://garbhsarthi.com";
 const RECORD_INTERVAL = 1000;
@@ -187,7 +188,65 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
             producersMapRef.current.delete(producerId);
         });
 
-        socket.on("kicked", ({reason}) => {
+        socket.on("muted-by-teacher", ({ type }) => {
+            if (type === "audio" && mediaStreamRef.current) {
+                mediaStreamRef.current.getAudioTracks().forEach(track => track.enabled = false);
+                setMuted(true);
+            } else if (type === "video" && mediaStreamRef.current) {
+                mediaStreamRef.current.getVideoTracks().forEach(track => track.enabled = false);
+                setVideoOff(true);
+            }
+        });
+
+        socket.on("participant-unmuted", ({ socketId, type }) => {
+            setParticipants(prev =>
+                prev.map(p => {
+                    if (p.socketId === socketId) {
+                        const updated = { ...p };
+                        if (type === "audio") {
+                            updated.mutedAudio = false;
+                        } else if (type === "video") {
+                            updated.mutedVideo = false;
+                        }
+                        return updated;
+                    }
+                    return p;
+                })
+            );
+        });
+
+        socket.on("producer-resumed", ({ kind }) => {
+            if (kind === "audio" && mediaStreamRef.current) {
+                mediaStreamRef.current.getAudioTracks().forEach(track => track.enabled = true);
+                setMuted(false);
+            }
+        });
+
+        socket.on("producer-paused", ({ kind }) => {
+            if (kind === "audio" && mediaStreamRef.current) {
+                mediaStreamRef.current.getAudioTracks().forEach(track => track.enabled = false);
+                setMuted(true);
+            }
+        });
+
+        socket.on("participant-muted", ({ socketId, type }) => {
+            setParticipants(prev =>
+                prev.map(p => {
+                    if (p.socketId === socketId) {
+                        const updated = { ...p };
+                        if (type === "audio") {
+                            updated.mutedAudio = true;
+                        } else if (type === "video") {
+                            updated.mutedVideo = true;
+                        }
+                        return updated;
+                    }
+                    return p;
+                })
+            );
+        });
+
+        socket.on("kicked", () => {
             setJoined(false);
             socket.disconnect();
         });
@@ -226,7 +285,6 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                 });
 
                 const iceServers = await actionToGetIceServers();
-                console.log(iceServers);
 
                 sendTransportRef.current = device.createSendTransport({
                     id: sendParams.id,
@@ -356,6 +414,8 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                     name: pinfo.name || socketId,
                     role: pinfo.peerRole,
                     streams: {audio: null, video: null},
+                    mutedAudio: false, // Initialize mute status
+                    mutedVideo: false,
                 };
 
                 if (!entry.streams) entry.streams = {audio: null, video: null};
@@ -465,16 +525,42 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
         stopRecording();
     };
 
+// Update toggleMute to communicate with the server
     const toggleMute = () => {
         if (!mediaStreamRef.current) return;
-        mediaStreamRef.current.getAudioTracks().forEach(t => (t.enabled = !t.enabled));
-        setMuted(m => !m);
+
+        const audioTrack = mediaStreamRef.current.getAudioTracks()[0];
+        if (!audioTrack) return;
+
+        if (audioTrack.enabled) {
+            // Mute: disable track locally and notify server
+            audioTrack.enabled = false;
+            socketRef.current.emit("pauseProducer", { kind: "audio" });
+            setMuted(true);
+        } else {
+            // Mute: disable track locally and notify server
+            audioTrack.enabled = true;
+            // Unmute: request server to resume producer
+            socketRef.current.emit("resumeProducer", { kind: "audio" });
+            setMuted(false);
+            // Wait for server response to update state (handled in socket handlers)
+        }
     };
 
     const toggleVideo = () => {
         if (!mediaStreamRef.current) return;
-        mediaStreamRef.current.getVideoTracks().forEach(t => (t.enabled = !t.enabled));
-        setVideoOff(v => !v);
+        const videoTrack = mediaStreamRef.current.getVideoTracks()[0];
+        if (!videoTrack) return;
+
+        if (videoTrack.enabled) {
+            videoTrack.enabled = false;
+            socketRef.current.emit("pauseProducer", { kind: "video" });
+            setVideoOff(true);
+        } else {
+            videoTrack.enabled = true;
+            socketRef.current.emit("resumeProducer", { kind: "video" });
+            setVideoOff(false);
+        }
     };
 
     const leaveCall = () => {
@@ -575,6 +661,35 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
         }
     };
 
+    // Update handleMute to emit socket event and update state
+    const handleMute = (socketId,mutedAudio, type) => {
+        if(mutedAudio) return;
+        // Emit socket event to server
+        socketRef.current.emit("teacher-muted", { socketId, type });
+
+        // Update local participant state to reflect mute status
+        setParticipants(prev =>
+            prev.map(p => {
+                if (p.socketId === socketId) {
+                    const updated = { ...p };
+                    if (type === "audio") {
+                        updated.mutedAudio = true;
+                        if (p.streams?.audio) {
+                            p.streams.audio.getAudioTracks().forEach(track => track.enabled = false);
+                        }
+                    } else if (type === "video") {
+                        updated.mutedVideo = true;
+                        if (p.streams?.video) {
+                            p.streams.video.getVideoTracks().forEach(track => track.enabled = false);
+                        }
+                    }
+                    return updated;
+                }
+                return p;
+            })
+        );
+    };
+
     return (
         <div className="video-room-container">
             {waitingApproval && (
@@ -587,7 +702,16 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                 {/* Main Video */}
                 <div className="main-video">
                     {isTeacher ? (
-                        <video ref={localVideoRef} muted autoPlay playsInline/>
+                        <div className={"teacher_video_main"}>
+                            <>
+                                <video style={{display:`${videoOff ? 'none' : 'block' }`}} ref={localVideoRef} muted autoPlay playsInline/>
+                                {videoOff && (
+                                    <div className="name-placeholder">
+                                        <span>You</span>
+                                    </div>
+                                )}
+                            </>
+                        </div>
                     ) : (
                         <>
                             {participants.map((p) =>
@@ -606,8 +730,13 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                 {/* Thumbnails */}
                 <div className="thumbnails-bar">
                     {!isTeacher && (
-                        <div className="thumbnail self">
-                            <video ref={localVideoRef} muted autoPlay playsInline/>
+                        <div className="participant-thumbnail thumbnail">
+                            <video style={{display:`${videoOff ? 'none' : 'block' }`}} ref={localVideoRef} muted autoPlay playsInline/>
+                            {videoOff && (
+                                <div className="name-placeholder">
+                                    <span>You</span>
+                                </div>
+                            )}
                         </div>
                     )}
                     {participants.map(
@@ -617,6 +746,7 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                                     key={p.socketId}
                                     p={p}
                                     isTeacher={isTeacher}
+                                    onMute={handleMute}
                                     onKick={() => kickUser(p.socketId)}
                                 />
                             )
@@ -747,32 +877,4 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
     );
 }
 
-function ParticipantThumbnail({ p, isTeacher, onKick }) {
-    const videoRef = useRef(null);
-    const audioRef = useRef(null);
 
-    useEffect(() => {
-        if (p?.streams?.video && videoRef.current) {
-            videoRef.current.srcObject = p.streams.video;
-            videoRef.current.play().catch(err => {
-                console.warn("Video playback failed for", p.socketId, err);
-            });
-        }
-        if (p?.streams?.audio && audioRef.current) {
-            audioRef.current.srcObject = p.streams.audio;
-            audioRef.current.play().catch(err => {
-                console.warn("Audio playback failed for", p.socketId, err);
-            });
-        }
-    }, [p]);
-
-    return (
-        <div className={`${p.role !== "teacher" ? 'thumbnail' : ''}`} data-role={p.role}>
-            {p.streams?.video && <video ref={videoRef} autoPlay playsInline />}
-            {p.streams?.audio && <audio ref={audioRef} autoPlay playsInline />}
-            {isTeacher && p.role !== "teacher" && (
-                <button onClick={onKick} className="kick-btn">Kick</button>
-            )}
-        </div>
-    );
-}

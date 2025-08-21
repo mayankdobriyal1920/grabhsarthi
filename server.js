@@ -108,6 +108,8 @@ io.on("connection", (socket) => {
         producers: [],
         consumers: [],
         roomId: ROOM_ID,
+        mutedAudio: false, // Track audio mute status
+        mutedVideo: false, // Track video mute status
         recvTransport: null // <<< new property to hold single recv transport
     });
 
@@ -391,25 +393,86 @@ io.on("connection", (socket) => {
     });
 
     // pause/resume producer (mute/unmute behavior)
-    socket.on("pauseProducer", async ({ producerId }, cb) => {
+    // socket.on("pauseProducer", async ({ producerId }, cb) => {
+    //     try {
+    //         const p = peers.get(socket.id);
+    //         const producer = p.producers.find(x => x.id === producerId);
+    //         if (producer) await producer.pause();
+    //         cb?.({ ok: true });
+    //     } catch (err) {
+    //         cb?.({ error: err.message });
+    //     }
+    // });
+
+    socket.on("pauseProducer", async ({ kind }, cb) => {
         try {
             const p = peers.get(socket.id);
-            const producer = p.producers.find(x => x.id === producerId);
-            if (producer) await producer.pause();
-            cb?.({ ok: true });
+            const producer = p.producers.find(x => x.kind === kind);
+            if (producer) {
+                await producer.pause();
+                if (kind === "audio") p.mutedAudio = true;
+                else if (kind === "video") p.mutedVideo = true;
+                io.to(p.roomId).emit("participant-muted", { socketId: socket.id, type: kind });
+                socket.emit("producer-paused", { kind });
+                cb?.({ ok: true });
+            } else {
+                cb?.({ error: "Producer not found" });
+            }
         } catch (err) {
+            console.error("pauseProducer error:", err);
             cb?.({ error: err.message });
         }
     });
 
-    socket.on("resumeProducer", async ({ producerId }, cb) => {
+    socket.on("resumeProducer", async ({ kind }, cb) => {
         try {
             const p = peers.get(socket.id);
-            const producer = p.producers.find(x => x.id === producerId);
-            if (producer) await producer.resume();
-            cb?.({ ok: true });
+            const producer = p.producers.find(x => x.kind === kind);
+            if (producer) {
+                await producer.resume();
+                if (kind === "audio") p.mutedAudio = false;
+                else if (kind === "video") p.mutedVideo = false;
+                io.to(p.roomId).emit("participant-unmuted", { socketId: socket.id, type: kind });
+                socket.emit("producer-resumed", { kind });
+                cb?.({ ok: true });
+            } else {
+                cb?.({ error: "Producer not found" });
+            }
         } catch (err) {
+            console.error("resumeProducer error:", err);
             cb?.({ error: err.message });
+        }
+    });
+
+    // socket.on("resumeProducer", async ({ producerId }, cb) => {
+    //     try {
+    //         const p = peers.get(socket.id);
+    //         const producer = p.producers.find(x => x.id === producerId);
+    //         if (producer) await producer.resume();
+    //         cb?.({ ok: true });
+    //     } catch (err) {
+    //         cb?.({ error: err.message });
+    //     }
+    // });
+
+    socket.on("teacher-muted", async ({ socketId, type }) => {
+        const hostPeer = peers.get(socket.id);
+        if (!hostPeer || hostPeer.role !== "teacher") return;
+
+        const targetPeer = peers.get(socketId);
+        if (!targetPeer) return;
+
+        // Find and pause the appropriate producer
+        const producer = targetPeer.producers.find(p => p.kind === type);
+        if (producer) {
+            await producer.pause();
+            if (type === "audio") targetPeer.mutedAudio = true;
+            else if (type === "video") targetPeer.mutedVideo = true;
+
+            // Notify the target participant
+            io.to(socketId).emit("muted-by-teacher", { type });
+            // Notify all peers in the room
+            io.to(targetPeer.roomId).emit("participant-muted", { socketId, type });
         }
     });
 
@@ -506,8 +569,8 @@ app.post("/api/create-room", (req, res) => {
     // return fixed room id
     res.json({
         roomId: ROOM_ID,
-        startUrl: `https://garbhsarthi.com/class/start/${ROOM_ID}`,
-        joinUrl: `https://garbhsarthi.com/class/join/${ROOM_ID}`
+        startUrl: `https://meet.garbhsarthi.com/class/start/${ROOM_ID}`,
+        joinUrl: `https://meet.garbhsarthi.com/class/join/${ROOM_ID}`
     });
 });
 

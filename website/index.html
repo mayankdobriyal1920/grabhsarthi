@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="./images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GarbhSarthi – Your Companion Through Pregnancy</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --gs-peach: #FFC4A3;
+            --gs-green: #A8D5BA;
+            --gs-pink: #F4C9C1;
+            --gs-taupe: #717773;
+            --gs-bg: #FFF8F5;
+            --gs-white: #fff;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: linear-gradient(135deg, var(--gs-peach) 0%, var(--gs-green) 100%);
+            min-height: 100vh;
+            font-family: 'Lato', Arial, sans-serif;
+            color: var(--gs-taupe);
+            margin: 0;
+            padding: 0;
+        }
+        .navbar-gs {
+            background: var(--gs-white);
+            border-bottom: 2px solid #faf0ea;
+            box-shadow: 0 2px 14px -7px rgba(168,213,186,0.08);
+            z-index: 1000;
+        }
+        .navbar-gs .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            color: #577568;
+            font-weight: 700;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+        }
+        .navbar-gs .nav-link {
+            color: #6b8178;
+            font-weight: 600;
+            margin: 0 10px;
+            border-radius: 20px;
+            transition: background .2s, color .2s;
+        }
+        .navbar-gs .nav-link.active, .navbar-gs .nav-link:focus, .navbar-gs .nav-link:hover {
+            color: #fff;
+            background: var(--gs-peach);
+        }
+        .hero-section {
+            background: var(--gs-bg);
+            text-align: center;
+            padding: 60px 15px 40px 15px;
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 9px 32px -16px rgba(255, 142, 108, 0.17);
+            margin-bottom: 32px;
+        }
+        .hero-logo {
+            max-width: 155px;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.7rem;
+            color: #577568;
+            font-weight: 700;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #63847e;
+        }
+        .get-app-btn {
+            padding: 14px 32px;
+            background: var(--gs-peach);
+            color: #444;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.17rem;
+            font-weight: 600;
+            margin-top: 24px;
+            transition: background 0.15s;
+            box-shadow: 0 2px 8px rgba(252,124,76,0.13);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .get-app-btn:hover {
+            background: var(--gs-pink);
+            color: #333;
+            text-decoration: none;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            color: #577568;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 18px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .feature-list li {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .feature-list li::before {
+            content: "🟢";
+            margin-right: 12px;
+            font-size: 1.1em;
+            color: var(--gs-green);
+        }
+        .vision-card {
+            background: var(--gs-bg);
+            border-radius: 21px;
+            box-shadow: 0 2px 10px rgba(196, 211, 192, 0.09);
+            padding: 32px;
+            margin: 30px auto 16px auto;
+            max-width: 700px;
+        }
+        .info-section {
+            background: var(--gs-white);
+            border-radius: 24px;
+            box-shadow: 0 6px 24px -12px rgba(168, 213, 186, 0.07);
+            padding: 30px 24px 24px 24px;
+            margin-bottom: 32px;
+        }
+
+        .info-img {
+            max-width: 120px;
+            border-radius: 18px;
+            background: #FAEBE9;
+            box-shadow: 0 2px 6px rgba(255, 170, 143, 0.14);
+        }
+        .dashboard-image{
+            max-width: 220px;
+        }
+        .download-section {
+            background: var(--gs-bg);
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(196, 211, 192, 0.07);
+            max-width: 660px;
+            margin: 0 auto 60px auto;
+            padding: 28px 16px 24px 16px;
+            text-align: center;
+        }
+        .qr-img {
+            width: 128px;
+            height: 128px;
+            background: var(--gs-white);
+            padding: 8px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(195, 185, 180, 0.08);
+            margin-bottom: 8px;
+        }
+        /* Pricing cards */
+        .pricing-section {
+            padding: 32px 0 32px 0;
+            background: var(--gs-white);
+            border-radius: 24px;
+            box-shadow: 0 2px 24px -7px rgba(255, 200, 180, 0.09);
+            margin-bottom: 36px;
+        }
+        .pricing-title {
+            font-family: 'Playfair Display', serif;
+            color: #497775;
+            font-size: 2rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        .pricing-card {
+            background: var(--gs-bg);
+            border-radius: 24px;
+            box-shadow: 0 1px 11px -4px rgba(168,213,186,0.09);
+            padding: 28px 22px;
+            text-align: center;
+            transition: box-shadow 0.2s;
+        }
+        .pricing-card.best {
+            border: 2.5px solid var(--gs-peach);
+            box-shadow: 0 5px 28px -8px rgba(255,170,143,0.14);
+            position: relative;
+        }
+        .price-value {
+            font-size: 2.4rem;
+            font-weight: bold;
+            color: #b98577;
+            margin-bottom: 7px;
+        }
+        .plan-label {
+            font-weight: 700;
+            color: #59726b;
+            letter-spacing: 0.05em;
+            margin-bottom: 3px;
+            font-size: 1.1rem;
+        }
+        .plan-desc {
+            color: #6b8178;
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+        }
+        .plan-best-badge {
+            background: var(--gs-peach);
+            color: #fff;
+            border-radius: 10px;
+            padding: 3px 12px;
+            font-size: .96rem;
+            font-weight: bold;
+            position: absolute;
+            top: 16px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 1.5px 7px -2px rgba(252,124,76,0.13);
+        }
+        .pricing-features {
+            text-align: left;
+            font-size: 1rem;
+            margin: 0 auto 18px auto;
+            min-height: 84px;
+            padding-left: 12px;
+            max-width: 220px;
+        }
+        .pricing-features li {
+            margin-bottom: 7px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .vision-card, .info-section, .download-section, .hero-section, .pricing-section {
+                border-radius: 0;
+                padding: 30px 6px;
+            }
+            .section-title, .pricing-title {
+                font-size: 1.18rem;
+            }
+        }
+    </style>
+    <!-- Playfair Display font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Lato font for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Sticky Navbar -->
+<nav class="navbar navbar-expand-lg navbar-gs sticky-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="#home">GarbhSarthi</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavGS" aria-controls="navbarNavGS" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavGS">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#vision">Vision</a></li>
+                <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+                <li class="nav-item"><a class="nav-link" href="#download">Download</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+    <img src="./images/app-logo.png" alt="GarbhSarthi Logo" class="hero-logo mb-3"/>
+    <div class="hero-title">GarbhSarthi</div>
+    <div class="hero-subtitle mb-2">Your Companion Through Pregnancy & Beyond</div>
+    <p>
+        The holistic Indian app supporting expecting and aspiring mothers with mindful wellness, daily guidance, and community.
+    </p>
+    <a href="#download" class="get-app-btn">
+        Download the App
+    </a>
+</section>
+
+<!-- About Section -->
+<section class="container my-5" id="features">
+    <div class="row align-items-center info-section">
+        <div class="col-md-4 text-center pb-3 pb-md-0">
+            <img src="./images/dashboard_simple.png" class="info-img dashboard-image" alt="App Dashboard Illustration">
+        </div>
+        <div class="col-md-8">
+            <h2 class="section-title">What does GarbhSarthi do?</h2>
+            <ul class="feature-list">
+                <li>Guided journey for Pregnant Moms and those Trying to Conceive</li>
+                <li>Personalized dashboards, daily routines & self-care task reminders</li>
+                <li>Track baby growth, kicks, moods, sleep, hydration, ovulation and more</li>
+                <li>Live and recorded classes: Garbh Sanskar, Yoga, Meditation, Nutrition</li>
+                <li>Supportive community circles and expert guidance</li>
+                <li>Available in English, Hindi</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Highlights Section -->
+<section class="container mb-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="info-section text-center h-100">
+                <img src="./images/journey_simple.png" class="info-img mb-2" alt="Role Selection">
+                <h4 class="section-title mb-2" style="font-size:1.2rem;">Personalized for Your Journey</h4>
+                <div>
+                    Choose “Pregnant Mom” or “Trying to Conceive” and get a journey tailored for you.
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-section text-center h-100">
+                <img src="./images/platform_simple.png" class="info-img mb-2" alt="Class Library">
+                <h4 class="section-title mb-2" style="font-size:1.2rem;">Expert Classes & Content</h4>
+                <div>
+                    Join interactive live and recorded classes on yoga, meditation, nutrition and Garbh Sanskar.
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-section text-center h-100">
+                <img src="./images/network_simple.png" class="info-img mb-2" alt="Community Support">
+                <h4 class="section-title mb-2" style="font-size:1.2rem;">Caring Community Support</h4>
+                <div>
+                    Find motivation, share your journey, and connect in a safe, nurturing environment.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Vision -->
+<section class="vision-card" id="vision">
+    <h2 class="section-title text-center">Our Vision</h2>
+    <p class="text-center fs-5 mb-0">
+        To nurture every mother’s journey with compassion, science and community—<br>
+        blending wellness with timeless Indian traditions for healthier, happier families.
+    </p>
+</section>
+
+<!-- Pricing Section -->
+<section class="container pricing-section" id="pricing">
+    <h2 class="pricing-title text-center mb-4">Our Pricing</h2>
+    <div class="row g-4 justify-content-center">
+        <!-- Free Plan -->
+        <div class="col-md-4">
+            <div class="pricing-card h-100">
+                <div class="plan-label">Free</div>
+                <div class="price-value">₹0</div>
+                <div class="plan-desc">Basic features for every stage</div>
+                <ul class="pricing-features">
+                    <li>Limited trackers</li>
+                    <li>Community access</li>
+                    <li>Basic content & tips</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Essentials Plan -->
+        <div class="col-md-4">
+            <div class="pricing-card best h-100">
+                <div class="plan-label">Essentials</div>
+                <div class="price-value">₹999 <span style="font-size:1rem;color:#666;font-weight:400;">/mo</span></div>
+                <div class="plan-desc">For holistic daily support</div>
+                <ul class="pricing-features">
+                    <li>All trackers unlocked</li>
+                    <li>Video library access</li>
+                    <li>Personalized routines</li>
+                    <li>Priority support</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Premium Plan -->
+        <div class="col-md-4">
+            <div class="pricing-card h-100">
+                <div class="plan-label">Premium</div>
+                <div class="price-value">₹1999 <span style="font-size:1rem;color:#666;font-weight:400;">/mo</span></div>
+                <div class="plan-desc">Best for trimester & beyond</div>
+                <ul class="pricing-features">
+                    <li>All Essentials, plus:</li>
+                    <li>Live classes</li>
+                    <li>Ovulation scanner & expert Q&A</li>
+                    <li>Exclusive community circles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-3" style="font-size:.97rem;color:#b98577;">
+        No hidden fees. Cancel anytime.
+    </div>
+</section>
+
+<!-- App Download Section with QR code -->
+<div class="download-section mb-4" id="download">
+    <h2 class="section-title mb-3">Get the GarbhSarthi App</h2>
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mb-3">
+        <!-- Dummy QR Code (replace src with your real QR code image) -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://your-dummy-link.com" class="qr-img me-md-4 mb-3 mb-md-0" alt="QR Code to download app">
+        <div>
+            <a href="#" class="get-app-btn mx-1 mb-2">Download for Android</a>
+            <a href="#" class="get-app-btn mx-1 mb-2">Download for iOS</a>
+        </div>
+    </div>
+    <div style="font-size:.95rem; color:#63847e;">
+        Scan the QR code or click a button to download GarbhSarthi and begin your wellness journey.
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    &copy; 2025 GarbhSarthi · All Rights Reserved
+</footer>
+
+<!-- Bootstrap JS & scroll menu handler -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Navbar scroll active section
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+        let fromTop = window.scrollY + 70;
+        navLinks.forEach(link => {
+            const section = document.querySelector(link.getAttribute('href'));
+            if (
+                section &&
+                section.offsetTop <= fromTop &&
+                section.offsetTop + section.offsetHeight > fromTop
+            ) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -27,7 +27,7 @@ const actionToCheckRoomStatus = async (roomId)=>{
 
 const actionToSendVideoChunkDataToServerFinishProcess = async (groupId,duration)=>{
     await api.post(`recording-video-finish`,{groupId,duration});
-    window.location.href = "https://garbhsarthi.com/class/monika1212";
+    window.location.href = "https://meet.garbhsarthi.com/class/monika1212";
 }
 
 const actionToCreateClassRoom = async (secret)=>{

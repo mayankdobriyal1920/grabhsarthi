@@ -7,8 +7,7 @@ export default function StartClass() {
     const { roomId } = useParams();
     return (
         <div className="teacher-screen">
-            <VideoRoom isTeacher={true} roomId={roomId || "main-classroom"} />
+            <VideoRoom isTeacher={true} userName={'Monika Kothari'} roomId={roomId || "main-classroom"} />
         </div>
-
     );
 }
