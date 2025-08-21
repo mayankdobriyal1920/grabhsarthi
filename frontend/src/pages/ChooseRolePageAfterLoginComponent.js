@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IonPage, IonContent } from '@ionic/react';
 import {useHistory} from "react-router-dom";
+import useStore from "../zustand/useStore";
 
 const roles = [
     {
@@ -24,7 +25,17 @@ const roles = [
 const ChooseRolePageAfterLoginComponent = () => {
     const [chosen, setChosen] = useState(null);
     const history = useHistory();
+    const {signinSuccess} = useStore();
     const goToPage = (page)=>{
+        let userData = {
+            id:2,
+            name:'Monika Kothari',
+            role:3,
+        }
+        if(chosen === 'pregnant'){
+            userData.role = 2;
+        }
+        signinSuccess(userData)
         history.replace(page);
     }
     return (

@@ -1,10 +1,265 @@
 body,html,#root{
-    font-family: 'Poppins', sans-serif!important;
+    font-family: system-ui, -apple-system, "Segoe UI", 'Poppins', Helvetica, Arial, sans-serif!important;
 }
 input:focus-visible{
     outline: 1px solid var(--primary-color)!important;
 }
+.main-contant-page{
+    --padding-top: var(--header-bar-height);
+}
+.with_login-mobile-menu {
+    padding: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
+
+/* === User header === */
+.with_login-menu-item-header-row {
+    align-items: center;
+    padding-bottom: 16px;
+}
+
+.user_prof_initial .user_name_initial img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd; /* subtle border */
+}
+
+.user_full_info {
+    margin-left: 8px;
+}
+
+.close_header_menu IonIcon {
+    font-size: var(--font-size-1);
+    cursor: pointer;
+    color: #333;
+}
+
+/*
+.page-content {
+    --padding-top: 60px; !* Header height *!
+    --padding-bottom: 20px;
+}
+*/
+
+.content-area {
+    height: 100%;
+    padding: 16px;
+}
+
+
+.user_prof_initial .user_name_initial {
+    margin: auto;
+    text-align: center;
+}
+
+.user_full_info .user_full_name {
+    font-weight: 600;
+    font-size: var(--font-size-2);
+    color: #111;
+}
+
+.user_full_info .user_full_email {
+    font-size: 0.7rem;
+    line-height: 1.1rem;
+}
+
+.user_full_info {
+    width: 170px;
+    height: auto;
+}
+
+.user_full_info .user_full_contact {
+    font-size: var(--font-size-5);
+    line-height: 1.1rem;
+}
+
+.with_login-menu-item-header-row {
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.with_login-menu-item.menu-names {
+    margin-left: 12px;
+}
+
+.with_login-menu-item-header-row {
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.with_login-menu-item.menu-names {
+    margin-left: 12px;
+}
+.with_login-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: var(--font-size-4);
+    color: rgb(106 105 105);
+    margin-bottom: 30px;
+}
+.with_login-menu-item.menu-names.active span {
+    color: #d60000;
+}
+.with_login-menu-item ion-icon {
+    font-size: var(--font-size-3);
+    color: var(--font-color-light);
+}
+.with_login-menu-item span {
+    font-size: var(--font-size-3);
+    color: var(--font-color);
+}
+.with_login-menu-item.available_on_menu .available_on_menu_row {
+    margin-top: 0.4rem;
+}
+.with_login-menu-item.available_on_menu {
+    margin-top: 3rem;
+    font-size: var(--font-size-4);
+    display: block;
+}
+
+.with_login-menu-item.version_no_section {
+    text-align: center;
+    width: 100%;
+    margin-top: auto;
+}
+
+.with_login-menu-item.version_no_section .version_no_section {
+    width: 100%;
+    font-size: var(--font-size-3);
+    color: #e80000;
+}
+
+.with_login-header {
+    background: white !important;
+    border-bottom: 1px solid #dcdcdc;
+    box-shadow: none !important;
+
+}
+
+.with_login-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.with_login-title {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.with_login-menu-button {
+    margin-left: 10px!important;
+    font-size: var(--font-size-3);
+    color: var(--font-color);
+    transition: transform 0.3s ease;
+    --padding-bottom: 8px !important;
+    --padding-top: 8px !important;
+    --padding-left: 0 !important;
+    --padding-right: 0 !important;
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+}
+
+.with_login-menu-button.open ion-icon {
+    transform: rotate(180deg);
+}
+
+.with_login-icons ion-icon {
+    font-size: 23px;
+    color: rgb(106 105 105);
+}
+.with_login-menu-button .profile-avatar {
+    position: relative;
+    width: 40px;       /* adjust size */
+    height: 40px;
+}
+
+.with_login-menu-button .avatar-pill {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* makes it circular */
+    object-fit: cover;
+}
+
+.with_login-menu-button .avatar-icon {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: #ffffff;   /* optional: white background circle */
+    border-radius: 50%;
+    padding: 2px;
+    font-size: var(--font-size-4);
+    color: var(--gs-text-dark);
+}
+
+.notification-icon {
+    position: relative;
+    display: inline-block;
+}
+
+ion-toolbar.header-common-tab {
+    --background: white;
+    --color: rgb(106, 105, 105);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #dc0000;   /* iOS style red badge */
+    color: #ffffff;
+    font-size: var(--font-size-5);
+    border-radius: 50%;
+    padding: 2px;
+    line-height: 1;
+    min-width: 16px;
+    text-align: center;
+}
+
+ion-header,
+ion-tab-bar {
+    transition: transform 0.3s ease-in-out;
+}
+
+
+ion-header.hide_element {
+    transform: translateY(-100%);
+}
+
+ion-tab-bar.hide_element {
+    transform: translateY(100%);
+}
+
+ion-button{
+    --background-activated: unset!important;
+    --background-focused: unset!important;
+    --background-hover: unset!important;
+    --background-focused-opacity: unset!important;
+    --background-activated-opacity: unset!important;
+    opacity: 1!important;
+    text-transform: none!important;
+    min-height: 2.7rem!important;
+}
+.lazy-load-image-background.blur.lazy-load-image-loaded {
+    filter: blur(0);
+    height: auto !important;
+    transition: filter .1s;
+}
+.logout_button_menu {
+    width: 100%;
+    --background: var(--primary-color);
+    font-size: var(--font-size-4);
+}
 
 .welcome-page {
     display: flex;
@@ -16,7 +271,6 @@ input:focus-visible{
 }
 .welcome-page-inner{
     background: var(--background-color);
-    padding: 10px;
     height: 100%;
     width: 100%;
     padding: 20px 40px;
@@ -491,4 +745,363 @@ ion-modal.more-sheet-modal ion-content {
     margin-top: 7px;
     font-size: var(--font-size-4);
     color: var(--font-color);
+}
+
+
+.pregnant-dashboard {
+    --background: var(--white);
+}
+
+.pregnant-dashboard .dash-wrap {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 12px 14px 24px;
+    color: var(--gs-text-dark);
+}
+
+/* Top bar */
+.pregnant-dashboard .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main_app_header .avatar-pill {
+    border-radius: 8px;
+    background: var(--gs-peach-300);
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+    color: var(--gs-text-dark);
+    box-shadow: var(  --gs-icon-shadow);
+}
+
+.pregnant-dashboard .icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    border: 0;
+    background: var(--white);
+    display: grid;
+    place-items: center;
+    box-shadow: var(  --gs-icon-shadow);
+}
+.pregnant-dashboard .icon-btn ion-icon { font-size: 18px; }
+
+/* Greeting */
+.pregnant-dashboard .greet {
+    margin: 10px 2px 12px;
+}
+.pregnant-dashboard .greet h1 {
+    font-size: var(--font-size-1);
+    color: var(--gs-text-dark);
+    line-height: 1.15;
+    margin: 6px 0 2px;
+    font-weight: bold;
+}
+.pregnant-dashboard .greet p {
+    margin: 0;
+    color: var(--gs-text-medium);
+    font-size: 14px;
+}
+
+/* Card base */
+.pregnant-dashboard .card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(  --gs-icon-shadow);
+    padding: 14px;
+    margin: 12px 0;
+}
+
+/* Snapshot */
+.pregnant-dashboard .snapshot {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.pregnant-dashboard .baby-blob {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    background: radial-gradient(120% 120% at 30% 20%, var(--gs-peach-200) 0%, var(--gs-peach-300) 60%, var(--gs-peach-400) 100%);
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+}
+.pregnant-dashboard .baby-svg { width: 62px; height: 62px; }
+.pregnant-dashboard .snap-text .b { font-weight: 700; }
+.pregnant-dashboard .snap-text .muted { color: var(--gs-text-medium); font-size: 13px; margin-top: 2px; }
+
+/* Tasks */
+.pregnant-dashboard .tasks h3 {
+    margin: 2px 0 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.pregnant-dashboard .tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 10px;
+    margin-bottom: 10px;
+}
+
+.pregnant-dashboard .task {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gs-text-dark);
+    white-space: pre-line; /* allow Garbh\ nSamvaad */
+}
+.pregnant-dashboard .task-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--gs-peach-200);
+    display: grid;
+    place-items: center;
+    margin: 0 auto 6px;
+    box-shadow: inset 0 2px 3px rgba(0,0,0,0.04);
+}
+.pregnant-dashboard .task-icon ion-icon { font-size: 22px; color: #7e5a4d; }
+
+/* Progress */
+.pregnant-dashboard .progress-row {
+    margin-top: 6px;
+}
+.pregnant-dashboard .muted { color: var(--gs-text-medium); }
+.pregnant-dashboard .s { font-size: 12px; }
+.pregnant-dashboard .track {
+    position: relative;
+    height: 10px;
+    background: var(--gs-bg-accent-light);
+    border-radius: 999px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+.pregnant-dashboard .fill {
+    height: 100%;
+    background: var(--gs-green);
+}
+.pregnant-dashboard .thumb {
+  display: none!important;
+}
+
+.main_app_header ion-icon { font-size: 22px; color: var(--gs-text); }
+
+/* Chips */
+.pregnant-dashboard .chips {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 12px 0;
+}
+.pregnant-dashboard .chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 12px 12px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: var(  --gs-icon-shadow);
+}
+.pregnant-dashboard .chip ion-icon { font-size: 18px; color: #7e5a4d; }
+
+/* Streak */
+.pregnant-dashboard .streak {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.pregnant-dashboard .streak-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.pregnant-dashboard .circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--gs-peach-200);
+}
+.pregnant-dashboard .circle ion-icon { font-size: 18px; color: #7e5a4d; }
+.pregnant-dashboard .circle.solid {
+    background: #f3b09c;
+    color: #7e3e27;
+}
+.pregnant-dashboard .circle.solid ion-icon { color: #7e3e27; }
+.pregnant-dashboard .streak-text { display: flex; flex-direction: column; line-height: 1.05; }
+.pregnant-dashboard .streak-text .b { font-weight: 800; }
+.with_login-menu-item-header-row .profile-avatar {
+    position: relative;
+    width: 40px;       /* adjust size */
+    height: 40px;
+}
+
+.with_login-menu-item-header-row .avatar-pill {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--gs-peach-300);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: var(--gs-text-dark);
+    box-shadow: var(  --gs-icon-shadow);
+}
+
+
+.user_full_info .user_full_name {
+    font-weight: 600;
+    font-size: var(--font-size-2);
+    color: var(--gs-text-dark);
+}
+
+.user_full_info .user_full_email {
+    font-size: 0.7rem;
+    line-height: 1.1rem;
+}
+
+.user_full_info {
+    width: 170px;
+    height: auto;
+}
+
+.user_full_info .user_full_contact {
+    font-size: var(--font-size-5);
+    line-height: 1.1rem;
+}
+.with_login-mobile-menu .submenu {
+    margin-left: 22px;
+}
+
+ion-toolbar:last-of-type {
+    --border-width: 0!important;
+    --background: var(--white)!important;
+    --border: unset!important;
+    --padding-bottom: 0px !important;
+    --padding-top: 0px !important;
+    --padding-left: 0px !important;
+    --padding-right: 0px !important;
+    --padding-start: 0px !important;
+    --padding-end: 0px !important;
+}
+
+.with_login-toolbar{margin:auto; padding: 0px 6px;}
+
+.page_name_header_container{
+    margin-left: 10px;
+    text-align: left;
+    line-height: 18px;
+}
+.page_name_header{
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
+    font-weight: bold;
+}
+.page_name_header_online{
+    font-size: var(--font-size-5);
+    color: var(--gs-text-dark);
+    display: flex;
+    align-items: center;
+}
+.page_name_header_online:before {
+    content: '';
+    border-radius: 50%;
+    width: 9px;
+    margin-right: 5px;
+    height: 9px;
+    background: #00d200;
+}
+
+
+.ttc-dashboard .cycle-card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--gs-icon-shadow);
+    padding: 14px;
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--gs-text);
+}
+
+.ttc-dashboard .cycle-card .dash-card-head h3 {
+    margin: 2px 0 12px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ttc-dashboard .cycle-card .dash-card-body {
+    text-align: center;
+}
+
+.ttc-dashboard .cycle-card .calendar-strip {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #8a8f85;
+}
+
+.ttc-dashboard .cycle-card .calendar-dates {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.ttc-dashboard .cycle-card .calendar-dates span {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-4);
+    color: var(--gs-text-dark);
+}
+
+.ttc-dashboard .cycle-card .calendar-strip span {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-4);
+    color: var(--gs-text-dark);
+}
+
+.ttc-dashboard .cycle-card .calendar-dates span.active {
+    background: var(--gs-tracker-mint); /* soft green background */
+    color: var(--gs-heading);
+    font-weight: 600;
+}
+
+.ttc-dashboard .cycle-card .status-text {
+    font-size: var(--font-size-4);
+    color: var(--gs-text-dark);
+    font-weight: bold;
+    margin: 15px;
+}
+
+
+.ttc-dashboard .task-icon,.ttc-dashboard .circle{
+    background: var(--gs-tracker-mint);
+}
+
+.ttc-dashboard .task-icon ion-icon,.ttc-dashboard .circle ion-icon,.ttc-dashboard .chip ion-icon{
+    color: var(--gs-heading);
+}
+.pregnant-dashboard .fill{
+    background: var(--gs-peach-400);
+}
+.pregnant-dashboard .track{
+    background: var(--gs-peach-200);
 }

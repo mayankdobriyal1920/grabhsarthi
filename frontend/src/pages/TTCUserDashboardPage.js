@@ -10,10 +10,11 @@ import {
     pulseOutline,
     peopleOutline,
     leafOutline,
-    flame
+    flame, calendarOutline, heartOutline, nutritionOutline, bandageOutline
 } from "ionicons/icons";
+import CycleCalendarComponent from "../components/CycleCalendarComponent";
 
-export default function PregnantDashboardPage({ handleScroll }) {
+export default function TTCUserDashboardPage({ handleScroll }) {
     // progress example: 3/4 tasks = 75%
     const progress = 0.75;
 
@@ -23,43 +24,16 @@ export default function PregnantDashboardPage({ handleScroll }) {
                 fullscreen
                 scrollEvents={true}
                 onIonScroll={handleScroll}
-                className="dash --peach-bg pregnant-dashboard main-contant-page">
+                className="dash --peach-bg pregnant-dashboard ttc-dashboard main-contant-page">
                 <div className="dash-wrap pregnant-dashboard-wrap">
                     {/* Greeting */}
                     <div className="greet">
-                        <h1>Namaste, Monika Ji!</h1>
-                        <p>You’re in Week 24</p>
+                        <h1>Namaste, Monika!</h1>
+                        <p>Let’s track your cycle</p>
                     </div>
 
                     {/* Baby Growth Snapshot */}
-                    <div className="card snapshot">
-                        <div className="baby-blob">
-                            {/* Simple baby SVG in a soft circle */}
-                            <svg
-                                viewBox="0 0 64 64"
-                                className="baby-svg"
-                                aria-hidden="true"
-                                role="img"
-                            >
-                                <circle cx="32" cy="32" r="32" fill="#FFE1D6" />
-                                <path
-                                    d="M27 24c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5c0 2.8-2 5.2-4.7 5.5v1.4c3.2.6 6.7 3.1 6.7 7.4 0 4.6-3.9 7.7-8.9 7.7-4.8 0-8.1-2.7-8.7-6.5-.3-1.8 1.2-3.4 3-3.4h1.7c1 0 1.9-.8 1.9-1.9v-2.1c-2.6-.4-4.4-2.6-4.4-5.1z"
-                                    fill="#D18C7C"
-                                />
-                                <circle cx="36" cy="22.8" r="1.2" fill="#6A3C34" />
-                            </svg>
-                        </div>
-                        <div className="snap-text">
-                            <p className="b">Your baby is the size</p>
-                            <div className="track">
-                                <div
-                                    className="fill"
-                                    style={{ width: `${progress * 100}%` }}
-                                />
-                            </div>
-                            <p className="muted">The lungs and taste buds develop</p>
-                        </div>
-                    </div>
+                    <CycleCalendarComponent/>
 
                     {/* Daily Tasks */}
                     <div className="card tasks">
@@ -75,23 +49,23 @@ export default function PregnantDashboardPage({ handleScroll }) {
 
                             <div className="task">
                                 <div className="task-icon">
-                                    <IonIcon icon={bodyOutline} />
+                                    <IonIcon icon={heartOutline} />
                                 </div>
-                                <span>Meditation</span>
+                                <span>Mindset</span>
                             </div>
 
                             <div className="task">
                                 <div className="task-icon">
-                                    <IonIcon icon={chatbubbleEllipsesOutline} />
+                                    <IonIcon icon={nutritionOutline} />
                                 </div>
-                                <span>Garbh{"\n"}Samvaad</span>
+                                <span>Diet</span>
                             </div>
 
                             <div className="task">
                                 <div className="task-icon">
-                                    <IonIcon icon={musicalNotesOutline} />
+                                    <IonIcon icon={bandageOutline} />
                                 </div>
-                                <span>Mantra</span>
+                                <span>Folate Reminder</span>
                             </div>
 
                             <div className="task">

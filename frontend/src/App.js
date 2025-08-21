@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {setupIonicReact, IonApp, IonRouterOutlet, IonLoading} from '@ionic/react';
+import {setupIonicReact, IonApp, IonRouterOutlet} from '@ionic/react';
 import '@ionic/react/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
@@ -18,8 +18,6 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/common-style.css';
-import {useDispatch,useSelector} from "react-redux";
-import {actionToConnectSocketServer} from "./redux/CommonAction";
 import {IonReactRouter} from "@ionic/react-router";
 import {Redirect, Route} from "react-router";
 import WithoutLoginHomePage from "./pages/WithoutLoginHomePage";
@@ -30,10 +28,6 @@ import AppEntryTabsPage from "./pages/AppEntryTabsPage";
 setupIonicReact();
 
 const AppEnterMainPage = () => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(actionToConnectSocketServer());
-    }, []);
 
     return (
         <IonReactRouter>

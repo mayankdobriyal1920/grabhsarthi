@@ -4,7 +4,7 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-default-font:"Esqadero FF CY 4F-Regular", sans-serif !important;
+  --ion-default-font:system-ui, -apple-system, "Segoe UI", 'Poppins', Helvetica, Arial, sans-serif!important;
   --ion-color-primary: #f57b2c;
   --theme-background-color: #F3F6FF;
   --theme-background-secondry-color: #ffffff;
@@ -107,7 +107,7 @@ http://ionicframework.com/docs/theming/ */
   --color-background: #FFF8F8;   /* Baby skin light */
   --color-primary: #d87576;      /* Rose pink for buttons/icons */
   --background-color:#FFF8F5;
-  --primary-button-color:#e59a94;
+  --primary-button-color:#4B8A84;
 
   --color-bg-gradient: linear-gradient(135deg, #FFF8F8, #FADADD);
   --color-heading: #1C1C1C;
@@ -138,8 +138,11 @@ http://ionicframework.com/docs/theming/ */
   --event-page-left-side:0;
 
     /* Backgrounds */
-    --gs-bg-main: #FFF8F5;        /* Very light blush */
+    --gs-bg-main: #ffe9e1;        /* Very light blush */
     --gs-bg-card: #EEF8F4;        /* Pastel mint */
+    --gs-peach-200: #ffe9e1;        /* Pastel mint */
+    --gs-peach-300: #ffd9cc;        /* Pastel mint */
+    --gs-peach-400: #f3b09c;        /* Pastel mint */
     --gs-bg-accent-light: #E9F8F5; /* Subtle mint section bg */
     --gs-bg-accent-peach: #FFEAE3; /* Light peach */
 
@@ -150,12 +153,14 @@ http://ionicframework.com/docs/theming/ */
     --gs-accent-gold: #CBA15D;    /* Soft gold */
     --gs-accent-teal: #4B8A84;    /* Teal highlight */
     --gs-accent-yellow: #FFD580;  /* Gentle gold for highlights */
-
+    --white: #ffffff;
     /* Typography */
     --gs-heading: #577568;        /* Muted green (main headings) */
     --gs-text: #564E46;           /* Sepia/chocolate brown (body) */
-    --gs-text-dark: #333333;      /* Deeper contrast text */
+    --gs-text-dark: #2f2a28;      /* Deeper contrast text */
+    --gs-text-medium: #6b5f5a;      /* Deeper contrast text */
     --gs-text-light: #B7ADA8;     /* Disabled/helper text */
+    --gs-icon-shadow: 0 4px 14px rgba(52, 24, 6, 0.08);
 
     /* Tracker & Graphs */
     --gs-tracker-blue: #B7E9F7;   /* Light blue for sleep/water */

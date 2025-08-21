@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     IonTabs,
     IonRouterOutlet,
@@ -7,7 +7,7 @@ import {
     IonIcon,
     IonLabel,
     IonModal,
-    IonContent
+    IonContent, IonPage
 } from '@ionic/react';
 import { Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 
@@ -27,11 +27,18 @@ import {
     settingsOutline,
     ellipsisHorizontal
 } from 'ionicons/icons';
+import HeaderAfterLoginComponent from "../components/HeaderAfterLoginComponent";
+import useStore from "../zustand/useStore";
+import TTCUserDashboardPage from "./TTCUserDashboardPage";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
     const [showMoreSheet, setShowMoreSheet] = useState(false);
-
+    const lastScrollTop = React.useRef(0);
+    const menuRef = React.useRef(null);
+    const [hideHeader, setHideHeader] = useState(false);
+    const {userAuthDetail} = useStore();
+    const {userInfo} = userAuthDetail;
     const history = useHistory();
     const { pathname } = useLocation();
 
@@ -53,15 +60,42 @@ const AppEntryTabsPage = () => {
         setShowMoreSheet(!showMoreSheet);
     };
 
+    const handleScroll = (event) => {
+        const scrollTop = event.detail.scrollTop ?? 0;
+        const newScrollTop = scrollTop < 0 ? 0 : scrollTop;
+
+        if (newScrollTop > lastScrollTop.current) {
+            setHideHeader(true);
+        } else if (newScrollTop < lastScrollTop.current) {
+            setHideHeader(false);
+        }
+
+        lastScrollTop.current = newScrollTop;
+    }
+
     return (
         <IonTabs>
             <IonRouterOutlet>
-                <Route
-                    exact
-                    path="/dashboard/home"
-                    render={() => <PregnantDashboardPage />}
-                />
-                <Redirect exact from="/dashboard" to="/dashboard/home" />
+                <Route path="/dashboard/" render={() => (
+                    <IonPage>
+                        {/* Common header always visible */}
+                        <HeaderAfterLoginComponent menuRef={menuRef} currentPath={currentPath} setCurrentPath={setCurrentPath} hideHeader={hideHeader} pageId={"main-menu-content"} />
+                        {/* Nested outlet for tab pages */}
+                        <IonRouterOutlet id="main-menu-content">
+                            <Route exact path="/dashboard/home" render={()=>(
+                                <>
+                                    {(userInfo?.role === 2) ?
+                                        <PregnantDashboardPage handleScroll={handleScroll} />
+                                        :
+                                        <TTCUserDashboardPage handleScroll={handleScroll} />
+                                    }
+                                </>
+
+                            )} />
+                            <Redirect exact from="/dashboard" to="/dashboard/home" />
+                        </IonRouterOutlet>
+                    </IonPage>
+                )} />
             </IonRouterOutlet>
 
             {/* Tab Bar only shows on mobile */}
