@@ -4,7 +4,7 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-default-font:system-ui, -apple-system, "Segoe UI", 'Poppins', Helvetica, Arial, sans-serif!important;
+  --ion-default-font:'DM Sans', sans-serif!important;
   --ion-color-primary: #f57b2c;
   --theme-background-color: #F3F6FF;
   --theme-background-secondry-color: #ffffff;
@@ -106,14 +106,14 @@ http://ionicframework.com/docs/theming/ */
 
   --color-background: #FFF8F8;   /* Baby skin light */
   --color-primary: #d87576;      /* Rose pink for buttons/icons */
-  --background-color:#FFF8F5;
-  --primary-button-color:#4B8A84;
+  --background-color:#ffffff;
+  --primary-button-color:#446b8b;
 
   --color-bg-gradient: linear-gradient(135deg, #FFF8F8, #FADADD);
   --color-heading: #1C1C1C;
   --color-body: #463C3C;
   --primary-color: #FFC4A3;
-  --secondry-color: #A8D5BA;
+  --secondry-color: #55905b;
   --input-bg: #f9f9f9;
   --input-border: #ddd;
   --input-border-focus: #5b6693;
@@ -147,7 +147,7 @@ http://ionicframework.com/docs/theming/ */
     --gs-bg-accent-peach: #FFEAE3; /* Light peach */
 
     /* Primary Colors */
-    --gs-primary: #C88A8F;        /* Earthy mauve / dusty rose */
+    --gs-primary: #dc7170;        /* Earthy mauve / dusty rose */
     --gs-primary-dark: #B98577;   /* Active/pressed state for buttons */
     --gs-accent-green: #A8D5BA;   /* Sage green */
     --gs-accent-gold: #CBA15D;    /* Soft gold */
@@ -155,7 +155,7 @@ http://ionicframework.com/docs/theming/ */
     --gs-accent-yellow: #FFD580;  /* Gentle gold for highlights */
     --white: #ffffff;
     /* Typography */
-    --gs-heading: #577568;        /* Muted green (main headings) */
+    --gs-heading: #55905b;        /* Muted green (main headings) */
     --gs-text: #564E46;           /* Sepia/chocolate brown (body) */
     --gs-text-dark: #2f2a28;      /* Deeper contrast text */
     --gs-text-medium: #6b5f5a;      /* Deeper contrast text */
@@ -179,7 +179,7 @@ http://ionicframework.com/docs/theming/ */
 
 
     --gs-card-bg: #FEFAF7;
-    --gs-pink: #D9A5A3;
+    --gs-pink: #dc7170;
     --gs-green: #A8D5BA;
     --gs-card-border: #E5D6CB;
     --gs-active-pink: #B98577;

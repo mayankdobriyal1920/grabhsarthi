@@ -61,16 +61,16 @@ const AppEntryTabsPage = () => {
     };
 
     const handleScroll = (event) => {
-        const scrollTop = event.detail.scrollTop ?? 0;
-        const newScrollTop = scrollTop < 0 ? 0 : scrollTop;
-
-        if (newScrollTop > lastScrollTop.current) {
-            setHideHeader(true);
-        } else if (newScrollTop < lastScrollTop.current) {
-            setHideHeader(false);
-        }
-
-        lastScrollTop.current = newScrollTop;
+        // const scrollTop = event.detail.scrollTop ?? 0;
+        // const newScrollTop = scrollTop < 0 ? 0 : scrollTop;
+        //
+        // if (newScrollTop > lastScrollTop.current) {
+        //     setHideHeader(true);
+        // } else if (newScrollTop < lastScrollTop.current) {
+        //     setHideHeader(false);
+        // }
+        //
+        // lastScrollTop.current = newScrollTop;
     }
 
     return (

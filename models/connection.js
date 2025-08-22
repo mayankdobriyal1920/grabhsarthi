@@ -8,7 +8,7 @@ var pool = mysql.createPool({
     host: process.env.DB_HOST || '178.16.138.111',
     user: process.env.DB_USER || 'dbuser',
     password: process.env.DB_PASSWORD || 'Pa$$W0rd@123$$',
-    database: process.env.DB_NAME || 'unikpayindia',
+    database: process.env.DB_NAME || 'garbhsarthi',
     debug    :  false
 });
 export default pool;

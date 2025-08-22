@@ -1,9 +1,10 @@
 body,html,#root{
     font-family: system-ui, -apple-system, "Segoe UI", 'Poppins', Helvetica, Arial, sans-serif!important;
 }
-input:focus-visible{
+*:focus-visible{
     outline: 1px solid var(--primary-color)!important;
 }
+
 .main-contant-page{
     --padding-top: var(--header-bar-height);
 }
@@ -280,11 +281,11 @@ ion-button{
     width: 15rem;
     margin: auto;
     padding-top: 40px;
-    height: 280px;
+    height: 350px;
 }
 
 .welcome-heading {
-    font-size: var(--font-size-0);
+    font-size: 40px;
     font-weight: bold;
     margin-top: 24px;
 }
@@ -330,7 +331,7 @@ ion-button{
 
 /*/////// LOGIN PAGE //////////*/
 .login-content {
-    --background: #fffaf9;
+    --background: var(--background-color);
 }
 
 .login-container {
@@ -383,7 +384,7 @@ ion-button{
     padding: 12px;
     margin-top: 40px;
     width: 100%;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px 4px rgba(0, 0, 0, 0.05);
 }
 
 .input-icon ion-icon {
@@ -392,7 +393,7 @@ ion-button{
 .input-icon {
     font-size: var(--font-size-2);
     margin-right: 10px;
-    color: #c97e79;
+    color: var(--gs-pink);
 }
 
 .custom-input {
@@ -527,7 +528,7 @@ ion-button{
     margin: 30px auto;
     padding: 20px;
     text-align: center;
-    color: var(--gs-heading);
+    color: var(--gs-text-dark);
 }
 
 .form-title {
@@ -540,7 +541,7 @@ ion-button{
     margin-top: -4px;
 }
 .form-step {
-    font-size: 14px;
+    font-size: var(--font-size-3);
     color: var(--gs-text-dark);
     margin-bottom: 20px;
 }
@@ -548,9 +549,10 @@ ion-button{
 .toggle-buttons {
     display: flex;
     justify-content: center;
-    background: #f9d9d7;
+    background: #ffe7e6;
     border-radius: 25px;
     padding: 4px;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -566,18 +568,18 @@ ion-button{
 }
 
 .toggle-btn.active {
-    background: #e59a94;
+    background: var(--gs-pink);
     color: #fff;
 }
 
 .form-group {
     text-align: left;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    font-size: 14px;
+    font-size: var(--font-size-3);
     font-weight: 500;
     margin-bottom: 5px;
 }
@@ -641,7 +643,7 @@ ion-button{
     padding: 14px;
     background: var(--primary-button-color);
     border: none;
-    border-radius: 25px;
+    border-radius: 10px;
     color: white;
     font-size: var(--font-size-3);
     font-weight: bold;
@@ -873,8 +875,8 @@ ion-modal.more-sheet-modal ion-content {
 .pregnant-dashboard .s { font-size: 12px; }
 .pregnant-dashboard .track {
     position: relative;
-    height: 10px;
-    background: var(--gs-bg-accent-light);
+    height: 6px;
+    background: #0000000a;
     border-radius: 999px;
     margin-top: 6px;
     overflow: hidden;
@@ -1043,17 +1045,19 @@ ion-toolbar:last-of-type {
 }
 
 .ttc-dashboard .cycle-card .calendar-strip {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 6px;
-    font-size: 13px;
+    font-size: var(--font-size-3);
     color: #8a8f85;
+    display: grid;
+    margin-bottom: 6px;
+    grid-template-columns: 14.28% 14.28% 14.28% 14.28% 14.28% 14.28% 14.28%;
 }
 
 .ttc-dashboard .cycle-card .calendar-dates {
-    display: flex;
-    justify-content: space-between;
+    font-size: var(--font-size-3);
+    color: #8a8f85;
+    display: grid;
     margin-bottom: 6px;
+    grid-template-columns: 14.28% 14.28% 14.28% 14.28% 14.28% 14.28% 14.28%;
 }
 
 .ttc-dashboard .cycle-card .calendar-dates span {
@@ -1099,9 +1103,6 @@ ion-toolbar:last-of-type {
 .ttc-dashboard .task-icon ion-icon,.ttc-dashboard .circle ion-icon,.ttc-dashboard .chip ion-icon{
     color: var(--gs-heading);
 }
-.pregnant-dashboard .fill{
-    background: var(--gs-peach-400);
-}
-.pregnant-dashboard .track{
-    background: var(--gs-peach-200);
+.ttc-dashboard .fill{
+    background: var(--gs-pink);
 }
