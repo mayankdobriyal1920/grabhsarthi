@@ -12,6 +12,7 @@ import {
 } from "@ionic/react";
 import {logOut, menuOutline, notifications} from "ionicons/icons";
 import {useHistory, useLocation} from "react-router-dom";
+import appLogo from "../theme/img/app-small-logo.png";
 
 const menuItems = [
     { label: 'Home', pathName:'/dashboard/home' },
@@ -170,8 +171,8 @@ export default function HeaderAfterLoginComponent({pageId,hideHeader,menuRef,cur
                         <IonButton
                             onClick={toggleMenu}
                             className={`with_login-menu-button ${menuOpen ? 'open' : ''}`}>
-                            <div className="profile-avatar">
-                                <div className="avatar-pill">M</div>
+                            <div className="profile-avatar with-app-logo">
+                                <img alt={'appLogo'} src={appLogo}/>
                                 <IonIcon icon={menuOutline} className="avatar-icon"/>
                             </div>
                             <div className={"page_name_header_container"}>

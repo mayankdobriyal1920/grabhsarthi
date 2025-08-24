@@ -84,10 +84,10 @@ const AppEntryTabsPage = () => {
                         <IonRouterOutlet id="main-menu-content">
                             <Route exact path="/dashboard/home" render={()=>(
                                 <>
-                                    {(userInfo?.role === 2) ?
-                                        <PregnantDashboardPage handleScroll={handleScroll} />
-                                        :
+                                    {(userInfo?.role === 1) ?
                                         <TTCUserDashboardPage handleScroll={handleScroll} />
+                                        :
+                                        <PregnantDashboardPage handleScroll={handleScroll} />
                                     }
                                 </>
 

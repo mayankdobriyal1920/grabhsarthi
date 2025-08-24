@@ -4,14 +4,13 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-default-font:'DM Sans', sans-serif!important;
-  --ion-color-primary: #f57b2c;
+  --ion-default-font:'DM Sans',serif, sans-serif;
+  --ion-color-primary: #e55b7c;
   --theme-background-color: #F3F6FF;
   --theme-background-secondry-color: #ffffff;
   --theme-modal-color: #ffffff;
-  --theme-logo-color: #f57b2c;
-  --theme-gradiant-color: linear-gradient(90deg, #f57b2c 0%, #f57b2c 100%);
-  --theme-primary-button-color: #f57b2c;
+  --theme-logo-color: #e55b7c;
+  --theme-primary-button-color: linear-gradient(1deg, #44A89F, #44A89F);
   --theme-text-color: #000000;
   --theme-button-text-color: #ffffff;
   --theme-text-color-second: #000000;
@@ -107,13 +106,13 @@ http://ionicframework.com/docs/theming/ */
   --color-background: #FFF8F8;   /* Baby skin light */
   --color-primary: #d87576;      /* Rose pink for buttons/icons */
   --background-color:#ffffff;
-  --primary-button-color:#446b8b;
+  --primary-button-color:#36a39e;
 
   --color-bg-gradient: linear-gradient(135deg, #FFF8F8, #FADADD);
   --color-heading: #1C1C1C;
   --color-body: #463C3C;
   --primary-color: #FFC4A3;
-  --secondry-color: #55905b;
+  --secondry-color: #65a5a2;
   --input-bg: #f9f9f9;
   --input-border: #ddd;
   --input-border-focus: #5b6693;
@@ -155,17 +154,17 @@ http://ionicframework.com/docs/theming/ */
     --gs-accent-yellow: #FFD580;  /* Gentle gold for highlights */
     --white: #ffffff;
     /* Typography */
-    --gs-heading: #55905b;        /* Muted green (main headings) */
-    --gs-text: #564E46;           /* Sepia/chocolate brown (body) */
-    --gs-text-dark: #2f2a28;      /* Deeper contrast text */
-    --gs-text-medium: #6b5f5a;      /* Deeper contrast text */
+            /* Muted green (main headings) */
+    --gs-text: #656565;           /* Sepia/chocolate brown (body) */
+    --gs-text-dark: #4e4e4e;      /* Deeper contrast text */
     --gs-text-light: #B7ADA8;     /* Disabled/helper text */
+    --gs-text-medium: #6b5f5a;      /* Deeper contrast text */
     --gs-icon-shadow: 0 4px 14px rgba(52, 24, 6, 0.08);
 
     /* Tracker & Graphs */
     --gs-tracker-blue: #B7E9F7;   /* Light blue for sleep/water */
     --gs-tracker-aqua: #BEE4E0;   /* Aqua blue accent */
-    --gs-tracker-mint: #E1F5E8;   /* Light mint for baby/kick */
+    --gs-tracker-mint: #44a89f0f;   /* Light mint for baby/kick */
     --gs-tracker-blush: #E7B1B4;  /* Soft blush accent */
 
     /* State / Feedback */
@@ -178,10 +177,13 @@ http://ionicframework.com/docs/theming/ */
     --gs-shadow: 0 2px 8px rgba(200, 138, 143, 0.15); /* Soft card shadow */
 
 
-    --gs-card-bg: #FEFAF7;
-    --gs-pink: #dc7170;
+     --gs-button-gradient:linear-gradient(1deg, #44A89F, #44A89F);
+    --gs-card-bg: rgba(204, 114, 131, 0.09);
+    --gs-pink: #e55b7c;
+    --gs-heading: #44A89F;
+    --gs-brown: #85561e;
     --gs-green: #A8D5BA;
-    --gs-card-border: #E5D6CB;
+    --gs-card-border: #cc728375;
     --gs-active-pink: #B98577;
     --gs-btn-bg: #F4C9C1;
     --gs-btn-text: #515b4d;

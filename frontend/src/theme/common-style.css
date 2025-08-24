@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+html.md {
+    --ion-default-font:'DM Sans',serif, sans-serif!important;
+}
 body,html,#root{
-    font-family: system-ui, -apple-system, "Segoe UI", 'Poppins', Helvetica, Arial, sans-serif!important;
+    font-family: var(--ion-default-font) !important;
 }
 *:focus-visible{
-    outline: 1px solid var(--primary-color)!important;
+    outline: none!important;
 }
 
 .main-contant-page{
@@ -179,10 +183,16 @@ body,html,#root{
     font-size: 23px;
     color: rgb(106 105 105);
 }
+.profile-avatar.with-app-logo {
+    border-radius: 10px;
+    border: 1px solid #00000026;
+}
 .with_login-menu-button .profile-avatar {
     position: relative;
-    width: 40px;       /* adjust size */
-    height: 40px;
+    width: 45px;       /* adjust size */
+    height: 45px;
+    padding: 2px;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.04);
 }
 
 .with_login-menu-button .avatar-pill {
@@ -194,10 +204,11 @@ body,html,#root{
 
 .with_login-menu-button .avatar-icon {
     position: absolute;
-    bottom: -4px;
-    right: -4px;
+    bottom: -6px;
+    right: -6px;
     background: #ffffff;   /* optional: white background circle */
     border-radius: 50%;
+    border: 1px solid #00000026;
     padding: 2px;
     font-size: var(--font-size-4);
     color: var(--gs-text-dark);
@@ -278,15 +289,24 @@ ion-button{
 }
 
 .welcome-logo {
-    width: 15rem;
     margin: auto;
     padding-top: 40px;
-    height: 350px;
+}
+
+.welcome-heading span {
+    color: var(--gs-pink);
+}
+
+.login-heading {
+    font-size: var(--font-size-2);
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .welcome-heading {
-    font-size: 40px;
-    font-weight: bold;
+    font-size: 45px;
+    font-weight: 900;
     margin-top: 24px;
 }
 
@@ -366,8 +386,6 @@ ion-button{
 .logo-wrapper {
     text-align: center;
     margin-top: 30px;
-    width: 13.5rem;
-    height: 225px;
 }
 
 .logo-tagline {
@@ -382,17 +400,16 @@ ion-button{
     background: #fff;
     border-radius: 12px;
     padding: 12px;
-    margin-top: 40px;
+    margin-top: 8px;
     width: 100%;
     box-shadow: 0 2px 8px 4px rgba(0, 0, 0, 0.05);
 }
 
-.input-icon ion-icon {
-    margin-top: 5px;
-}
 .input-icon {
     font-size: var(--font-size-2);
     margin-right: 10px;
+    display: flex;
+    align-items: center;
     color: var(--gs-pink);
 }
 
@@ -479,14 +496,14 @@ ion-button{
     fill:var(--secondry-color);
 }
 .role-card svg {
-    stroke:var(--gs-primary);
-    fill:var(--gs-primary);
+    stroke:var(--gs-pink);
+    fill:var(--gs-pink);
 }
 .role-card.selected .role-headline {
     color:var(--secondry-color);
 }
 .role-card .role-headline {
-    color:var(--gs-primary);
+    color:var(--gs-pink);
 }
 
 .role-icon {
@@ -525,7 +542,7 @@ ion-button{
 .form-container {
     width: 90%;
     max-width: 400px;
-    margin: 30px auto;
+    margin: 5px auto;
     padding: 20px;
     text-align: center;
     color: var(--gs-text-dark);
@@ -534,6 +551,7 @@ ion-button{
 .form-title {
     font-size: 22px;
     font-weight: bold;
+    color: var(--gs-heading);
     margin-bottom: 10px;
     margin-top: 5px;
 }
@@ -616,7 +634,7 @@ ion-button{
 .switch-slider {
     width: 40px;
     height: 20px;
-    background: #e59a94;
+    background: var(--gs-pink);
     border-radius: 20px;
     position: relative;
     cursor: pointer;
@@ -639,17 +657,42 @@ ion-button{
 }
 
 .submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--primary-button-color);
+    background: var(--gs-button-gradient); /* Glossy gradient */
     border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: var(--font-size-3);
-    font-weight: bold;
+    border-radius: 28px;
+    color: #ffffff;
     cursor: pointer;
+    font-size: var(--font-size-3);
+    font-weight: 700;
     margin-top: 20px;
+    padding: 18px 0;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
+
+.submit-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(rgb(255 255 255 / 7%), rgb(255 255 255 / 0%));
+    transform: skewX(1deg);
+    transition: all 0.5s;
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
 
 .error {
     margin-top: 7px;
@@ -666,15 +709,19 @@ ion-button{
 }
 
 ion-tab-button ion-icon {
-    font-size: var(--font-size-2)!important;
+    font-size: var(--font-size-1)!important;
+}
+ion-tab-button{
+    color: var(--gs-text);
+    font-size: var(--font-size-4)!important;
 }
 .tab-selected {
-    color: var(--gs-heading) !important;
-    border-top: 2px solid var(--gs-heading) !important;
+    color: var(--gs-pink) !important;
+    border-top: 2px solid var(--gs-pink) !important;
 }
 
 .custom-ripple-color{
-    --ripple-color: var(--font-color) !important;
+    --ripple-color: var(--gs-pink) !important;
 }
 
 
@@ -796,7 +843,7 @@ ion-modal.more-sheet-modal ion-content {
 }
 .pregnant-dashboard .greet h1 {
     font-size: var(--font-size-1);
-    color: var(--gs-text-dark);
+    color: var(--gs-text);
     line-height: 1.15;
     margin: 6px 0 2px;
     font-weight: bold;
@@ -823,23 +870,53 @@ ion-modal.more-sheet-modal ion-content {
     align-items: center;
 }
 .pregnant-dashboard .baby-blob {
-    width: 72px;
-    height: 72px;
-    border-radius: 16px;
-    background: radial-gradient(120% 120% at 30% 20%, var(--gs-peach-200) 0%, var(--gs-peach-300) 60%, var(--gs-peach-400) 100%);
+    border-radius: 50%; /* Make it circular like a sac */
+    background: radial-gradient(
+            120% 120% at 30% 20%,
+            var(--gs-peach-200) 0%,
+            var(--gs-peach-300) 60%,
+            var(--gs-peach-400) 100%
+    );
     display: grid;
     place-items: center;
     flex: 0 0 auto;
+    width: 170px; /* Adjust size as needed */
+    height: 170px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(255, 200, 180, 0.6),
+    0 10px 20px rgba(0,0,0,0.1); /* Gives depth like fluid */
+    animation: floatSac 4s ease-in-out infinite;
 }
-.pregnant-dashboard .baby-svg { width: 62px; height: 62px; }
+
+.pregnant-dashboard .baby-svg {
+    width: 60%; /* baby smaller than sac */
+    height: auto;
+    animation: floatBaby 3s ease-in-out infinite alternate;
+}
+
+/* Floating animation for the sac */
+@keyframes floatSac {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+/* Gentle bobbing animation for baby inside */
+@keyframes floatBaby {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(-2deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
 .pregnant-dashboard .snap-text .b { font-weight: 700; }
 .pregnant-dashboard .snap-text .muted { color: var(--gs-text-medium); font-size: 13px; margin-top: 2px; }
 
 /* Tasks */
 .pregnant-dashboard .tasks h3 {
-    margin: 2px 0 12px;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: var(--font-size-3);
+    font-weight: bold;
+    color: var(--gs-text);
+    margin: 2px 0 12px 7px;
 }
 
 .pregnant-dashboard .tasks-grid {
@@ -847,29 +924,31 @@ ion-modal.more-sheet-modal ion-content {
     grid-template-columns: repeat(3, 1fr);
     gap: 12px 10px;
     margin-bottom: 10px;
+    margin-top: 20px;
 }
 
 .pregnant-dashboard .task {
     text-align: center;
     font-size: 12px;
-    color: var(--gs-text-dark);
+    color: var(--gs-text);
     white-space: pre-line; /* allow Garbh\ nSamvaad */
 }
 .pregnant-dashboard .task-icon {
-    width: 48px;
-    height: 48px;
+    width: 90px;
+    height: 90px;
     border-radius: 14px;
-    background: var(--gs-peach-200);
     display: grid;
     place-items: center;
-    margin: 0 auto 6px;
+    margin: 0 7px 6px;
     box-shadow: inset 0 2px 3px rgba(0,0,0,0.04);
 }
-.pregnant-dashboard .task-icon ion-icon { font-size: 22px; color: #7e5a4d; }
+.pregnant-dashboard .task-icon ion-icon { font-size: 30px; }
 
 /* Progress */
 .pregnant-dashboard .progress-row {
-    margin-top: 6px;
+    margin-top: 20px;
+    margin-left: 7px;
+    margin-bottom: 13px;
 }
 .pregnant-dashboard .muted { color: var(--gs-text-medium); }
 .pregnant-dashboard .s { font-size: 12px; }
@@ -903,6 +982,7 @@ ion-modal.more-sheet-modal ion-content {
     align-items: center;
     gap: 8px;
     border: 0;
+    color: var(--gs-text-dark);
     background: var(--white);
     border-radius: 14px;
     padding: 12px 12px;
@@ -933,28 +1013,30 @@ ion-modal.more-sheet-modal ion-content {
 }
 .pregnant-dashboard .circle ion-icon { font-size: 18px; color: #7e5a4d; }
 .pregnant-dashboard .circle.solid {
-    background: #f3b09c;
+    background: #f39c9c;
     color: #7e3e27;
 }
-.pregnant-dashboard .circle.solid ion-icon { color: #7e3e27; }
+.pregnant-dashboard .circle.solid ion-icon { color: #9f2900; }
 .pregnant-dashboard .streak-text { display: flex; flex-direction: column; line-height: 1.05; }
 .pregnant-dashboard .streak-text .b { font-weight: 800; }
 .with_login-menu-item-header-row .profile-avatar {
     position: relative;
-    width: 40px;       /* adjust size */
-    height: 40px;
+    width: 50px;       /* adjust size */
+    height: 50px;
 }
 
 .with_login-menu-item-header-row .avatar-pill {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
-    background: var(--gs-peach-300);
+    background: var(--gs-heading);
     display: grid;
+    color:#ffffff;
     place-items: center;
-    font-weight: 700;
-    color: var(--gs-text-dark);
-    box-shadow: var(  --gs-icon-shadow);
+    font-weight: bold;
+
+    font-size: var(--font-size-3);
+    box-shadow: var(--gs-icon-shadow);
 }
 
 
@@ -997,7 +1079,7 @@ ion-toolbar:last-of-type {
 .with_login-toolbar{margin:auto; padding: 0px 6px;}
 
 .page_name_header_container{
-    margin-left: 10px;
+    margin-left: 16px;
     text-align: left;
     line-height: 18px;
 }
@@ -1035,13 +1117,15 @@ ion-toolbar:last-of-type {
 }
 
 .ttc-dashboard .cycle-card .dash-card-head h3 {
-    margin: 2px 0 12px;
-    font-size: 16px;
+    font-size: var(--font-size-3);
     font-weight: bold;
+    color: var(--gs-text-dark);
+    margin: 2px 0 12px 7px;
 }
 
 .ttc-dashboard .cycle-card .dash-card-body {
     text-align: center;
+    color: var(--gs-text-dark);
 }
 
 .ttc-dashboard .cycle-card .calendar-strip {
@@ -1049,7 +1133,7 @@ ion-toolbar:last-of-type {
     color: #8a8f85;
     display: grid;
     margin-bottom: 6px;
-    grid-template-columns: 14.28% 14.28% 14.28% 14.28% 14.28% 14.28% 14.28%;
+    grid-template-columns: 15% 15% 15% 15% 15% 15% 15%;
 }
 
 .ttc-dashboard .cycle-card .calendar-dates {
@@ -1057,7 +1141,7 @@ ion-toolbar:last-of-type {
     color: #8a8f85;
     display: grid;
     margin-bottom: 6px;
-    grid-template-columns: 14.28% 14.28% 14.28% 14.28% 14.28% 14.28% 14.28%;
+    grid-template-columns: 15% 15% 15% 15% 15% 15% 15%;
 }
 
 .ttc-dashboard .cycle-card .calendar-dates span {
@@ -1083,26 +1167,99 @@ ion-toolbar:last-of-type {
 }
 
 .ttc-dashboard .cycle-card .calendar-dates span.active {
-    background: var(--gs-tracker-mint); /* soft green background */
-    color: var(--gs-heading);
+    background: #ffedf0;
+    color: var(--gs-pink);
     font-weight: 600;
 }
 
 .ttc-dashboard .cycle-card .status-text {
     font-size: var(--font-size-4);
-    color: var(--gs-text-dark);
+    color: var(--gs-pink);
     font-weight: bold;
     margin: 15px;
 }
+.progress_bar_div_with_percentage .percentage_bar_main {
+    position: relative;
+    height: 4px;
+    width: 100%;
+    background: #0000000a;
+    border-radius: 99px;
+    overflow: hidden;
+    margin: 0px 0px 5px 0px;
+}
 
+.progress_bar_div_with_percentage {
+    width: 80%;
+}
 
-.ttc-dashboard .task-icon,.ttc-dashboard .circle{
+.progress_bar_div_with_percentage .percentage_bar_main .fill_bar {
+    background: var(--gs-pink);
+    height: 100%;
+    border-radius: 99px;
+}
+.ttc-dashboard .task-icon,.ttc-dashboard .circle,.pregnant-dashboard .task-icon,.pregnant-dashboard .circle{
     background: var(--gs-tracker-mint);
 }
 
-.ttc-dashboard .task-icon ion-icon,.ttc-dashboard .circle ion-icon,.ttc-dashboard .chip ion-icon{
+.ttc-dashboard .task-icon ion-icon,.pregnant-dashboard .circle ion-icon,.pregnant-dashboard .chip ion-icon{
     color: var(--gs-heading);
 }
-.ttc-dashboard .fill{
+.ttc-dashboard .fill,.pregnant-dashboard .fill{
     background: var(--gs-pink);
+}
+
+/* ✅ Parent class to avoid conflicts */
+.baby-growth-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    box-shadow:var(--gs-icon-shadow)
+}
+
+.baby-growth-card h2 {
+    font-size: var(--font-size-3);
+    font-weight: bold;
+    margin: 0 0 15px;
+    color: var(--gs-text);
+}
+
+.baby-growth-card .content {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 35%;
+    gap: 10px;
+}
+
+.baby-growth-card .baby-icon {
+
+}
+.baby-growth-card .progress-box{
+    text-align: center;
+}
+.progress-box .progress_bar_div_with_percentage {
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+.baby-growth-card .progress-box h3 {
+    font-size: var(--font-size-1);
+    font-weight: 700;
+    color: var(--gs-text);
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.baby-growth-card .progress-box span {
+    font-size: var(--font-size-5);
+    color: var(--gs-text);
+}
+
+.baby-growth-card .description {
+    margin-top: 15px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #444;
 }
