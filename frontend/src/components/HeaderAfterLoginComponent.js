@@ -20,7 +20,7 @@ const menuItems = [
     { label: 'Become a Member', pathName: '/dashboard/membership' },
     { label: 'Contact Us', pathName:'/dashboard/contact-us' },
 ];
-export default function HeaderAfterLoginComponent({pageId,hideHeader,menuRef,currentPath,setCurrentPath}){
+export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,setCurrentPath}){
     const [menuOpen, setMenuOpen] = useState(false);
     const history = useHistory();
     const {pathname} = useLocation();
@@ -165,7 +165,7 @@ export default function HeaderAfterLoginComponent({pageId,hideHeader,menuRef,cur
                     </div>
                 </IonContent>
             </IonMenu>
-            <IonHeader className={`with_login-header main_app_header ${hideHeader ? 'hide_element' : ''}`}>
+            <IonHeader className={`with_login-header main_app_header`}>
                 <IonToolbar className="with_login-toolbar">
                     <IonButtons slot="start">
                         <IonButton

@@ -9,52 +9,53 @@ import {
     flame
 } from "ionicons/icons";
 import {_babyWeeklyGrowthContentSvg} from "../apiHelper/CommonHelper";
+import {useHistory} from "react-router-dom";
 
-export default function PregnantDashboardPage({ handleScroll }) {
-    // progress example: 3/4 tasks = 75%
-    const progress = 0.75;
-
+export default function PregnantDashboardPage() {
+    let currentWeek = 4;
+    const history = useHistory();
+    const goToPage = (page)=>{
+        history.push(page)
+    }
     return (
         <IonPage>
             <IonContent
                 fullscreen
-                scrollEvents={true}
-                onIonScroll={handleScroll}
                 className="dash --peach-bg pregnant-dashboard main-contant-page">
                 <div className="dash-wrap pregnant-dashboard-wrap">
                     {/* Greeting */}
                     <div className="greet">
                         <h1>Namaste, Monika Ji!</h1>
-                        <p>You’re in {_babyWeeklyGrowthContentSvg[0].week}</p>
+                        <p>You’re in {_babyWeeklyGrowthContentSvg[currentWeek].week}</p>
                     </div>
 
                     <div className="baby-growth-card">
-                        <h2>Baby Growth Snapshot</h2>
+                        <h2>Hy Mama!</h2>
                         <div className="content">
                             <div className="baby-blob">
-                                <img src={_babyWeeklyGrowthContentSvg[3].icon} className={"baby-svg"}/>
+                                <img src={_babyWeeklyGrowthContentSvg[currentWeek].icon} alt={'baby'} className={"baby-svg"}/>
                             </div>
                             <div className="progress-box">
                             <div className={"progress_bar_div_with_percentage"}>
-                                <h3>{_babyWeeklyGrowthContentSvg[0].weight}</h3>
+                                <h3>{_babyWeeklyGrowthContentSvg[currentWeek].weight}</h3>
                                 <div className={"percentage_bar_main"}>
-                                    <div style={{width: `${progress}%`}} className={"fill_bar"}></div>
+                                    <div style={{width: `${_babyWeeklyGrowthContentSvg[currentWeek].progress}%`}} className={"fill_bar"}></div>
                                 </div>
                             </div>
-                            <span>Weekly progress {progress}%</span>
+                            <span>Weekly progress {_babyWeeklyGrowthContentSvg[currentWeek].progress}%</span>
                         </div>
                         </div>
                         <p className="description">
-                            {_babyWeeklyGrowthContentSvg[0].description}
+                            {_babyWeeklyGrowthContentSvg[currentWeek].description}
                         </p>
                     </div>
 
                     {/* Daily Tasks */}
-                    <div className="card tasks">
+                    <div className="card tasks task_main_card">
                         <h3>Daily Tasks</h3>
 
                         <div className="tasks-grid">
-                            <div className="task">
+                            <div className="task" onClick={()=>goToPage('/daily-task/yoga')}>
                                 <div className="task-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#e08500" height="40px" width="40px"
                                          version="1.1" id="Capa_1" viewBox="0 0 370.001 370.001">
@@ -64,9 +65,9 @@ export default function PregnantDashboardPage({ handleScroll }) {
                                         </g>
                                     </svg>
                                     <div className={"progress_bar_div_with_percentage"}>
-                                        <div className={"percentage_bar_main"}>
-                                            <div style={{width: '40%'}} className={"fill_bar"}></div>
-                                        </div>
+                                        {/*<div className={"percentage_bar_main"}>*/}
+                                        {/*    <div style={{width: '40%'}} className={"fill_bar"}></div>*/}
+                                        {/*</div>*/}
                                         <div className={"percentage_bar_text"}>40%</div>
                                     </div>
                                 </div>
@@ -87,9 +88,9 @@ export default function PregnantDashboardPage({ handleScroll }) {
                                         </g>
                                     </svg>
                                     <div className={"progress_bar_div_with_percentage"}>
-                                        <div className={"percentage_bar_main"}>
-                                            <div style={{width: '20%'}} className={"fill_bar"}></div>
-                                        </div>
+                                        {/*<div className={"percentage_bar_main"}>*/}
+                                        {/*    <div style={{width: '20%'}} className={"fill_bar"}></div>*/}
+                                        {/*</div>*/}
                                         <div className={"percentage_bar_text"}>20%</div>
                                     </div>
                                 </div>
@@ -105,9 +106,9 @@ export default function PregnantDashboardPage({ handleScroll }) {
                                               fill="#ff9380"/>
                                     </svg>
                                     <div className={"progress_bar_div_with_percentage"}>
-                                        <div className={"percentage_bar_main"}>
-                                            <div style={{width: '70%'}} className={"fill_bar"}></div>
-                                        </div>
+                                        {/*<div className={"percentage_bar_main"}>*/}
+                                        {/*    <div style={{width: '70%'}} className={"fill_bar"}></div>*/}
+                                        {/*</div>*/}
                                         <div className={"percentage_bar_text"}>70%</div>
                                     </div>
                                 </div>
@@ -123,9 +124,9 @@ export default function PregnantDashboardPage({ handleScroll }) {
                                             fill="#f491f2"/>
                                     </svg>
                                     <div className={"progress_bar_div_with_percentage"}>
-                                        <div className={"percentage_bar_main"}>
-                                            <div style={{width: '10%'}} className={"fill_bar"}></div>
-                                        </div>
+                                        {/*<div className={"percentage_bar_main"}>*/}
+                                        {/*    <div style={{width: '10%'}} className={"fill_bar"}></div>*/}
+                                        {/*</div>*/}
                                         <div className={"percentage_bar_text"}>10%</div>
                                     </div>
                                 </div>
@@ -140,9 +141,9 @@ export default function PregnantDashboardPage({ handleScroll }) {
                                             d="M25.378 19.75c1.507 6.027-3.162 11.25-9.375 11.25s-10.9-5.149-9.375-11.25c0.937-3.75 5.625-9.375 9.375-18.75 3.75 9.374 8.438 15 9.375 18.75z"/>
                                     </svg>
                                     <div className={"progress_bar_div_with_percentage"}>
-                                        <div className={"percentage_bar_main"}>
-                                            <div style={{width: '30%'}} className={"fill_bar"}></div>
-                                        </div>
+                                        {/*<div className={"percentage_bar_main"}>*/}
+                                        {/*    <div style={{width: '30%'}} className={"fill_bar"}></div>*/}
+                                        {/*</div>*/}
                                         <div className={"percentage_bar_text"}>30%</div>
                                     </div>
                                 </div>
@@ -158,23 +159,22 @@ export default function PregnantDashboardPage({ handleScroll }) {
                                               fill="#FFC107"/>
                                     </svg>
                                     <div className={"progress_bar_div_with_percentage"}>
-                                        <div className={"percentage_bar_main"}>
-                                            <div style={{width: '80%'}} className={"fill_bar"}></div>
-                                        </div>
+                                        {/*<div className={"percentage_bar_main"}>*/}
+                                        {/*    <div style={{width: '80%'}} className={"fill_bar"}></div>*/}
+                                        {/*</div>*/}
                                         <div className={"percentage_bar_text"}>80%</div>
                                     </div>
                                 </div>
                                 <span>Mood</span>
                             </div>
                         </div>
-
                         <div className="progress-row">
-                            <span className="muted s">3/4 tasks completed</span>
+                            <div className="progress-row-ttl">
+                                <span className="dont_text_t_session_progress">Progress</span>
+                                <span className="dont_text_t">Overall 40%</span>
+                            </div>
                             <div className="track">
-                                <div
-                                    className="fill"
-                                    style={{width: `${progress * 100}%`}}
-                                />
+                                <div className="fill" style={{width: `${0.10 * 100}%`}}/>
                             </div>
                         </div>
                     </div>
@@ -200,22 +200,22 @@ export default function PregnantDashboardPage({ handleScroll }) {
                     </div>
 
                     {/* Wellness Streak */}
-                    <div className="streak card">
-                        <div className="streak-left">
-                            <div className="circle">
-                                <IonIcon icon={leafOutline}/>
-                            </div>
-                            <div className="streak-text">
-                                <span className="muted">3-day wellness</span>
-                                <span className="b">streak</span>
-                            </div>
-                        </div>
-                        <div className="streak-right">
-                            <div className="circle solid">
-                                <IonIcon icon={flame}/>
-                            </div>
-                        </div>
-                    </div>
+                    {/*<div className="streak card">*/}
+                    {/*    <div className="streak-left">*/}
+                    {/*        <div className="circle">*/}
+                    {/*            <IonIcon icon={leafOutline}/>*/}
+                    {/*        </div>*/}
+                    {/*        <div className="streak-text">*/}
+                    {/*            <span className="muted">3-day wellness</span>*/}
+                    {/*            <span className="b">streak</span>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="streak-right">*/}
+                    {/*        <div className="circle solid">*/}
+                    {/*            <IonIcon icon={flame}/>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </IonContent>
         </IonPage>

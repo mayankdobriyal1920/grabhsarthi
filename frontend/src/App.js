@@ -19,7 +19,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/common-style.css';
 import {IonReactRouter} from "@ionic/react-router";
-import {Redirect, Route, Router,Routes} from "react-router";
+import {Redirect, Route} from "react-router";
 import WithoutLoginHomePage from "./pages/WithoutLoginHomePage";
 import LoginPage from "./pages/LoginPage";
 import ChooseRolePageAfterLoginComponent from "./pages/ChooseRolePageAfterLoginComponent";
@@ -28,6 +28,7 @@ import AppEntryTabsPage from "./pages/AppEntryTabsPage";
 import {Capacitor} from "@capacitor/core";
 import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
+import DailyTaskYogTaskComponent from "./components/DailyTaskYogTaskComponent";
 
 setupIonicReact();
 
@@ -51,6 +52,7 @@ const PublicRoutes = () => {
                 <Route path="/login" exact={true} component={LoginPage} />
                 <Route path="/choose-role" exact={true} component={ChooseRolePageAfterLoginComponent} />
                 <Route path="/create-profile" exact={true} component={CreateRoleBasedFormPage} />
+                <Route path="/daily-task/yoga" exact={true} component={DailyTaskYogTaskComponent} />
                 <Route path="/dashboard" component={AppEntryTabsPage} />
                 <Redirect exact from="/" to="/home" />
                 <Route render={() => <Redirect to="/home" />} />

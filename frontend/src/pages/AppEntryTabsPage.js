@@ -34,9 +34,7 @@ import TTCUserDashboardPage from "./TTCUserDashboardPage";
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
     const [showMoreSheet, setShowMoreSheet] = useState(false);
-    const lastScrollTop = React.useRef(0);
     const menuRef = React.useRef(null);
-    const [hideHeader, setHideHeader] = useState(false);
     const {userAuthDetail} = useStore();
     const {userInfo} = userAuthDetail;
     const history = useHistory();
@@ -60,37 +58,23 @@ const AppEntryTabsPage = () => {
         setShowMoreSheet(!showMoreSheet);
     };
 
-    const handleScroll = (event) => {
-        // const scrollTop = event.detail.scrollTop ?? 0;
-        // const newScrollTop = scrollTop < 0 ? 0 : scrollTop;
-        //
-        // if (newScrollTop > lastScrollTop.current) {
-        //     setHideHeader(true);
-        // } else if (newScrollTop < lastScrollTop.current) {
-        //     setHideHeader(false);
-        // }
-        //
-        // lastScrollTop.current = newScrollTop;
-    }
-
     return (
         <IonTabs>
             <IonRouterOutlet>
                 <Route path="/dashboard/" render={() => (
                     <IonPage>
                         {/* Common header always visible */}
-                        <HeaderAfterLoginComponent menuRef={menuRef} currentPath={currentPath} setCurrentPath={setCurrentPath} hideHeader={hideHeader} pageId={"main-menu-content"} />
+                        <HeaderAfterLoginComponent menuRef={menuRef} currentPath={currentPath} setCurrentPath={setCurrentPath} pageId={"main-menu-content"} />
                         {/* Nested outlet for tab pages */}
                         <IonRouterOutlet id="main-menu-content">
                             <Route exact path="/dashboard/home" render={()=>(
                                 <>
-                                    {(userInfo?.role === 1) ?
-                                        <TTCUserDashboardPage handleScroll={handleScroll} />
+                                    {(userInfo?.role === 3) ?
+                                        <TTCUserDashboardPage />
                                         :
-                                        <PregnantDashboardPage handleScroll={handleScroll} />
+                                        <PregnantDashboardPage />
                                     }
                                 </>
-
                             )} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>

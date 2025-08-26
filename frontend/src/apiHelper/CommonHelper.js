@@ -43,284 +43,285 @@ export const _babyWeeklyGrowthContentSvg = [
     {
         week: '1st Week',
         icon: babyImg1,
-        weight: '~0 g',
-        description: 'The blastocyst forms, consisting of a fluid-filled cavity and inner cell mass.',
+        weight: '0.1 g',
+        description: 'I’ve implanted safely 🏡. Cells are dividing to form my heart, brain, and body.',
         progress: Math.round((1/40)*100)
     },
     {
         week: '2nd Week',
         icon: babyImg2,
-        weight: '~1 g',
-        description: 'The blastocyst implants in the uterus, with early cell differentiation.',
+        weight: '0.2 g',
+        description: 'My neural tube is forming 🧠 — the base of my brain and spinal cord.',
         progress: Math.round((2/40)*100)
     },
     {
         week: '3rd Week',
         icon: babyImg3,
-        weight: '~2 g',
-        description: 'The embryo forms the primitive streak; the heart begins to develop.',
+        weight: '0.3 g',
+        description: 'My tiny heart cells are developing ❤️. Facial features are starting to outline.',
         progress: Math.round((3/40)*100)
     },
     {
         week: '4th Week',
         icon: babyImg4,
-        weight: '~5 g',
-        description: 'The heart starts beating; limb buds and early facial features form.',
+        weight: '0.4 g',
+        description: 'My limb buds are forming 👣 and the early shape of eyes and ears appear.',
         progress: Math.round((4/40)*100)
     },
     {
         week: '5th Week',
         icon: babyImg5,
-        weight: '~7 g',
-        description: 'The embryo’s neural tube closes; limb buds grow larger.',
+        weight: '0.6 g',
+        description: 'My brain is growing quickly ⚡. Tiny arms and legs are lengthening.',
         progress: Math.round((5/40)*100)
     },
     {
         week: '6th Week',
         icon: babyImg6,
-        weight: '~10 g',
-        description: 'Arms and legs become visible; eyes and ears start forming.',
+        weight: '0.8 g',
+        description: 'You can now see my little heartbeat flicker 💓. First movements may begin.',
         progress: Math.round((6/40)*100)
     },
     {
         week: '7th Week',
         icon: babyImg7,
-        weight: '~14 g',
-        description: 'Facial features become distinct; limbs elongate.',
+        weight: '1 g',
+        description: 'My heartbeat grows stronger 💓💓. My face, mouth, and nostrils are forming.',
         progress: Math.round((7/40)*100)
     },
     {
         week: '8th Week',
         icon: babyImg8,
-        weight: '~20 g',
-        description: 'The fetus has fingers and toes; facial features develop further.',
+        weight: '2 g',
+        description: 'I’m now called a fetus 🤍. Fingers and toes are starting to separate.',
         progress: Math.round((8/40)*100)
     },
     {
         week: '9th Week',
         icon: babyImg9,
-        weight: '~28 g',
-        description: 'The fetus begins moving; limbs are more defined.',
+        weight: '4 g',
+        description: 'Tiny muscles let me move 🕺. My eyelids begin forming.',
         progress: Math.round((9/40)*100)
     },
     {
         week: '10th Week',
         icon: babyImg10,
-        weight: '~40 g',
-        description: 'Fingers and toes are distinct; major organs continue forming.',
+        weight: '7 g',
+        description: 'Most of my vital organs are formed 🌟. My nails and hair follicles appear.',
         progress: Math.round((10/40)*100)
     },
     {
         week: '11th Week',
         icon: babyImg11,
-        weight: '~60 g',
-        description: 'The head is large; the body grows rapidly to catch up.',
+        weight: '10 g',
+        description: 'I can yawn and hiccup 🥱. My head is still big compared to my body.',
         progress: Math.round((11/40)*100)
     },
     {
         week: '12th Week',
         icon: babyImg12,
-        weight: '~80 g',
-        description: 'The fetus moves spontaneously; external genitalia form.',
+        weight: '14 g',
+        description: 'I look more human now 👶. Kidneys start producing urine.',
         progress: Math.round((12/40)*100)
     },
     {
         week: '13th Week',
         icon: babyImg13,
-        weight: '~100 g',
-        description: 'The fetus’s body proportions improve; organs continue maturing.',
+        weight: '23 g',
+        description: 'My fingerprints are forming 🖐️. I can move freely in the sac.',
         progress: Math.round((13/40)*100)
     },
     {
         week: '14th Week',
         icon: babyImg14,
-        weight: '~140 g',
-        description: 'Fetal movements are more noticeable; hair begins to grow.',
+        weight: '43 g',
+        description: 'I can make facial expressions 😊. My body is stretching out.',
         progress: Math.round((14/40)*100)
     },
     {
         week: '15th Week',
         icon: babyImg15,
-        weight: '~170 g',
-        description: 'Limbs lengthen; the fetus’s movements are more coordinated.',
+        weight: '70 g',
+        description: 'My bones are hardening 🦴. I can sense light through eyelids.',
         progress: Math.round((15/40)*100)
     },
     {
         week: '16th Week',
         icon: babyImg16,
-        weight: '~200 g',
-        description: 'The skeleton begins forming; the fetus grows steadily.',
+        weight: '100 g',
+        description: 'Mom may feel tiny flutters 🪽. I can move my arms and legs.',
         progress: Math.round((16/40)*100)
     },
     {
         week: '17th Week',
         icon: babyImg17,
-        weight: '~240 g',
-        description: 'Fat forms under the skin, smoothing the fetus’s appearance.',
+        weight: '140 g',
+        description: 'My hearing begins 👂. I may respond to voices and sounds.',
         progress: Math.round((17/40)*100)
     },
     {
         week: '18th Week',
         icon: babyImg18,
-        weight: '~270 g',
-        description: 'The fetus can hear sounds and responds to stimuli.',
+        weight: '190 g',
+        description: 'My ears are in place 🎶. My heartbeat can be heard by stethoscope.',
         progress: Math.round((18/40)*100)
     },
     {
         week: '19th Week',
         icon: babyImg19,
-        weight: '~300 g',
-        description: 'Hair and nails grow; fetal movements strengthen.',
+        weight: '240 g',
+        description: 'I’m covered in a creamy layer called vernix 🧴 to protect my skin.',
         progress: Math.round((19/40)*100)
     },
     {
         week: '20th Week',
         icon: babyImg20,
-        weight: '~350 g',
-        description: 'The fetus’s senses develop; it can feel touch.',
+        weight: '300 g',
+        description: 'Halfway there 🌟. You may feel me kick more strongly now!',
         progress: Math.round((20/40)*100)
     },
     {
         week: '21st Week',
         icon: babyImg21,
-        weight: '~400 g',
-        description: 'Muscle tone and reflexes develop further.',
+        weight: '360 g',
+        description: 'I’m swallowing amniotic fluid 💧 and practicing digestion.',
         progress: Math.round((21/40)*100)
     },
     {
         week: '22nd Week',
         icon: babyImg22,
-        weight: '~430 g',
-        description: 'Fine hair (lanugo) covers the fetus; growth accelerates.',
+        weight: '430 g',
+        description: 'My senses are sharpening 👀👂. My eyebrows and lips are visible.',
         progress: Math.round((22/40)*100)
     },
     {
         week: '23rd Week',
         icon: babyImg23,
-        weight: '~500 g',
-        description: 'Lungs develop; movements become more coordinated.',
+        weight: '500 g',
+        description: 'I can feel movements and respond 🤸. My lungs are maturing.',
         progress: Math.round((23/40)*100)
     },
     {
         week: '24th Week',
         icon: babyImg24,
-        weight: '~600 g',
-        description: 'The fetus responds to sounds; skin develops fat deposits.',
+        weight: '600 g',
+        description: 'I have a sleep cycle now 💤. My skin is thin and reddish.',
         progress: Math.round((24/40)*100)
     },
     {
         week: '25th Week',
         icon: babyImg25,
-        weight: '~660 g',
-        description: 'Weight gain continues; reflexes strengthen.',
+        weight: '700 g',
+        description: 'My lungs produce surfactant 🌬️. My hands can grasp.',
         progress: Math.round((25/40)*100)
     },
     {
         week: '26th Week',
         icon: babyImg26,
-        weight: '~760 g',
-        description: 'Lungs mature; sleep patterns emerge.',
+        weight: '850 g',
+        description: 'I can open my eyes 👁️. My brain is developing quickly.',
         progress: Math.round((26/40)*100)
     },
     {
         week: '27th Week',
         icon: babyImg27,
-        weight: '~875 g',
-        description: 'Fat accumulates; movements feel stronger.',
+        weight: '1 kg',
+        description: 'I can recognize voices 🎵. My movements are stronger.',
         progress: Math.round((27/40)*100)
     },
     {
         week: '28th Week',
         icon: babyImg28,
-        weight: '~1005 g',
-        description: 'Eyes open; brain development accelerates.',
+        weight: '1.2 kg',
+        description: 'I can blink and dream 🌙. I’m growing chubbier.',
         progress: Math.round((28/40)*100)
     },
     {
         week: '29th Week',
         icon: babyImg29,
-        weight: '~1150 g',
-        description: 'Body fat increases; breathing movements strengthen.',
+        weight: '1.3 kg',
+        description: 'My bones are fully developed 🦴. Fat stores are building.',
         progress: Math.round((29/40)*100)
     },
     {
         week: '30th Week',
         icon: babyImg30,
-        weight: '~1310 g',
-        description: 'The fetus is more proportionate; lungs mature further.',
+        weight: '1.5 kg',
+        description: 'I can grasp my toes 🦶. My brain grooves deepen.',
         progress: Math.round((30/40)*100)
     },
     {
         week: '31st Week',
         icon: babyImg31,
-        weight: '~1500 g',
-        description: 'Bones harden; body fat continues to accumulate.',
+        weight: '1.7 kg',
+        description: 'I can turn my head 👶. My kicks are stronger than ever.',
         progress: Math.round((31/40)*100)
     },
     {
         week: '32nd Week',
         icon: babyImg32,
-        weight: '~1700 g',
-        description: 'Growth slows; fat deposits smooth the skin.',
+        weight: '2 kg',
+        description: 'I practice breathing regularly 🌬️. I take up more space now!',
         progress: Math.round((32/40)*100)
     },
     {
         week: '33rd Week',
         icon: babyImg33,
-        weight: '~1900 g',
-        description: 'The fetus moves to a head-down position; lungs mature.',
+        weight: '2.2 kg',
+        description: 'My immune system is preparing 🛡️. My skin is smoother.',
         progress: Math.round((33/40)*100)
     },
     {
         week: '34th Week',
         icon: babyImg34,
-        weight: '~2100 g',
-        description: 'Skin smooths as fat accumulates; weight gain continues.',
+        weight: '2.4 kg',
+        description: 'My fingernails reach fingertips 💅. I’m almost ready.',
         progress: Math.round((34/40)*100)
     },
     {
         week: '35th Week',
         icon: babyImg35,
-        weight: '~2300 g',
-        description: 'The fetus prepares for birth; movements feel restricted.',
+        weight: '2.6 kg',
+        description: 'My hearing is sharp 👂. I’m gaining fat quickly.',
         progress: Math.round((35/40)*100)
     },
     {
         week: '36th Week',
         icon: babyImg36,
-        weight: '~2500 g',
-        description: 'Organs are nearly mature; fat aids temperature regulation.',
+        weight: '2.9 kg',
+        description: 'I might shift head-down 🤰. My organs are nearly mature.',
         progress: Math.round((36/40)*100)
     },
     {
         week: '37th Week',
         icon: babyImg37,
-        weight: '~2700 g',
-        description: 'The fetus is full-term; growth stabilizes.',
+        weight: '3.1 kg',
+        description: 'I’m considered full term 🎉. Waiting for the perfect time!',
         progress: Math.round((37/40)*100)
     },
     {
         week: '38th Week',
         icon: babyImg38,
-        weight: '~2900 g',
-        description: 'Fat accumulation continues; the fetus prepares for birth.',
+        weight: '3.3 kg',
+        description: 'My lungs are strong 💨. I’m gaining about 30g per day.',
         progress: Math.round((38/40)*100)
     },
     {
         week: '39th Week',
         icon: babyImg39,
-        weight: '~3100 g',
-        description: 'Fully developed; the fetus is ready for birth.',
+        weight: '3.4 kg',
+        description: 'I’m ready anytime ⏳. My body is plump and healthy.',
         progress: Math.round((39/40)*100)
     },
     {
         week: '40th Week',
         icon: babyImg40,
-        weight: '~3200 g',
-        description: 'Full-term; birth is imminent.',
+        weight: '3.5 kg',
+        description: 'It’s time! 🎀 I’m ready to meet you with love and joy.',
         progress: Math.round((40/40)*100)
     }
 ];
+
 export function _generateUniqueCustomId() {
     let str = 'abcdeABCDEFGHIJKfghijklmnopqrstuvwxyzLMNOPQRSTUVWXYZ0123456789';
     let char = '',

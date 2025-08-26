@@ -305,15 +305,21 @@ ion-button{
 }
 
 .welcome-heading {
-    font-size: 45px;
+    font-size: 42px;
     font-weight: 900;
     margin-top: 24px;
 }
-
+.progress_bar_div_with_percentage .percentage_bar_text {
+    color: var(--gs-heading);
+    font-weight: 600;
+}
 .welcome-tagline {
     font-size: var(--font-size-3);
     color: var(--gs-text-dark);
     margin-top: 16px;
+}
+.task_main_card .progress-row .dont_text_t{
+    font-size: var(--font-size-5);
 }
 
 .welcome-description {
@@ -802,7 +808,6 @@ ion-modal.more-sheet-modal ion-content {
 }
 
 .pregnant-dashboard .dash-wrap {
-    max-width: 420px;
     margin: 0 auto;
     padding: 12px 14px 24px;
     color: var(--gs-text-dark);
@@ -877,21 +882,22 @@ ion-modal.more-sheet-modal ion-content {
             var(--gs-peach-300) 60%,
             var(--gs-peach-400) 100%
     );
-    display: grid;
     place-items: center;
     flex: 0 0 auto;
     width: 170px; /* Adjust size as needed */
     height: 170px;
     position: relative;
     overflow: hidden;
+    padding: 15px;
     box-shadow: inset 0 0 30px rgba(255, 200, 180, 0.6),
     0 10px 20px rgba(0,0,0,0.1); /* Gives depth like fluid */
     animation: floatSac 4s ease-in-out infinite;
 }
 
 .pregnant-dashboard .baby-svg {
-    width: 60%; /* baby smaller than sac */
-    height: auto;
+    width: 100%; /* baby smaller than sac */
+    height: 100%;
+    object-fit: contain;
     animation: floatBaby 3s ease-in-out infinite alternate;
 }
 
@@ -934,38 +940,14 @@ ion-modal.more-sheet-modal ion-content {
     white-space: pre-line; /* allow Garbh\ nSamvaad */
 }
 .pregnant-dashboard .task-icon {
-    width: 90px;
-    height: 90px;
     border-radius: 14px;
     display: grid;
+    padding: 10px 0;
     place-items: center;
-    margin: 0 7px 6px;
     box-shadow: inset 0 2px 3px rgba(0,0,0,0.04);
 }
-.pregnant-dashboard .task-icon ion-icon { font-size: 30px; }
-
-/* Progress */
-.pregnant-dashboard .progress-row {
-    margin-top: 20px;
-    margin-left: 7px;
-    margin-bottom: 13px;
-}
-.pregnant-dashboard .muted { color: var(--gs-text-medium); }
-.pregnant-dashboard .s { font-size: 12px; }
-.pregnant-dashboard .track {
-    position: relative;
-    height: 6px;
-    background: #0000000a;
-    border-radius: 999px;
-    margin-top: 6px;
-    overflow: hidden;
-}
-.pregnant-dashboard .fill {
-    height: 100%;
-    background: var(--gs-green);
-}
-.pregnant-dashboard .thumb {
-  display: none!important;
+.pregnant-dashboard .task-icon svg {
+    margin-bottom: 10px;
 }
 
 .main_app_header ion-icon { font-size: 22px; color: var(--gs-text); }
@@ -1193,7 +1175,7 @@ ion-toolbar:last-of-type {
 }
 
 .progress_bar_div_with_percentage .percentage_bar_main .fill_bar {
-    background: var(--gs-pink);
+    background: var(--gs-heading);
     height: 100%;
     border-radius: 99px;
 }
@@ -1262,4 +1244,235 @@ ion-toolbar:last-of-type {
     font-size: 13px;
     line-height: 1.4;
     color: #444;
+}
+
+.inner_pages_toolbar .title_in_header_task{
+    font-size: var(--font-size-2);
+    color: var(--gs-pink);
+    padding-left: 10px!important;
+    font-weight: bold;
+}
+.greet.in_task_panel h1{
+    color:var(--gs-heading)!important;
+    font-size: var(--font-size-1)!important;
+}
+
+
+.pregnant-dashboard .card_inner_pose_info_img {
+    width: 100%;
+    height: 204px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.pregnant-dashboard .card .text_in_card{
+    font-size: var(--font-size-4);
+    color: var(--gs-text);
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.pregnant-dashboard .tasks h3{
+    margin-left: 0px;
+}
+.pregnant-dashboard .card_inner_pose_info_img img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.start_stop_end_button_container .timer-container-outer {
+    width: 100%;
+    display: flex;
+}
+.start_stop_end_button_container .timer-container {
+    position: relative;
+    width: 110px; /* bigger for better visibility */
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: var(--gs-icon-shadow);
+}
+
+.start_stop_end_button_container .timer-container svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.start_stop_end_button_container .timer-container circle {
+    fill: none;
+    stroke-width: 7;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s linear; /* smooth animation */
+}
+
+.start_stop_end_button_container .timer-container .bg {
+    stroke: var(--gs-tracker-mint);
+}
+
+.start_stop_end_button_container .timer-container .progress {
+    stroke: var(--gs-heading); /* green color */
+    stroke-dasharray: 440; /* 2 * PI * r */
+    stroke-dashoffset: 440;
+}
+
+.start_stop_end_button_container .timer-container span {
+    position: relative; /* to appear above SVG */
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 2;
+    color: #333;
+}
+
+.start_stop_end_button_container {
+    display: flex;
+    gap: 10px;
+    margin: auto;
+    position: relative;
+    background: #f8f9fa;
+    align-items: center;
+    padding: 14px 9px;
+    border-radius: 10px;
+}
+
+.start_stop_end_button_container .button_in_time_y_task {
+    background: var(--gs-heading);
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: var(--font-size-3);
+    color: #ffffff;
+    box-shadow: var(--gs-icon-shadow);
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.start_stop_end_button_container .button_in_time_y_task_skip_task {
+    border: 1px solid var(--gs-heading);
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: var(--font-size-3);
+    color: var(--gs-heading);
+    box-shadow: var(--gs-icon-shadow);
+    text-align: center;
+    display: flex;
+    background: #ffffff;
+    align-items: center;
+}
+
+
+/* Progress */
+.pregnant-dashboard .progress-row {
+    margin-bottom: 20px;
+}
+
+.pregnant-dashboard .track {
+    position: relative;
+    height: 6px;
+    background: #0000000a;
+    border-radius: 999px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+.pregnant-dashboard .fill {
+    height: 100%;
+    background: var(--gs-heading);
+}
+.end_session_button_container{
+    font-size: var(--font-size-3);
+    font-weight: bold;
+    color: var(--gs-heading);
+}
+
+
+.task_section_container_wrap .header_for_task_section {
+    background: var(--gs-heading);
+    color: white;
+    padding: 1px;
+    text-align: center;
+}
+
+.header_for_task_section h1 {
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.header_for_task_section .session-info {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 15px;
+}
+
+.header_for_task_section .duration ion-icon{
+    font-size: var(--font-size-2);
+}
+.header_for_task_section .duration {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: var(--font-size-4);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.header_for_task_section .time_sec_c {
+    margin-left: auto;
+}
+.header_for_task_section .duration.count_sec {
+    margin-right: auto;
+}
+
+
+.card_inner_pose_info.pose-info {
+    margin-bottom: 25px;
+}
+
+.card_inner_pose_info.pose-info .pose-title {
+    font-size: var(--font-size-3);
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.card_inner_pose_info.pose-info .pose-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: var(--font-size-4);
+}
+
+.progress-row .dont_text_t_session_progress {
+    font-size: var(--font-size-4);
+    color: var(--gs-heading);
+}
+.pregnant-dashboard .progress-row{
+    margin-top: 20px;
+}
+.progress-row  .progress-row-ttl{
+    display: flex;
+}
+.progress-row .dont_text_t {
+    font-size: var(--font-size-4);
+    color: var(--gs-text);
+    margin-left: auto;
+}
+
+.session-info-end-session {
+    margin: 20px auto;
+    text-align: center;
+    color: #ffffff;
+    font-size: var(--font-size-4);
+    font-weight: bold;
 }
