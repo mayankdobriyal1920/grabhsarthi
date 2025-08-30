@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect,useMemo } from "react";
 import {IonPage, IonContent, IonIcon} from "@ionic/react";
 import {fitness} from "ionicons/icons";
 import moment from "moment-timezone";
+import { calendar, egg, heart, timer, alertCircle, checkmarkDone } from "ionicons/icons";
 
 const OvulationTracker = () => {
     const videoRef = useRef(null);
@@ -9,8 +10,8 @@ const OvulationTracker = () => {
     const [scanning, setScanning] = useState(false);
     const [bpm, setBpm] = useState(null);
     const [timeLeft, setTimeLeft] = useState(0);
-    const [message, setMessage] = useState('');
-    const [lmp, setLmp] = useState(moment("2024-08-20")); // default
+    const [messageHtml, setMessageHtml] = useState(null);
+    const [lmp, setLmp] = useState(moment()); // default
     const [cycleLength, setCycleLength] = useState(35);
 
     const ovulationDay = useMemo(() => {
@@ -24,7 +25,9 @@ const OvulationTracker = () => {
 
 
     const handleLmpChange = (e) => {
-        setLmp(new Date(e.target.value));
+        if(e.target.value){
+            setLmp(new Date(e.target.value));
+        }
     };
 
     const handleCycleChange = (e) => {
@@ -218,41 +221,77 @@ const OvulationTracker = () => {
     }, [scanning]);
 
 
+
     useEffect(() => {
-        // If no BPM or cycle data, show prompt
-        if (!bpm || !lmp || !cycleLength) {
-            setMessage("To calculate your fertility status, please enter your last period, cycle length, and scan your heart rate (BPM).");
+        if (!bpm || !lmp || !cycleLength || scanning) {
+            setMessageHtml(
+                <div className="fertility-msg info">
+                    <p>ℹ️ To calculate your fertility status, please enter your last period, cycle length, and scan your heart rate (BPM).</p>
+                </div>
+            );
             return;
         }
 
         const today = moment();
         const cycleDay = today.diff(lmp, "days") + 1;
-
-        // Ovulation & fertile window calculation
         const ovulationDayCalc = moment(lmp).add(cycleLength - 14, "days");
         const fertileStartCalc = moment(ovulationDayCalc).subtract(5, "days");
         const fertileEndCalc = moment(ovulationDayCalc).add(1, "days");
 
-        let msg = `Today is cycle day ${cycleDay}.\n`;
-        msg += `🔹 Ovulation is predicted on ${ovulationDayCalc.format("dddd, DD MMM YYYY")}.\n`;
-        msg += `🔹 Fertile window is from ${fertileStartCalc.format("DD MMM")} to ${fertileEndCalc.format("DD MMM")}.\n`;
+        let messageContent = [];
 
+        // Cycle day
+        messageContent.push(
+            <p key="cycleDay" className="cycle-day">
+                📅 Today is <strong>cycle day {cycleDay}</strong>.
+            </p>
+        );
+
+        // Ovulation & fertile window
+        messageContent.push(
+            <p key="ovulation" className="ovulation-date">
+                🔹 Ovulation is predicted on <strong>{ovulationDayCalc.format("dddd, DD MMM YYYY")}</strong>.
+            </p>
+        );
+        messageContent.push(
+            <p key="fertileWindow" className="fertile-window">
+                🔹 Fertile window: <strong>{fertileStartCalc.format("DD MMM")} – {fertileEndCalc.format("DD MMM")}</strong>
+            </p>
+        );
+
+        // Fertility status
+        let fertilityStatus = null;
         if (today.isBetween(fertileStartCalc, fertileEndCalc, "day", "[]")) {
-            msg += "You are in your fertile window. ";
-            if (bpm > 80) {
-                msg += "Your heart rate suggests ovulation is very near. Best chances now for conception";
-            } else {
-                msg += "Keep calm, track your signs, and maintain healthy lifestyle";
-            }
+            fertilityStatus = (
+                <p key="fertileNow" className="fertile-now">
+                    🌸 You are in your fertile window.{" "}
+                    {bpm > 80 ? "Your heart rate suggests ovulation is very near. Best chances now for conception ✨"
+                        : "Keep calm, track your signs, and maintain a healthy lifestyle 💚"}
+                </p>
+            );
         } else if (today.isSame(ovulationDayCalc, "day")) {
-            msg += "Today is your predicted ovulation day! Maximum fertility";
+            fertilityStatus = (
+                <p key="ovulationDay" className="ovulation-today">
+                    🥚 Today is your predicted ovulation day! Maximum fertility 🌟
+                </p>
+            );
         } else if (today.isAfter(ovulationDayCalc)) {
-            msg += "Ovulation likely passed. Focus on rest, balance & self-care";
+            fertilityStatus = (
+                <p key="ovulationPassed" className="ovulation-passed">
+                    🌙 Ovulation likely passed. Focus on rest, balance & self-care 💆‍♀️
+                </p>
+            );
         } else {
-            msg += "Ovulation predicted soon. Keep scanning BPM & tracking signs.";
+            fertilityStatus = (
+                <p key="ovulationSoon" className="ovulation-soon">
+                    🔜 Ovulation predicted soon. Keep scanning BPM & tracking signs.
+                </p>
+            );
         }
 
-        setMessage(msg);
+        messageContent.push(fertilityStatus);
+
+        setMessageHtml(<div className="fertility-msg">{messageContent}</div>);
     }, [scanning, bpm, lmp, cycleLength]);
 
 
@@ -273,20 +312,26 @@ const OvulationTracker = () => {
                             </div>
 
                             <div className={"message_icon_grid"}>
-                                {scanning && (
+                                <p className="bpm_heading">{bpm ? `${bpm} BPM` : scanning ? "Scanning..." : "Scan Heart Rate"}</p>
+                                {scanning ? (
                                     <div className="scan-info">
-                                        <p className="instruction">👉 Place your finger on the camera lens with flashlight ON</p>
-                                        <p className="timer">⏳ {timeLeft}s remaining</p>
+                                        <p className="timer">{timeLeft}s remaining</p>
                                     </div>
-                                )}
-                                <p className="bpm_heading">Scan Heart Rate</p>
+                                    ):
+                                    <div className="scan-info">
+                                        <p className="timer">Scan Timer</p>
+                                    </div>
+                                }
                                 {!scanning ? (
                                     <button className="scan-btn" onClick={startScan}>Start Scan</button>
                                 ) : (
                                     <button className="scan-btn" onClick={stopScan}>Stop Scan</button>
                                 )}
-                                <p className="bpm_scan_rate">{bpm ? `${bpm} BPM` : scanning ? "Scanning..." : "0 BPM"}</p>
-                                <p className="bpm-note">Measured via phone scan</p>
+                                {(scanning) ?
+                                    <p className="bpm-note">Place your finger on the camera lens with flashlight ON</p>
+                                    :
+                                    <p className="bpm-note">Measured via phone scan</p>
+                                }
                             </div>
                         </div>
                     </div>
@@ -367,9 +412,9 @@ const OvulationTracker = () => {
 
 
                     {/* Dynamic Fertility Message */}
-                    {(message) &&
+                    {(messageHtml) &&
                         <div className="card message-card">
-                            <p className="fertile-message">{message}</p>
+                            <p className="fertile-message">{messageHtml}</p>
                         </div>
                     }
 

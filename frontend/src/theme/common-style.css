@@ -1899,15 +1899,13 @@ ion-toolbar:last-of-type {
     background: var(--gs-pink);
     color: #fff;
     border: none;
-    border-radius: 20px; /* save-btn uses 30px */
-    font-weight: bold;
+    border-radius: 10px; /* save-btn uses 30px */
     font-size: var(--font-size-3);
 }
 
 .ovulation-dashboard-wrap .scan-btn {
     padding: 8px 16px;
-    font-weight: 600;
-    margin: 8px 0;
+    margin: 5px 0;
 }
 
 .ovulation-dashboard-wrap .save-btn {
@@ -2028,18 +2026,19 @@ ion-toolbar:last-of-type {
 
 /* Scan Info */
 .scan-info {
-    margin-top: 10px;
-    text-align: center;
+    margin-top: 0;
+    text-align: left;
 }
 
 .scan-info .instruction {
-    font-size: 14px;
-    color: #555;
+    font-size: var(--font-size-3);
+    color:var(--gs-text);
 }
 
 .scan-info .timer {
-    font-size: 16px;
+    font-size: var(--font-size-3);
     font-weight: bold;
+    margin: 5px 0;
     color: var(--gs-pink);
 }
 
@@ -2068,4 +2067,45 @@ ion-toolbar:last-of-type {
 
 .ovulation-dashboard-wrap .heart-rate-card .heart-rate-card-grid .message_icon_grid {
     text-align: left;
+}
+
+
+
+.ovulation-dashboard-wrap .fertility-msg p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.ovulation-dashboard-wrap .fertility-msg strong {
+    color: var(--gs-pink); /* accent pink for emphasis */
+}
+
+.ovulation-dashboard-wrap .cycle-day {
+    font-weight: bold;
+    color: var(--gs-heading); /* teal for cycle info */
+}
+
+.ovulation-dashboard-wrap .ovulation-date, .fertile-window {
+    color: #333;
+}
+
+.ovulation-dashboard-wrap .fertile-now {
+    color: #d9534f; /* red/pink for fertile period */
+}
+
+.ovulation-dashboard-wrap .ovulation-today {
+    color: #f0ad4e; /* orange for ovulation */
+    font-weight: bold;
+}
+
+.ovulation-dashboard-wrap .ovulation-passed {
+    color: #6c757d; /* gray for past ovulation */
+}
+
+.ovulation-dashboard-wrap .ovulation-soon {
+    color: #5bc0de; /* blue for upcoming ovulation */
+}
+
+.ovulation-dashboard-wrap .fertility-msg.info {
+    font-style: italic;
 }
