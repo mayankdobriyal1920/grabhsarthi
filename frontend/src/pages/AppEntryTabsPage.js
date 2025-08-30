@@ -25,11 +25,12 @@ import {
     people,
     peopleOutline,
     settingsOutline,
-    ellipsisHorizontal
+    ellipsisHorizontal, settingsSharp, settings
 } from 'ionicons/icons';
 import HeaderAfterLoginComponent from "../components/HeaderAfterLoginComponent";
 import useStore from "../zustand/useStore";
 import TTCUserDashboardPage from "./TTCUserDashboardPage";
+import OvulationTrackerPage from "../components/OvulationTrackerPage";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -76,6 +77,15 @@ const AppEntryTabsPage = () => {
                                     }
                                 </>
                             )} />
+                            <Route exact path="/dashboard/tracker" render={()=>(
+                                <>
+                                    {(userInfo?.role === 3) ?
+                                        <OvulationTrackerPage />
+                                        :
+                                        <OvulationTrackerPage />
+                                    }
+                                </>
+                            )} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
                     </IonPage>
@@ -86,6 +96,7 @@ const AppEntryTabsPage = () => {
             <IonTabBar slot="bottom" className="custom-tabbar main-tab-bar">
                 <IonTabButton
                     tab="home"
+                    href="/dashboard/home"
                     onClick={() => setCurrentPath('/dashboard/home')}
                     className="custom-ripple-color"
                     selected={currentPath === '/dashboard/home'}
@@ -96,6 +107,7 @@ const AppEntryTabsPage = () => {
 
                 <IonTabButton
                     tab="classes"
+                    href="/dashboard/classes"
                     onClick={() => setCurrentPath('/dashboard/classes')}
                     className="custom-ripple-color"
                     selected={currentPath === '/dashboard/classes'}
@@ -106,6 +118,7 @@ const AppEntryTabsPage = () => {
 
                 <IonTabButton
                     tab="tracker"
+                    href="/dashboard/tracker"
                     onClick={() => setCurrentPath('/dashboard/tracker')}
                     className="custom-ripple-color"
                     selected={currentPath === '/dashboard/tracker'}
@@ -116,6 +129,7 @@ const AppEntryTabsPage = () => {
 
                 <IonTabButton
                     tab="community"
+                    href="/dashboard/community"
                     onClick={() => setCurrentPath('/dashboard/community')}
                     className="custom-ripple-color"
                     selected={currentPath === '/dashboard/community'}
@@ -125,33 +139,17 @@ const AppEntryTabsPage = () => {
                 </IonTabButton>
 
                 <IonTabButton
-                    tab="more"
-                    className={`custom-ripple-color ${showMoreSheet ? 'tab-selected' : ''}`}
-                    onClick={callFunctionToOpenShowMoreSheet}
+                    tab="settings"
+                    href="/dashboard/settings"
+                    onClick={() => setCurrentPath('/dashboard/settings')}
+                    className="custom-ripple-color"
+                    selected={currentPath === '/dashboard/settings'}
                 >
-                    <IonIcon icon={ellipsisHorizontal} />
-                    <IonLabel>More</IonLabel>
-
-                    <IonModal
-                        isOpen={showMoreSheet}
-                        onDidDismiss={() => setShowMoreSheet(false)}
-                        breakpoints={[0, 0.2]}
-                        initialBreakpoint={0.2}
-                        className="more-sheet-modal"
-                    >
-                        <IonContent className="ion-padding">
-                            <div className="more-sheet-grid">
-                                <div onClick={() => gotToPage('/dashboard/settings')} className={`more-sheet-item`}>
-                                    <div className="more-tile">
-                                        <IonIcon icon={settingsOutline} />
-                                    </div>
-                                    <span>Settings</span>
-                                </div>
-                                {/* Add other "more" items as needed */}
-                            </div>
-                        </IonContent>
-                    </IonModal>
+                    <IonIcon icon={currentPath === '/dashboard/settings' ? settings : settingsOutline} />
+                    <IonLabel>Settings</IonLabel>
                 </IonTabButton>
+
+
             </IonTabBar>
         </IonTabs>
     );

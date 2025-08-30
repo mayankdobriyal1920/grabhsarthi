@@ -29,6 +29,11 @@ import {Capacitor} from "@capacitor/core";
 import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
 import DailyTaskYogTaskComponent from "./components/DailyTaskYogTaskComponent";
+import DailyTaskMeditationTaskComponent from "./components/DailyTaskMeditationTaskComponent";
+import DailyTaskSamvaadComponent from "./components/DailyTaskSamvaadComponent";
+import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
+import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
+import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
 
 setupIonicReact();
 
@@ -53,6 +58,11 @@ const PublicRoutes = () => {
                 <Route path="/choose-role" exact={true} component={ChooseRolePageAfterLoginComponent} />
                 <Route path="/create-profile" exact={true} component={CreateRoleBasedFormPage} />
                 <Route path="/daily-task/yoga" exact={true} component={DailyTaskYogTaskComponent} />
+                <Route path="/daily-task/meditation" exact={true} component={DailyTaskMeditationTaskComponent} />
+                <Route path="/daily-task/samvaad" exact={true} component={DailyTaskSamvaadComponent} />
+                <Route path="/daily-task/mantra" exact={true} component={DailyTaskMantraComponent} />
+                <Route path="/daily-task/hydration" exact={true} component={DailyTaskHydrationComponent} />
+                <Route path="/daily-task/mood" exact={true} component={DailyTaskMoodComponent} />
                 <Route path="/dashboard" component={AppEntryTabsPage} />
                 <Redirect exact from="/" to="/home" />
                 <Route render={() => <Redirect to="/home" />} />

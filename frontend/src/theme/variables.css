@@ -177,7 +177,7 @@ http://ionicframework.com/docs/theming/ */
     --gs-shadow: 0 2px 8px rgba(200, 138, 143, 0.15); /* Soft card shadow */
 
 
-     --gs-button-gradient:linear-gradient(1deg, #44A89F, #44A89F);
+    --gs-button-gradient:linear-gradient(1deg, #44A89F, #44A89F);
     --gs-card-bg: rgba(204, 114, 131, 0.09);
     --gs-pink: #e55b7c;
     --gs-heading: #44A89F;
@@ -189,5 +189,11 @@ http://ionicframework.com/docs/theming/ */
     --gs-btn-text: #515b4d;
     --gs-card-radius: 20px;
     --gs-btn-radius: 24px;
+    --gs-yoga-task-color: #ea9518;
+    --gs-meditation-task-color: #966dff;
+    --gs-samvaad-task-color: #ff9380;
+    --gs-mantra-task-color: #f491f2;
+    --gs-hydration-task-color: #8cc7d5;
+    --gs-mood-task-color: #FFC107;
 
 }

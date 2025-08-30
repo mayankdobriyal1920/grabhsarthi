@@ -559,7 +559,7 @@ ion-button{
     font-weight: bold;
     color: var(--gs-heading);
     margin-bottom: 10px;
-    margin-top: 5px;
+    margin-top: 22px;
 }
 .switch-field .switch span{
     margin-top: -4px;
@@ -1076,6 +1076,11 @@ ion-toolbar:last-of-type {
     display: flex;
     align-items: center;
 }
+
+.dont_text_t_session_progress {
+    font-size: var(--font-size-4);
+    color: var(--gs-heading);
+}
 .page_name_header_online:before {
     content: '';
     border-radius: 50%;
@@ -1170,6 +1175,25 @@ ion-toolbar:last-of-type {
     margin: 0px 0px 5px 0px;
 }
 
+/* Progress */
+.pregnant-dashboard .progress-row {
+    margin-bottom: 20px;
+}
+
+.pregnant-dashboard .track {
+    position: relative;
+    height: 6px;
+    background: #0000000a;
+    border-radius: 999px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+.pregnant-dashboard .fill {
+    height: 100%;
+    background: var(--gs-heading);
+}
+
 .progress_bar_div_with_percentage {
     width: 80%;
 }
@@ -1185,9 +1209,6 @@ ion-toolbar:last-of-type {
 
 .ttc-dashboard .task-icon ion-icon,.pregnant-dashboard .circle ion-icon,.pregnant-dashboard .chip ion-icon{
     color: var(--gs-heading);
-}
-.ttc-dashboard .fill,.pregnant-dashboard .fill{
-    background: var(--gs-pink);
 }
 
 /* ✅ Parent class to avoid conflicts */
@@ -1246,17 +1267,6 @@ ion-toolbar:last-of-type {
     color: #444;
 }
 
-.inner_pages_toolbar .title_in_header_task{
-    font-size: var(--font-size-2);
-    color: var(--gs-pink);
-    padding-left: 10px!important;
-    font-weight: bold;
-}
-.greet.in_task_panel h1{
-    color:var(--gs-heading)!important;
-    font-size: var(--font-size-1)!important;
-}
-
 
 .pregnant-dashboard .card_inner_pose_info_img {
     width: 100%;
@@ -1279,6 +1289,7 @@ ion-toolbar:last-of-type {
     width: 100%;
     height: 100%;
 }
+
 
 .start_stop_end_button_container .timer-container-outer {
     width: 100%;
@@ -1318,7 +1329,7 @@ ion-toolbar:last-of-type {
 }
 
 .start_stop_end_button_container .timer-container .progress {
-    stroke: var(--gs-heading); /* green color */
+    stroke: var(--gs-yoga-task-color); /* green color */
     stroke-dasharray: 440; /* 2 * PI * r */
     stroke-dashoffset: 440;
 }
@@ -1342,59 +1353,42 @@ ion-toolbar:last-of-type {
     border-radius: 10px;
 }
 
-.start_stop_end_button_container .button_in_time_y_task {
-    background: var(--gs-heading);
+.button_in_time_y_task {
+    background: var(--gs-yoga-task-color);
     padding: 10px 25px;
     border-radius: 8px;
     font-size: var(--font-size-3);
     color: #ffffff;
     box-shadow: var(--gs-icon-shadow);
+    border: 1px solid var(--gs-yoga-task-color);
     text-align: center;
-    display: flex;
-    align-items: center;
 }
 
-.start_stop_end_button_container .button_in_time_y_task_skip_task {
-    border: 1px solid var(--gs-heading);
+.button_in_time_y_task_skip_task {
+    border: 1px solid var(--gs-yoga-task-color);
     padding: 10px 25px;
     border-radius: 8px;
     font-size: var(--font-size-3);
-    color: var(--gs-heading);
+    color: var(--gs-yoga-task-color);
     box-shadow: var(--gs-icon-shadow);
     text-align: center;
-    display: flex;
     background: #ffffff;
-    align-items: center;
 }
 
 
-/* Progress */
-.pregnant-dashboard .progress-row {
-    margin-bottom: 20px;
+.task_section_container_wrap .fill {
+    background: var(--gs-yoga-task-color);
 }
 
-.pregnant-dashboard .track {
-    position: relative;
-    height: 6px;
-    background: #0000000a;
-    border-radius: 999px;
-    margin-top: 6px;
-    overflow: hidden;
-}
-
-.pregnant-dashboard .fill {
-    height: 100%;
-    background: var(--gs-heading);
-}
 .end_session_button_container{
     font-size: var(--font-size-3);
     font-weight: bold;
-    color: var(--gs-heading);
+    color: var(--gs-yoga-task-color);
 }
 
 
 .task_section_container_wrap .header_for_task_section {
-    background: var(--gs-heading);
+    background: var(--gs-yoga-task-color);
     color: white;
     padding: 1px;
     text-align: center;
@@ -1453,9 +1447,9 @@ ion-toolbar:last-of-type {
     font-size: var(--font-size-4);
 }
 
-.progress-row .dont_text_t_session_progress {
+.task_section_container_wrap .progress-row .dont_text_t_session_progress {
     font-size: var(--font-size-4);
-    color: var(--gs-heading);
+    color: var(--gs-yoga-task-color);
 }
 .pregnant-dashboard .progress-row{
     margin-top: 20px;
@@ -1474,5 +1468,521 @@ ion-toolbar:last-of-type {
     text-align: center;
     color: #ffffff;
     font-size: var(--font-size-4);
+    width: 135px;
+}
+.header_for_task_section.meditation{
+    background: var(--gs-meditation-task-color);
+}
+.header_for_task_section.mantra{
+    background: var(--gs-mantra-task-color);
+}
+.header_for_task_section.hydration{
+    background: var(--gs-hydration-task-color);
+}
+.meditation_main_container .session_start_stop_skin_button .button_in_time_y_task{
+    background: var(--gs-meditation-task-color);
+    border:1px solid var(--gs-meditation-task-color);
+}
+.meditation_main_container .session_start_stop_skin_button .button_in_time_y_task_skip_task{
+    border:1px solid var(--gs-meditation-task-color);
+    color: var(--gs-meditation-task-color);
+}
+.session_start_stop_skin_button .button_in_time_y_task{
+    margin: auto;
+    padding:20px 0;
+    width: 200px;
+}
+.session_start_stop_skin_button .button_in_time_y_task_skip_task{
+    margin: auto;
+    padding:20px 0;
+    width: 200px;
+}
+.session_start_stop_skin_button{
+    display: flex;
+    gap: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+.meditation_message_text{
+    margin-top: 20px;
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
+}
+.meditation_main_container .start_stop_end_button_container,
+.mantra_main_container .start_stop_end_button_container{
+    display: block;
+    text-align: center;
+}
+
+.meditation_main_container .start_stop_end_button_container .timer-container .progress{
+    stroke: var(--gs-meditation-task-color); /* green color */
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+}
+.mantra_main_container .start_stop_end_button_container .timer-container .progress {
+    stroke: var(--gs-mantra-task-color); /* green color */
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+}
+.mantra_main_container .session_start_stop_skin_button .button_in_time_y_task{
+    background: var(--gs-mantra-task-color);
+    border:1px solid var(--gs-mantra-task-color);
+}
+.mantra_main_container .session_start_stop_skin_button .button_in_time_y_task_skip_task{
+    border:1px solid var(--gs-mantra-task-color);
+    color: var(--gs-mantra-task-color);
+}
+.meditation_main_container .start_stop_end_button_container .timer-container,
+.mantra_main_container .start_stop_end_button_container .timer-container{
+    width: 160px;
+    height: 160px;
+}
+.meditation_main_container .header_for_task_section .session-info,
+.mantra_main_container .header_for_task_section .session-info {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.meditation_main_container .start_stop_end_button_container .timer-container span,
+.mantra_main_container .start_stop_end_button_container .timer-container span{
+    font-size: 28px;
+}
+.meditation_main_container .start_stop_end_button_container,
+.mantra_main_container .start_stop_end_button_container{
+    padding: 25px;
+    margin-top: 15px;
+}
+.meditation_ohm_svg_center{
+    display: flex;
+    padding: 20px;
+    animation: breathe 8s infinite ease-in-out;
+}
+.meditation_ohm_svg_center svg{
+    margin:auto;
+    width: 100px;
+    height: 100px;
+}
+@keyframes breathe {
+    0%, 100% {
+        transform: scale(0.5);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.samvaad_main_container .session-info-text-header {
+    padding: 0 20px;
+    margin-top: 12px;
+}
+
+.samvaad_main_container .session-info-text-header .duration.time_sec_c {
+    text-align: center;
+    margin-left: unset!important;
+    display: block;
+    padding: 10px 0;
+    font-size: var(--font-size-4);
+}
+
+.header_for_task_section.samvaad{
+    background: var(--gs-samvaad-task-color);
+}
+
+.samvaad_inner_card {
+    display: flex;
+    flex-flow: column;
+}
+
+.samvaad_inner_card .samvaad_inner_img_cont {
+    width: 165px;
+    height: 165px;
+    margin: auto;
+}
+.samvaad_inner_card .sanvaad_sweet_msz{
+    font-size: var(--font-size-2);
+    color: var(--gs-text);
     font-weight: bold;
+    font-family: monospace;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 25px;
+}
+
+.samvaad_text_input_area {
+    border-radius: 10px;
+    border: 1px solid #ff644775;
+    padding: 10px;
+    width: 100%;
+    resize: none;
+    margin: 0 5px;
+    color: var(--gs-text);
+    font-size: var(--font-size-4);
+}
+
+.samvaad_main_container .samvaad_bottom_text,.hydration_main_container .samvaad_bottom_text,.mood_main_container .samvaad_bottom_text{
+    font-size: var(--font-size-4);
+    color: var(--gs-text);
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0 20px;
+}
+.samvaad_bottom_streek_section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fdf9f6;
+    border-radius: 50px;
+    padding: 8px 14px;
+    font-weight: 500;
+    color: var(--gs-text);
+    width: fit-content;
+    font-size: var(--font-size-4);
+    margin: 15px auto;
+}
+
+.samvaad_bottom_streek_section .streak-icon {
+    font-size: 18px;
+    color: var(--gs-samvaad-task-color);
+}
+
+.samvaad_bottom_streek_section .streak-text {
+    color: var(--gs-text);
+}
+.card_for_garbh_samvaad{
+    background: #fdf9f6!important;
+}
+
+.start_stop_end_button_container.meditation_task_card{
+    background: #946ff60f!important;
+}
+
+.samvaad_bottom_streek_section.meditation {
+    background: #946ff60f!important;
+}
+
+.start_stop_end_button_container.yoga_task_card{
+    background: #d59a3c17 !important;
+}
+
+.samvaad_bottom_streek_section.meditation .streak-icon{
+    color: var(--gs-meditation-task-color) !important;
+}
+.samvaad_bottom_streek_section.mantra .streak-icon{
+    color: var(--gs-mantra-task-color) !important;
+}
+.samvaad_bottom_streek_section.mantra {
+    background: #e297ec1f !important
+}
+.start_stop_end_button_container.mantra_task_card{
+    background: #e297ec1f !important
+}
+
+.samvaad_bottom_streek_section.hydration .streak-icon{
+    color: var(--gs-hydration-task-color) !important;
+}
+.samvaad_bottom_streek_section.hydration {
+    background: #a5d9fb21 !important
+}
+
+.samvaad_bottom_streek_section.mood .streak-icon{
+    color: var(--gs-mood-task-color) !important;
+}
+.samvaad_bottom_streek_section.mood {
+    background: #edc4451c !important
+}
+
+.save_samvaad_button{
+    font-size: var(--font-size-3);
+    background: var(--gs-samvaad-task-color);
+    color: #ffffff;
+    border-radius: 10px;
+    text-align: center;
+    padding: 15px 0px;
+    margin: 20px 5px;
+    border: unset;
+}
+
+
+.mantra_message_text{
+    margin-top: 20px;
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
+    line-height: 35px;
+}
+
+.hydrated_section_image {
+    width: 73%;
+    display: flex;
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 10px auto 20px auto;
+    box-shadow: var(--gs-shadow);
+}
+.save_samvaad_button.add_glass_hydration_button {
+    margin: 0px auto;
+    display: flex;
+    text-align: center;
+    padding: 15px 33px;
+    background: var(--gs-hydration-task-color);
+}
+
+.mood_main_container .header_for_task_section.mood{
+    background: var(--gs-mood-task-color);
+}
+
+
+.mood_main_container .mood_selector_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 20px 20px;
+}
+
+.mood_main_container .mood_card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.mood_main_container .mood_card:hover {
+    transform: translateY(-4px);
+}
+
+.mood_main_container .mood_main_container.mood_card.selected {
+    border: 2px solid var(--gs-mood-task-color);
+    background: #e6f5f4;
+    box-shadow: 0 0 12px rgba(0,0,0,0.06);
+}
+
+.mood_main_container .mood_icon {
+    font-size: 2rem;
+    color: var(--gs-mood-task-color);;
+    margin-bottom: 6px;
+}
+
+.mood_main_container .mood_text_input {
+    margin: 20px 0;
+}
+
+.mood_main_container .rounded-input {
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    font-size: 1rem;
+}
+
+.mood_main_container .save_mood_button {
+    width: 100%;
+    background: var(--gs-mood-task-color);;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 6px 14px #edc4451c;
+    transition: background 0.3s ease;
+}
+
+
+
+.mood_main_container .save_mood_button:hover:not(:disabled) {
+    background: #edc4451c;
+}
+
+.mood_main_container .success_state {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.mood_main_container .success_icon {
+    font-size: 2.5rem;
+    color: #e46983;
+    animation: pulse 1s infinite alternate;
+}
+
+.mood_tracker_bottom_cont{
+    margin: 0 20px;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.mood_text_input .samvaad_text_input_area {
+    border: 1px solid rgba(255, 183, 24, 0.46);
+}
+
+.ovulation-dashboard-wrap {
+    font-family: 'DM Sans', sans-serif;
+    color: #333;
+    padding: 20px;
+}
+
+.ovulation-dashboard-wrap .page-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #e46983;
+    margin-bottom: 20px;
+}
+
+/* Card Styles */
+.ovulation-dashboard-wrap .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Heart Rate Card */
+.ovulation-dashboard-wrap .heart-rate-card {
+    text-align: center;
+}
+
+.ovulation-dashboard-wrap .heart-icon {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.ovulation-dashboard-wrap .scan-btn {
+    background: #e46983;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 600;
+    margin: 8px 0;
+}
+
+.ovulation-dashboard-wrap .bpm {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+.ovulation-dashboard-wrap small {
+    color: #666;
+}
+
+/* Input Row */
+.ovulation-dashboard-wrap .input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.ovulation-dashboard-wrap .input-box {
+    flex: 1;
+}
+
+.ovulation-dashboard-wrap .input-box label {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.ovulation-dashboard-wrap .input-field {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* Calendar */
+.ovulation-dashboard-wrap .calendar-card {
+    text-align: center;
+}
+
+.ovulation-dashboard-wrap .calendar-card h3 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.ovulation-dashboard-wrap .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.ovulation-dashboard-wrap .calendar-grid span {
+    padding: 6px;
+    border-radius: 50%;
+}
+
+.ovulation-dashboard-wrap .calendar-grid .highlight {
+    background: #c7ebe6;
+    color: #065f55;
+}
+
+.ovulation-dashboard-wrap .calendar-grid .ovulation-day {
+    background: #e46983;
+    color: #fff;
+}
+
+.ovulation-dashboard-wrap .ovulation-text {
+    color: #e46983;
+    font-weight: bold;
+}
+
+.ovulation-dashboard-wrap .fertile-window {
+    color: #444;
+    font-size: 14px;
+}
+
+/* Note */
+.ovulation-dashboard-wrap .note-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ovulation-dashboard-wrap .note-icon {
+    font-size: 20px;
+}
+
+/* Save Button */
+.ovulation-dashboard-wrap .save-btn {
+    background: #e46983;
+    color: #fff;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.scan-info {
+    margin-top: 10px;
+    text-align: center;
+}
+.scan-info .instruction {
+    font-size: 14px;
+    color: #555;
+}
+.scan-info .timer {
+    font-size: 16px;
+    font-weight: bold;
+    color: #e46983;
 }
