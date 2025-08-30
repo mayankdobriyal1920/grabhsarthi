@@ -1824,28 +1824,27 @@ ion-toolbar:last-of-type {
 .mood_text_input .samvaad_text_input_area {
     border: 1px solid rgba(255, 183, 24, 0.46);
 }
-
 .ovulation-dashboard-wrap {
-    font-family: 'DM Sans', sans-serif;
-    color: #333;
+    color: var(--gs-text);
     padding: 20px;
 }
 
+/* Page Title */
 .ovulation-dashboard-wrap .page-title {
     text-align: center;
     font-size: 22px;
     font-weight: bold;
-    color: #e46983;
+    color: var(--gs-pink);
     margin-bottom: 20px;
 }
 
 /* Card Styles */
 .ovulation-dashboard-wrap .card {
     background: #fff;
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 16px; /* or 18px, can adjust */
+    padding: 16px; /* or 18px */
     margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 /* Heart Rate Card */
@@ -1854,36 +1853,76 @@ ion-toolbar:last-of-type {
 }
 
 .ovulation-dashboard-wrap .heart-icon {
-    font-size: 60px;
-    display: block;
-    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    color: var(--gs-pink);
+    margin-bottom: 10px;
+}
+
+.ovulation-dashboard-wrap .heart-icon.beat {
+    animation: heartbeat 1s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 50%, 100% { transform: scale(1); }
+    25%, 75% { transform: scale(1.2); }
+}
+
+.ovulation-dashboard-wrap .bpm_heading {
+    font-size: var(--font-size-1);
+    font-weight: bold;
+    color: var(--gs-text);
+    text-align: left;
+    margin: 0;
+}
+
+.ovulation-dashboard-wrap .bpm_scan_rate {
+    font-size: var(--font-size-0);
+    font-weight: bold;
+    color: var(--gs-text);
+    text-align: left;
+    margin: 0;
+}
+
+.ovulation-dashboard-wrap .bpm-note {
+    font-size: var(--font-size-5);
+    color: #777;
+    text-align: left;
+    margin: 5px  0;
+}
+
+/* Buttons */
+.ovulation-dashboard-wrap .scan-btn,
+.ovulation-dashboard-wrap .save-btn {
+    background: var(--gs-pink);
+    color: #fff;
+    border: none;
+    border-radius: 20px; /* save-btn uses 30px */
+    font-weight: bold;
+    font-size: var(--font-size-3);
 }
 
 .ovulation-dashboard-wrap .scan-btn {
-    background: #e46983;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
     padding: 8px 16px;
     font-weight: 600;
     margin: 8px 0;
 }
 
-.ovulation-dashboard-wrap .bpm {
-    font-size: 22px;
-    font-weight: bold;
-    margin: 8px 0;
-}
-
-.ovulation-dashboard-wrap small {
-    color: #666;
+.ovulation-dashboard-wrap .save-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 30px;
+    margin-top: 20px;
 }
 
 /* Input Row */
 .ovulation-dashboard-wrap .input-row {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 12px;
+    margin-bottom: 5px;
 }
 
 .ovulation-dashboard-wrap .input-box {
@@ -1891,18 +1930,33 @@ ion-toolbar:last-of-type {
 }
 
 .ovulation-dashboard-wrap .input-box label {
-    font-size: 14px;
-    color: #444;
+    font-size: var(--font-size-4);
+    color: var(--gs-text);
     margin-bottom: 6px;
+    font-weight: bold;
     display: block;
 }
 
 .ovulation-dashboard-wrap .input-field {
-    background: #fff;
+    background: #f8f9fa;
     border-radius: 10px;
     padding: 10px;
-    font-size: 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    display: flex;
+    font-size: var(--font-size-4);
+}
+
+.ovulation-dashboard-wrap .input-field input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: var(--font-size-4);
+    font-weight: 500;
+    color: var(--gs-text);
+    outline: none;
+}
+
+.ovulation-dashboard-wrap .input-field input[type="date"] {
+    cursor: pointer;
 }
 
 /* Calendar */
@@ -1920,36 +1974,48 @@ ion-toolbar:last-of-type {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
-    font-size: 14px;
-    margin-bottom: 12px;
+    font-size: var(--font-size-4);
 }
 
 .ovulation-dashboard-wrap .calendar-grid span {
-    padding: 6px;
+    padding-top: 8px;
     border-radius: 50%;
+    width: 30px;
+    height: 30px;
 }
 
 .ovulation-dashboard-wrap .calendar-grid .highlight {
-    background: #c7ebe6;
-    color: #065f55;
+    background: var(--gs-tracker-mint);
+    color: var(--gs-heading);
 }
 
 .ovulation-dashboard-wrap .calendar-grid .ovulation-day {
-    background: #e46983;
-    color: #fff;
-}
-
-.ovulation-dashboard-wrap .ovulation-text {
-    color: #e46983;
+    background: var(--gs-pink);
+    color: #ffffff;
     font-weight: bold;
 }
 
-.ovulation-dashboard-wrap .fertile-window {
-    color: #444;
-    font-size: 14px;
+.ovulation-dashboard-wrap .ovulation-text {
+    color: var(--gs-pink);
+    font-size: var(--font-size-3);
+    font-weight: bold;
+    margin-top: 15px;
 }
 
-/* Note */
+/* Messages & Notes */
+.ovulation-dashboard-wrap .message-card {
+    text-align: center;
+    background: #fdf0f4;
+    border: 1px solid #f7c8d1;
+}
+
+.ovulation-dashboard-wrap .fertile-message {
+    font-size: var(--font-size-4);
+    font-weight: 500;
+    line-height: 22px;
+    color: #444;
+}
+
 .ovulation-dashboard-wrap .note-card {
     display: flex;
     align-items: center;
@@ -1960,29 +2026,46 @@ ion-toolbar:last-of-type {
     font-size: 20px;
 }
 
-/* Save Button */
-.ovulation-dashboard-wrap .save-btn {
-    background: #e46983;
-    color: #fff;
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
+/* Scan Info */
 .scan-info {
     margin-top: 10px;
     text-align: center;
 }
+
 .scan-info .instruction {
     font-size: 14px;
     color: #555;
 }
+
 .scan-info .timer {
     font-size: 16px;
     font-weight: bold;
-    color: #e46983;
+    color: var(--gs-pink);
+}
+
+.ovulation-dashboard-wrap .input-row-container {
+    margin-bottom: 20px;
+}
+
+.ovulation-dashboard-wrap .input-row-container .error-msg {
+    font-size: var(--font-size-5);
+    color: #bd0000;
+}
+
+.ovulation-dashboard-wrap .fertile-window{
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
+}
+
+.ovulation-dashboard-wrap .heart-rate-card .heart-rate-card-grid {
+    display: grid;
+    grid-template-columns: 35% auto;
+}
+
+.ovulation-dashboard-wrap .heart-rate-card .heart-rate-card-grid .icon_g_sec {
+    margin: auto;
+}
+
+.ovulation-dashboard-wrap .heart-rate-card .heart-rate-card-grid .message_icon_grid {
+    text-align: left;
 }

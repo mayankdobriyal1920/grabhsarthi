@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect,useMemo } from "react";
 import {IonPage, IonContent, IonIcon} from "@ionic/react";
 import {fitness} from "ionicons/icons";
+import moment from "moment-timezone";
 
 const OvulationTracker = () => {
     const videoRef = useRef(null);
@@ -9,31 +10,58 @@ const OvulationTracker = () => {
     const [bpm, setBpm] = useState(null);
     const [timeLeft, setTimeLeft] = useState(0);
     const [message, setMessage] = useState('');
+    const [lmp, setLmp] = useState(moment("2024-08-20")); // default
+    const [cycleLength, setCycleLength] = useState(35);
 
-    // Default LMP + cycle length
-    const lmp = new Date("2023-08-20");
-    const cycleLength = 35;
-    const ovulationDay = new Date(lmp);
-    ovulationDay.setDate(lmp.getDate() + cycleLength - 14);
+    const ovulationDay = useMemo(() => {
+        if (!lmp) return null;
+        return moment(lmp).add(cycleLength - 14, "days");
+    }, [lmp, cycleLength]);
 
-    const fertileStart = new Date(ovulationDay);
-    fertileStart.setDate(ovulationDay.getDate() - 5);
-    const fertileEnd = new Date(ovulationDay);
+    const fertileStart = useMemo(() => ovulationDay ? moment(ovulationDay).subtract(5, "days") : null, [ovulationDay]);
+    const fertileEnd = useMemo(() => ovulationDay ? moment(ovulationDay).add(1, "days") : null, [ovulationDay]);
+    const displayMonth = useMemo(() => ovulationDay ? moment(ovulationDay).startOf("month") : moment(lmp).startOf("month"), [ovulationDay, lmp]);
+
+
+    const handleLmpChange = (e) => {
+        setLmp(new Date(e.target.value));
+    };
+
+    const handleCycleChange = (e) => {
+        const val = parseInt(e.target.value, 10);
+        setCycleLength(val);
+    };
 
     // Camera access
     const startScan = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: "environment" }, // rear camera
+                video: {
+                    facingMode: "environment",
+                    width: { ideal: 640 },
+                    height: { ideal: 480 }
+                }
             });
+
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
                 videoRef.current.play();
+
+                // Enable torch for better PPG signal
+                const track = stream.getVideoTracks()[0];
+                if (track.getCapabilities && track.getCapabilities().torch) {
+                    await track.applyConstraints({
+                        advanced: [{ torch: true }]
+                    });
+                    console.log("🔦 Torch enabled for better PPG signal");
+                }
             }
             setScanning(true);
-            setTimeLeft(45); // 45 second timer
+            setTimeLeft(45);
+            setBpm(0);
+            console.log("🚀 Starting BPM scan for ovulation tracking");
         } catch (err) {
-            console.error("Camera error:", err);
+            console.error("📱 Camera error:", err);
         }
     };
 
@@ -191,71 +219,125 @@ const OvulationTracker = () => {
 
 
     useEffect(() => {
-        if (scanning) return;
-
-        const today = new Date();
-        if (today >= fertileStart && today <= fertileEnd) {
-            if (bpm > 75) {
-                setMessage("🌸 Your fertile window is open and your BPM suggests ovulation might be near. Stay hopeful ✨");
-            } else {
-                setMessage("💚 You're in your fertile window. Take care of yourself and stay positive 💕");
-            }
-        } else if (today.toDateString() === ovulationDay.toDateString()) {
-            setMessage("🥚 Today is your predicted ovulation day! Sending you baby dust 🌟");
-        } else if (today > ovulationDay) {
-            setMessage("🌙 Ovulation likely passed. Focus on rest, balance, and self-care 💆‍♀️");
-        } else {
-            setMessage("📅 Tracking ahead of ovulation. Keep monitoring BPM for changes.");
+        // If no BPM or cycle data, show prompt
+        if (!bpm || !lmp || !cycleLength) {
+            setMessage("To calculate your fertility status, please enter your last period, cycle length, and scan your heart rate (BPM).");
+            return;
         }
-    }, [scanning, bpm, fertileStart, fertileEnd, ovulationDay]);
+
+        const today = moment();
+        const cycleDay = today.diff(lmp, "days") + 1;
+
+        // Ovulation & fertile window calculation
+        const ovulationDayCalc = moment(lmp).add(cycleLength - 14, "days");
+        const fertileStartCalc = moment(ovulationDayCalc).subtract(5, "days");
+        const fertileEndCalc = moment(ovulationDayCalc).add(1, "days");
+
+        let msg = `Today is cycle day ${cycleDay}.\n`;
+        msg += `🔹 Ovulation is predicted on ${ovulationDayCalc.format("dddd, DD MMM YYYY")}.\n`;
+        msg += `🔹 Fertile window is from ${fertileStartCalc.format("DD MMM")} to ${fertileEndCalc.format("DD MMM")}.\n`;
+
+        if (today.isBetween(fertileStartCalc, fertileEndCalc, "day", "[]")) {
+            msg += "You are in your fertile window. ";
+            if (bpm > 80) {
+                msg += "Your heart rate suggests ovulation is very near. Best chances now for conception";
+            } else {
+                msg += "Keep calm, track your signs, and maintain healthy lifestyle";
+            }
+        } else if (today.isSame(ovulationDayCalc, "day")) {
+            msg += "Today is your predicted ovulation day! Maximum fertility";
+        } else if (today.isAfter(ovulationDayCalc)) {
+            msg += "Ovulation likely passed. Focus on rest, balance & self-care";
+        } else {
+            msg += "Ovulation predicted soon. Keep scanning BPM & tracking signs.";
+        }
+
+        setMessage(msg);
+    }, [scanning, bpm, lmp, cycleLength]);
+
 
     return (
         <IonPage className="ovulation-tracker-page">
             <IonContent fullscreen className="main-content-page ovulation-dashboard main-contant-page">
                 <div className="dash-wrap ovulation-dashboard-wrap">
+
                     {/* Heart BPM card */}
                     <div className="card heart-rate-card">
-                        <div className={`heart-icon ${bpm ? "beat" : ""}`}>
-                            <IonIcon icon={fitness} />
-                        </div>
-                        {!scanning ?
-                            (<button className="scan-btn" onClick={startScan}>Start Scan</button> )
-                            :
-                            (<button className="scan-btn" onClick={stopScan}>Stop Scan</button> )
-                        }
-                        {scanning && (
-                            <div className="scan-info"> <p className="instruction">
-                                👉 Place your finger on the camera lens with flashlight ON</p>
-                                <p className="timer">⏳ {timeLeft}s remaining</p>
+                        <div className={"heart-rate-card-grid"}>
+                            <div className={"icon_g_sec"}>
+                                <div className={`heart-icon ${scanning && bpm ? "beat" : ""}`}>
+                                    <IonIcon icon={fitness} />
+                                </div>
+                                <video ref={videoRef} className="camera-preview" style={{ display: "none" }} width="200" height="150" />
+                                <canvas ref={canvasRef} width="50" height="50" style={{ display: "none" }} />
                             </div>
-                        )}
-                        <p className="bpm"> {bpm ? `${bpm} BPM` : scanning ? "Scanning..." : "No Data"}</p>
-                        <p className="bpm-note">Measured via phone scan</p>
+
+                            <div className={"message_icon_grid"}>
+                                {scanning && (
+                                    <div className="scan-info">
+                                        <p className="instruction">👉 Place your finger on the camera lens with flashlight ON</p>
+                                        <p className="timer">⏳ {timeLeft}s remaining</p>
+                                    </div>
+                                )}
+                                <p className="bpm_heading">Scan Heart Rate</p>
+                                {!scanning ? (
+                                    <button className="scan-btn" onClick={startScan}>Start Scan</button>
+                                ) : (
+                                    <button className="scan-btn" onClick={stopScan}>Stop Scan</button>
+                                )}
+                                <p className="bpm_scan_rate">{bpm ? `${bpm} BPM` : scanning ? "Scanning..." : "0 BPM"}</p>
+                                <p className="bpm-note">Measured via phone scan</p>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Cycle Info */}
-                    <div className="input-row">
-                        <div className="input-box">
-                            <label>Last Period</label>
-                            <div className="input-field">{lmp.toDateString()}</div>
+                    <div className="input-row-container">
+                        <div className="input-row">
+                            <div className="input-box">
+                                <label>Last Period</label>
+                                <div className="input-field">
+                                    <input
+                                        type="date"
+                                        value={lmp.toISOString().split("T")[0]}
+                                        onChange={handleLmpChange}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="input-box">
+                                <label>Cycle Length</label>
+                                <div className="input-field">
+                                    <input
+                                        type="number"
+                                        min="20"
+                                        max="45"
+                                        value={Number(cycleLength)}
+                                        onChange={handleCycleChange}
+                                    /> days
+                                </div>
+                            </div>
                         </div>
-                        <div className="input-box">
-                            <label>Cycle Length</label>
-                            <div className="input-field">{cycleLength} days</div>
-                        </div>
+                        {(cycleLength < 15 || cycleLength > 50) &&
+                            <span className={"error-msg"}>
+                                Cycle length must be greater then 15 and smaller then 50
+                            </span>
+                        }
                     </div>
 
                     {/* Calendar */}
                     <div className="card calendar-card">
-                        <h3>September 2023</h3>
+                        <h3>{displayMonth.format("MMMM YYYY")}</h3>
                         <div className="calendar-grid">
-                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                            {Array.from({ length: 30 }, (_, i) => {
-                                const day = new Date("2023-09-01");
-                                day.setDate(i + 1);
-                                const dateStr = day.toDateString();
-                                const isOvulation = dateStr === ovulationDay.toDateString();
-                                const isFertile = day >= fertileStart && day <= fertileEnd;
+                            <span>S</span><span>M</span><span>T</span>
+                            <span>W</span><span>T</span><span>F</span><span>S</span>
+
+                            {Array.from({ length: displayMonth.daysInMonth() }, (_, i) => {
+                                const day = moment(displayMonth).date(i + 1);
+
+                                const isOvulation = day.isSame(ovulationDay, "day");
+                                const isFertile = day.isBetween(fertileStart, fertileEnd, "day", "[]");
+                                const isToday = day.isSame(moment(), "day");
 
                                 return (
                                     <span
@@ -265,149 +347,38 @@ const OvulationTracker = () => {
                                                 ? "ovulation-day"
                                                 : isFertile
                                                     ? "highlight"
-                                                    : ""
-                                        }
-                                    >
-                                        {i + 1}
-                                    </span>
+                                                    : isToday
+                                                        ? "today"
+                                                        : ""
+                                        }>
+                                  {i + 1}
+                                </span>
                                 );
                             })}
                         </div>
+
                         <p className="ovulation-text">
-                            Predicted Ovulation: <strong>{ovulationDay.toDateString()} 🌸</strong>
+                            Predicted Ovulation: <strong>{ovulationDay.format("ddd, DD MMM YYYY")}</strong>
                         </p>
                         <p className="fertile-window">
-                            {fertileStart.toDateString()} – {fertileEnd.toDateString()}
+                            {fertileStart.format("DD MMM")} – {fertileEnd.format("DD MMM")}
                         </p>
                     </div>
 
+
                     {/* Dynamic Fertility Message */}
-                    <div className="card message-card">
-                        <p className="fertile-message">{message}</p>
-                    </div>
+                    {(message) &&
+                        <div className="card message-card">
+                            <p className="fertile-message">{message}</p>
+                        </div>
+                    }
 
                     {/* Save Button */}
                     <button className="save-btn">Save & Set Reminders</button>
                 </div>
             </IonContent>
-
-            <style>
-                {`
-                .ovulation-dashboard-wrap {
-                    font-family: 'DM Sans', sans-serif;
-                    color: #333;
-                    padding: 20px;
-                }
-                .ovulation-dashboard-wrap .page-title {
-                    text-align: center;
-                    font-size: 22px;
-                    font-weight: bold;
-                    color: #e46983;
-                    margin-bottom: 20px;
-                }
-                /* Card */
-                .ovulation-dashboard-wrap .card {
-                    background: #fff;
-                    border-radius: 18px;
-                    padding: 18px;
-                    margin-bottom: 20px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-                }
-                /* Heart */
-                .ovulation-dashboard-wrap .heart-icon {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin-bottom: 10px;
-                    color: #e46983;
-                }
-                .ovulation-dashboard-wrap .heart-icon.beat {
-                    animation: heartbeat 1s infinite;
-                }
-                @keyframes heartbeat {
-                    0% { transform: scale(1); }
-                    25% { transform: scale(1.2); }
-                    50% { transform: scale(1); }
-                    75% { transform: scale(1.2); }
-                    100% { transform: scale(1); }
-                }
-                .ovulation-dashboard-wrap .bpm {
-                    font-size: 24px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 5px 0;
-                }
-                .ovulation-dashboard-wrap .bpm-note {
-                    font-size: 12px;
-                    color: #777;
-                    text-align: center;
-                }
-                /* Inputs */
-                .ovulation-dashboard-wrap .input-row {
-                    display: flex;
-                    justify-content: space-between;
-                    gap: 12px;
-                }
-                .ovulation-dashboard-wrap .input-box {
-                    flex: 1;
-                }
-                .ovulation-dashboard-wrap .input-field {
-                    background: #f8f9fa;
-                    border-radius: 10px;
-                    padding: 10px;
-                    font-size: 14px;
-                }
-                /* Calendar */
-                .ovulation-dashboard-wrap .calendar-grid {
-                    display: grid;
-                    grid-template-columns: repeat(7, 1fr);
-                    gap: 6px;
-                    font-size: 14px;
-                }
-                .ovulation-dashboard-wrap .calendar-grid span {
-                    padding: 6px;
-                    border-radius: 50%;
-                }
-                .ovulation-dashboard-wrap .calendar-grid .highlight {
-                    background: #c7ebe6;
-                    color: #065f55;
-                }
-                .ovulation-dashboard-wrap .calendar-grid .ovulation-day {
-                    background: #e46983;
-                    color: #fff;
-                    font-weight: bold;
-                }
-                .ovulation-dashboard-wrap .ovulation-text {
-                    color: #e46983;
-                    font-weight: bold;
-                    margin-top: 10px;
-                }
-                /* Fertile message */
-                .ovulation-dashboard-wrap .message-card {
-                    text-align: center;
-                    background: #fdf0f4;
-                    border: 1px solid #f7c8d1;
-                }
-                .ovulation-dashboard-wrap .fertile-message {
-                    font-size: 15px;
-                    font-weight: 500;
-                    color: #444;
-                }
-                /* Save Button */
-                .ovulation-dashboard-wrap .save-btn {
-                    background: #e46983;
-                    color: #fff;
-                    width: 100%;
-                    padding: 14px;
-                    border: none;
-                    border-radius: 30px;
-                    font-size: 16px;
-                    font-weight: bold;
-                    margin-top: 20px;
-                }
-                `}
-            </style>
         </IonPage>
+
     );
 };
 
