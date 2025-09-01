@@ -23,7 +23,7 @@ export default function TTCUserDashboardPage() {
         <IonPage>
             <IonContent
                 fullscreen
-                className="dash --peach-bg pregnant-dashboard ttc-dashboard main-contant-page">
+                className="dash --peach-bg pregnant-dashboard ttc-dashboard main-content-page">
                 <div className="dash-wrap pregnant-dashboard-wrap">
                     {/* Greeting */}
                     <div className="greet">

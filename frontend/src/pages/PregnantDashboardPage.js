@@ -19,7 +19,7 @@ export default function PregnantDashboardPage() {
         <IonPage>
             <IonContent
                 fullscreen
-                className="dash --peach-bg pregnant-dashboard main-contant-page">
+                className="dash --peach-bg pregnant-dashboard main-content-page">
                 <div className="dash-wrap pregnant-dashboard-wrap">
                     {/* Greeting */}
                     <div className="greet">
@@ -28,7 +28,7 @@ export default function PregnantDashboardPage() {
                     </div>
 
                     <div className="baby-growth-card">
-                        <h2>Hy Mama!</h2>
+                        <h2>Hi Mama!</h2>
                         <div className="content">
                             <div className="baby-blob">
                                 <img src={_babyWeeklyGrowthContentSvg[currentWeek].icon} alt={'baby'} className={"baby-svg"}/>

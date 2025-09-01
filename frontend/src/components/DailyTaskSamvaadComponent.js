@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {IonPage, IonContent, IonIcon} from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import pregSamvaadImg from "../theme/img/preg_samvaad.png";
 import {close, ribbonOutline} from "ionicons/icons";
+import {Capacitor} from "@capacitor/core";
+import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskSamvaadComponent() {
     const history = useHistory();
     const [babySamvaadText,setBabySamvaadText] = useState('');
     const handleGoHomePage = () => history.goBack();
+
+    useEffect(()=>{
+        if(Capacitor.isNativePlatform()){
+            StatusBar.setBackgroundColor({ color: '#ff9380' }).then(()=>{
+                StatusBar.setStyle({ style:Style.Dark });
+            });
+
+            return ()=>{
+                StatusBar.setBackgroundColor({ color: '#ffffff' }).then(()=>{
+                    StatusBar.setStyle({ style:Style.Light });
+                });
+            }
+        }
+    },[])
 
     return (
         <IonPage>

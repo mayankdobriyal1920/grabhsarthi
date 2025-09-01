@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import {close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
+import {Capacitor} from "@capacitor/core";
+import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskMeditationTaskComponent() {
     const history = useHistory();
@@ -31,6 +33,20 @@ export default function DailyTaskMeditationTaskComponent() {
     const offset = circumference - (elapsed / totalSeconds) * circumference;
     const minutes = Math.floor((totalSeconds - elapsed) / 60);
     const seconds = (totalSeconds - elapsed) % 60;
+
+    useEffect(()=>{
+        if(Capacitor.isNativePlatform()){
+            StatusBar.setBackgroundColor({ color: '#966dff' }).then(()=>{
+                StatusBar.setStyle({ style:Style.Dark });
+            });
+
+            return ()=>{
+                StatusBar.setBackgroundColor({ color: '#ffffff' }).then(()=>{
+                    StatusBar.setStyle({ style:Style.Light });
+                });
+            }
+        }
+    },[])
 
     return (
         <IonPage>

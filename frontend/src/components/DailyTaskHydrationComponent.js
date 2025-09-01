@@ -1,13 +1,30 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import {add, close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
 import hydrationImg from "../theme/img/hydration_bottal_img.png";
+import {Capacitor} from "@capacitor/core";
+import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
+import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskHydrationComponent() {
     const history = useHistory();
     const handleGoHomePage = () => history.goBack();
 
+
+    useEffect(()=>{
+        if(Capacitor.isNativePlatform()){
+            StatusBar.setBackgroundColor({ color: '#8cc7d5' }).then(()=>{
+                StatusBar.setStyle({ style:Style.Dark });
+            });
+
+            return ()=>{
+                StatusBar.setBackgroundColor({ color: '#ffffff' }).then(()=>{
+                    StatusBar.setStyle({ style:Style.Light });
+                });
+            }
+        }
+    },[])
 
     return (
         <IonPage>

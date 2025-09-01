@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect,useMemo } from "react";
-import {IonPage, IonContent, IonIcon} from "@ionic/react";
+import {IonPage, IonContent, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardContent} from "@ionic/react";
 import {fitness} from "ionicons/icons";
 import moment from "moment-timezone";
-import { calendar, egg, heart, timer, alertCircle, checkmarkDone } from "ionicons/icons";
 
 const OvulationTracker = () => {
     const videoRef = useRef(null);
@@ -13,6 +12,9 @@ const OvulationTracker = () => {
     const [messageHtml, setMessageHtml] = useState(null);
     const [lmp, setLmp] = useState(moment()); // default
     const [cycleLength, setCycleLength] = useState(35);
+    const [baselineBpm, setBaselineBpm] = useState(null);
+    const [baselineData, setBaselineData] = useState([]);
+    const [detectedOvulationDay, setDetectedOvulationDay] = useState(null);
 
     const ovulationDay = useMemo(() => {
         if (!lmp) return null;
@@ -26,7 +28,7 @@ const OvulationTracker = () => {
 
     const handleLmpChange = (e) => {
         if(e.target.value){
-            setLmp(new Date(e.target.value));
+            setLmp(moment(e.target.value));
         }
     };
 
@@ -53,11 +55,14 @@ const OvulationTracker = () => {
                 // Enable torch for better PPG signal
                 const track = stream.getVideoTracks()[0];
                 if (track.getCapabilities && track.getCapabilities().torch) {
-                    await track.applyConstraints({
-                        advanced: [{ torch: true }]
-                    });
-                    console.log("🔦 Torch enabled for better PPG signal");
+                    try {
+                        await track.applyConstraints({ advanced: [{ torch: true }] });
+                        console.log("Torch enabled");
+                    } catch (err) {
+                        console.warn("Torch not supported:", err);
+                    }
                 }
+
             }
             setScanning(true);
             setTimeLeft(45);
@@ -73,6 +78,9 @@ const OvulationTracker = () => {
         if (stream) {
             const tracks = stream.getTracks();
             tracks.forEach((track) => track.stop());
+        }
+        if (videoRef.current) {
+            videoRef.current.srcObject = null;
         }
         setScanning(false);
         setTimeLeft(0);
@@ -92,54 +100,83 @@ const OvulationTracker = () => {
         return () => clearInterval(timer);
     }, [scanning, timeLeft]);
 
+    // Store each scan with day info
+    useEffect(() => {
+        if (!scanning && bpm && lmp) {
+            const today = moment();
+            const cycleDay = today.diff(lmp, "days") + 1;
+
+            // Save scan record
+            const scanRecord = { day: cycleDay, bpm, ts: Date.now() };
+            const history = JSON.parse(localStorage.getItem("bpmHistory") || "[]");
+            history.push(scanRecord);
+            localStorage.setItem("bpmHistory", JSON.stringify(history));
+
+            // Baseline collection (Day 1–5)
+            if (cycleDay >= 1 && cycleDay <= 5) {
+                setBaselineData(prev => {
+                    const updated = [...prev, bpm];
+                    localStorage.setItem("baselineData", JSON.stringify(updated));
+                    return updated;
+                });
+            }
+        }
+    }, [scanning, bpm, lmp]);
+
+    // Detect ovulation from BPM rise
+    useEffect(() => {
+        const history = JSON.parse(localStorage.getItem("bpmHistory") || "[]");
+        const baselineArr = JSON.parse(localStorage.getItem("baselineData") || "[]");
+        if (!baselineArr.length) return;
+
+        const baseline = baselineArr.reduce((a, b) => a + b, 0) / baselineArr.length;
+
+        const threshold = baseline + 3;
+        let riseCount = 0;
+        let detectedDay = null;
+
+        for (const entry of history) {
+            if (entry.bpm > threshold) {
+                riseCount++;
+                if (riseCount >= 2 && !detectedDay) {
+                    detectedDay = entry.day;
+                }
+            } else {
+                riseCount = 0;
+            }
+        }
+
+        if (detectedDay) {
+            setDetectedOvulationDay(detectedDay);
+            console.log("🌸 Ovulation detected via BPM rise, cycle day:", detectedDay);
+        }
+    }, [baselineData]);
+
     useEffect(() => {
         if (!scanning) return;
 
-        let frameCount = 0;
-        let redValues = [];
-        let greenValues = [];
-        let blueValues = [];
-        let timestamps = [];
-        const SAMPLE_RATE = 30; // 30 FPS
-        const WINDOW_SIZE = 256; // ~8.5 seconds of data
-        const MIN_BPM = 50;
-        const MAX_BPM = 180;
-
+        const SAMPLE_RATE = 30;
+        const WINDOW_SIZE = SAMPLE_RATE * 10; // ~10 seconds of frames
+        const MIN_BPM = 50, MAX_BPM = 180;
         const ctx = canvasRef.current?.getContext("2d");
 
-        // Simple moving average filter
-        const movingAverage = (data, windowSize = 5) => {
-            const result = [];
-            for (let i = 0; i < data.length; i++) {
-                const start = Math.max(0, i - windowSize + 1);
-                const window = data.slice(start, i + 1);
-                result.push(window.reduce((sum, val) => sum + val, 0) / window.length);
-            }
-            return result;
+        let frameCount = 0;
+        const greenValues = [];
+        const timestamps = [];
+
+        const bandpass = (data) => {
+            const mean = data.reduce((a, b) => a + b, 0) / data.length;
+            return data.map(v => v - mean); // basic detrend
+            // For production: apply real 0.8–3 Hz bandpass filter
         };
 
-        // Simple bandpass filter for heart rate frequencies
-        const bandpassFilter = (data) => {
-            // Detrend the signal (remove DC component)
-            const mean = data.reduce((sum, val) => sum + val, 0) / data.length;
-            return data.map(val => val - mean);
-        };
-
-        // Find peaks in the signal
-        const findPeaks = (data, minDistance = 10) => {
+        const findPeaks = (data, fs, thresholdFactor = 1.0) => {
+            const mean = data.reduce((a, b) => a + b, 0) / data.length;
+            const std = Math.sqrt(data.map(v => (v - mean) ** 2).reduce((a, b) => a + b, 0) / data.length);
+            const threshold = mean + thresholdFactor * std;
             const peaks = [];
-            for (let i = minDistance; i < data.length - minDistance; i++) {
-                let isPeak = true;
-
-                // Check if current point is higher than surrounding points
-                for (let j = i - minDistance; j <= i + minDistance; j++) {
-                    if (j !== i && data[j] >= data[i]) {
-                        isPeak = false;
-                        break;
-                    }
-                }
-
-                if (isPeak && data[i] > 0) { // Only positive peaks
+            for (let i = 1; i < data.length - 1; i++) {
+                if (data[i] > threshold && data[i] > data[i - 1] && data[i] > data[i + 1]) {
                     peaks.push(i);
                 }
             }
@@ -149,84 +186,81 @@ const OvulationTracker = () => {
         const interval = setInterval(() => {
             if (!videoRef.current || !ctx) return;
 
-            // Capture frame data
             ctx.drawImage(videoRef.current, 0, 0, 50, 50);
             const frame = ctx.getImageData(0, 0, 50, 50);
-
-            let redSum = 0, greenSum = 0, blueSum = 0;
-            const pixelCount = frame.data.length / 4;
-
-            // Average RGB values across the frame
+            let greenSum = 0;
+            const pixels = frame.data.length / 4;
             for (let i = 0; i < frame.data.length; i += 4) {
-                redSum += frame.data[i];
                 greenSum += frame.data[i + 1];
-                blueSum += frame.data[i + 2];
             }
 
-            redValues.push(redSum / pixelCount);
-            greenValues.push(greenSum / pixelCount);
-            blueValues.push(blueSum / pixelCount);
+            greenValues.push(greenSum / pixels);
             timestamps.push(Date.now());
             frameCount++;
 
-            // Keep only recent data
-            if (redValues.length > WINDOW_SIZE) {
-                redValues.shift();
+            if (greenValues.length > WINDOW_SIZE) {
                 greenValues.shift();
-                blueValues.shift();
                 timestamps.shift();
             }
 
-            // Process signal every 30 frames (~1 second)
-            if (frameCount % 30 === 0 && redValues.length >= 60) {
-                try {
-                    // Use green channel (most sensitive to blood volume changes)
-                    let signal = [...greenValues];
+            // Process every ~5 seconds
+            if (frameCount % (SAMPLE_RATE * 5) === 0 && greenValues.length >= SAMPLE_RATE * 5) {
+                const signal = bandpass(greenValues.slice());
+                const peaks = findPeaks(signal, SAMPLE_RATE, 1.0);
 
-                    // Apply smoothing
-                    signal = movingAverage(signal, 3);
+                if (peaks.length >= 2) {
+                    const intervals = [];
+                    for (let i = 1; i < peaks.length; i++) {
+                        const dt = (timestamps[peaks[i]] - timestamps[peaks[i - 1]]) / 1000;
+                        const bpm = 60 / dt;
+                        if (bpm >= MIN_BPM && bpm <= MAX_BPM) intervals.push(bpm);
+                    }
 
-                    // Apply bandpass filter
-                    signal = bandpassFilter(signal);
+                    if (intervals.length > 0) {
+                        intervals.sort((a, b) => a - b);
+                        const median = intervals[Math.floor(intervals.length / 2)];
+                        if (!bpm || Math.abs(median - bpm) / bpm < 0.2) {
+                            setBpm(prev => {
+                                if (!prev || Math.abs(median - prev) / prev < 0.2) {
+                                    return Math.round(median);
+                                }
+                                return prev;
+                            });
 
-                    // Find peaks with minimum distance based on max heart rate
-                    const minPeakDistance = Math.floor((60 / MAX_BPM) * SAMPLE_RATE);
-                    const peaks = findPeaks(signal, minPeakDistance);
-
-                    if (peaks.length >= 3) {
-                        // Calculate intervals between peaks
-                        const intervals = [];
-                        for (let i = 1; i < peaks.length; i++) {
-                            const interval = (peaks[i] - peaks[i-1]) / SAMPLE_RATE; // seconds
-                            intervals.push(60 / interval); // convert to BPM
-                        }
-
-                        // Filter out unrealistic BPM values
-                        const validBPMs = intervals.filter(bpm => bpm >= MIN_BPM && bpm <= MAX_BPM);
-
-                        if (validBPMs.length > 0) {
-                            // Use median BPM to reduce noise
-                            validBPMs.sort((a, b) => a - b);
-                            const medianBPM = validBPMs[Math.floor(validBPMs.length / 2)];
-                            setBpm(Math.round(medianBPM));
                         }
                     }
-                } catch (error) {
-                    console.error("PPG processing error:", error);
                 }
             }
-        }, 1000 / SAMPLE_RATE); // ~33ms for 30 FPS
+        }, 1000 / SAMPLE_RATE);
 
         return () => clearInterval(interval);
     }, [scanning]);
 
 
 
+// Load baseline from localStorage on mount
+    useEffect(() => {
+        const storedData = localStorage.getItem("baselineData");
+        if (storedData) {
+            const parsed = JSON.parse(storedData);
+            setBaselineData(parsed);
+            if (parsed.length > 0) {
+                const avg = parsed.reduce((a, b) => a + b, 0) / parsed.length;
+                setBaselineBpm(Math.round(avg));
+            }
+        }
+    }, []);
+
+
+    // Fertility message generator
     useEffect(() => {
         if (!bpm || !lmp || !cycleLength || scanning) {
             setMessageHtml(
                 <div className="fertility-msg info">
-                    <p>ℹ️ To calculate your fertility status, please enter your last period, cycle length, and scan your heart rate (BPM).</p>
+                    <p>
+                        To calculate your fertility status, please enter your last period,
+                        cycle length, and scan your heart rate (BPM).
+                    </p>
                 </div>
             );
             return;
@@ -234,70 +268,69 @@ const OvulationTracker = () => {
 
         const today = moment();
         const cycleDay = today.diff(lmp, "days") + 1;
-        const ovulationDayCalc = moment(lmp).add(cycleLength - 14, "days");
-        const fertileStartCalc = moment(ovulationDayCalc).subtract(5, "days");
-        const fertileEndCalc = moment(ovulationDayCalc).add(1, "days");
 
-        let messageContent = [];
+        // Use BPM-detected ovulation if available, else fallback to calendar estimate
+        const ovulationDay = detectedOvulationDay
+            ? moment(lmp).add(detectedOvulationDay - 1, "days")
+            : moment(lmp).add(cycleLength - 14, "days");
 
-        // Cycle day
-        messageContent.push(
-            <p key="cycleDay" className="cycle-day">
-                📅 Today is <strong>cycle day {cycleDay}</strong>.
-            </p>
-        );
+        const fertileStart = moment(ovulationDay).subtract(5, "days");
+        const fertileEnd = moment(ovulationDay).add(1, "days");
 
-        // Ovulation & fertile window
-        messageContent.push(
-            <p key="ovulation" className="ovulation-date">
-                🔹 Ovulation is predicted on <strong>{ovulationDayCalc.format("dddd, DD MMM YYYY")}</strong>.
-            </p>
-        );
-        messageContent.push(
-            <p key="fertileWindow" className="fertile-window">
-                🔹 Fertile window: <strong>{fertileStartCalc.format("DD MMM")} – {fertileEndCalc.format("DD MMM")}</strong>
-            </p>
-        );
-
-        // Fertility status
+        // Compose message
         let fertilityStatus = null;
-        if (today.isBetween(fertileStartCalc, fertileEndCalc, "day", "[]")) {
+
+        if (today.isBetween(fertileStart, fertileEnd, "day", "[]")) {
             fertilityStatus = (
                 <p key="fertileNow" className="fertile-now">
-                    🌸 You are in your fertile window.{" "}
-                    {bpm > 80 ? "Your heart rate suggests ovulation is very near. Best chances now for conception ✨"
-                        : "Keep calm, track your signs, and maintain a healthy lifestyle 💚"}
+                    You are in your fertile window.{" "}
+                    {baselineBpm && bpm >= baselineBpm + 2
+                        ? detectedOvulationDay
+                            ? "Your BPM rise confirms ovulation is near/ongoing. This is your most fertile time."
+                            : "Your BPM is elevated above baseline, suggesting ovulation may be approaching. Best chances now."
+                        : "Keep scanning daily — your fertile window is open."}
                 </p>
             );
-        } else if (today.isSame(ovulationDayCalc, "day")) {
+        } else if (today.isSame(ovulationDay, "day")) {
             fertilityStatus = (
                 <p key="ovulationDay" className="ovulation-today">
-                    🥚 Today is your predicted ovulation day! Maximum fertility 🌟
+                    {detectedOvulationDay
+                        ? "Today matches your BPM-confirmed ovulation day! Peak fertility."
+                        : "Today is your predicted ovulation day. Peak fertility."}
                 </p>
             );
-        } else if (today.isAfter(ovulationDayCalc)) {
+        } else if (today.isAfter(ovulationDay)) {
             fertilityStatus = (
                 <p key="ovulationPassed" className="ovulation-passed">
-                    🌙 Ovulation likely passed. Focus on rest, balance & self-care 💆‍♀️
+                    {detectedOvulationDay
+                        ? "BPM rise suggests ovulation has already occurred. Fertility window likely closed."
+                        : "Ovulation likely passed based on cycle prediction."}
                 </p>
             );
         } else {
             fertilityStatus = (
                 <p key="ovulationSoon" className="ovulation-soon">
-                    🔜 Ovulation predicted soon. Keep scanning BPM & tracking signs.
+                    Ovulation predicted soon.{" "}
+                    {baselineBpm && bpm >= baselineBpm + 2
+                        ? "Your BPM is trending higher, suggesting ovulation may come earlier than expected."
+                        : "Keep scanning BPM & watching your cycle signs."}
                 </p>
             );
         }
 
-        messageContent.push(fertilityStatus);
-
-        setMessageHtml(<div className="fertility-msg">{messageContent}</div>);
-    }, [scanning, bpm, lmp, cycleLength]);
+        setMessageHtml(
+            <div className="fertility-msg">
+                <p>Cycle day {cycleDay}. BPM: {bpm}</p>
+                {baselineBpm && <p>Baseline BPM: {baselineBpm}</p>}
+                {fertilityStatus}
+            </div>
+        );
+    }, [bpm, lmp, cycleLength, scanning, baselineBpm, detectedOvulationDay]);
 
 
     return (
         <IonPage className="ovulation-tracker-page">
-            <IonContent fullscreen className="main-content-page ovulation-dashboard main-contant-page">
+            <IonContent fullscreen className="main-content-page ovulation-dashboard main-content-page">
                 <div className="dash-wrap ovulation-dashboard-wrap">
 
                     {/* Heart BPM card */}
@@ -312,7 +345,7 @@ const OvulationTracker = () => {
                             </div>
 
                             <div className={"message_icon_grid"}>
-                                <p className="bpm_heading">{bpm ? `${bpm} BPM` : scanning ? "Scanning..." : "Scan Heart Rate"}</p>
+                                <p className="bpm_heading">{!scanning && bpm ? `${bpm} BPM` : scanning ? "Scanning..." : "Scan Heart Rate"}</p>
                                 {scanning ? (
                                     <div className="scan-info">
                                         <p className="timer">{timeLeft}s remaining</p>
@@ -377,7 +410,7 @@ const OvulationTracker = () => {
                             <span>S</span><span>M</span><span>T</span>
                             <span>W</span><span>T</span><span>F</span><span>S</span>
 
-                            {Array.from({ length: displayMonth.daysInMonth() }, (_, i) => {
+                            {Array.from({ length: moment(displayMonth).daysInMonth() }, (_, i) => {
                                 const day = moment(displayMonth).date(i + 1);
 
                                 const isOvulation = day.isSame(ovulationDay, "day");
@@ -412,11 +445,45 @@ const OvulationTracker = () => {
 
 
                     {/* Dynamic Fertility Message */}
+                    <div className={"ovul_final_result_card"}>Final Result</div>
                     {(messageHtml) &&
                         <div className="card message-card">
                             <p className="fertile-message">{messageHtml}</p>
                         </div>
                     }
+
+                    <div className={"ovul_final_result_card"}>How Fertility Detection Works</div>
+                    <div className="card tasks card_for_tracker_info">
+                        <ul className="card_for_tracker_info_inner_ul">
+                            <li>
+                                <strong>Baseline Days:</strong> Track your resting heart rate (BPM) during
+                                the first 5 days of your cycle (period). This builds your personal baseline.
+                            </li>
+                            <li>
+                                <strong>Regular Tracking:</strong> From day 6 onwards, scan your BPM at the
+                                same time daily (preferably morning, before coffee or exercise).
+                            </li>
+                            <li>
+                                <strong>Detection Method:</strong> Ovulation often causes a small but
+                                sustained rise in resting BPM (around +2–4 beats above baseline for 2+ days).
+                                Our app looks for this rise to estimate when ovulation may have occurred.
+                            </li>
+                            <li>
+                                <strong>Cycle Prediction + BPM:</strong> We combine your cycle info (LMP +
+                                cycle length) with your heart rate data. If BPM signals suggest earlier or
+                                later ovulation, your fertile window will shift accordingly.
+                            </li>
+                            <li>
+                                <strong>Important:</strong> This is <u>not a medical diagnosis</u>. Heart
+                                rate can be influenced by stress, sleep, illness, caffeine, and other
+                                factors. Accuracy improves the more consistently you track.
+                            </li>
+                            <li>
+                                <strong>Best Practice:</strong> Use this as a supportive tool alongside
+                                other fertility signs (like cervical mucus or ovulation kits).
+                            </li>
+                        </ul>
+                    </div>
 
                     {/* Save Button */}
                     <button className="save-btn">Save & Set Reminders</button>

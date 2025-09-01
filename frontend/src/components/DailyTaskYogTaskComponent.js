@@ -3,6 +3,8 @@ import { IonPage, IonContent, IonHeader, IonToolbar, IonButton, IonButtons, IonT
 import { useHistory } from "react-router-dom";
 import {close, fitness, fitnessOutline, pause, timer, timerOutline} from "ionicons/icons";
 import catAndCowPose from "../theme/img/yogaTasks/cat-cow-pose.gif";
+import {Capacitor} from "@capacitor/core";
+import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskYogTaskComponent() {
     const history = useHistory();
@@ -32,6 +34,20 @@ export default function DailyTaskYogTaskComponent() {
     const offset = circumference - (elapsed / totalSeconds) * circumference;
     const minutes = Math.floor((totalSeconds - elapsed) / 60);
     const seconds = (totalSeconds - elapsed) % 60;
+
+    useEffect(()=>{
+        if(Capacitor.isNativePlatform()){
+            StatusBar.setBackgroundColor({ color: '#ea9518' }).then(()=>{
+                StatusBar.setStyle({ style:Style.Dark });
+            });
+
+            return ()=>{
+                StatusBar.setBackgroundColor({ color: '#ffffff' }).then(()=>{
+                    StatusBar.setStyle({ style:Style.Light });
+                });
+            }
+        }
+    },[])
 
     return (
         <IonPage>

@@ -34,6 +34,7 @@ import DailyTaskSamvaadComponent from "./components/DailyTaskSamvaadComponent";
 import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
 import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
 import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
+import CommunityPostPage from "./pages/CommunityPostPage";
 
 setupIonicReact();
 
@@ -63,6 +64,7 @@ const PublicRoutes = () => {
                 <Route path="/daily-task/mantra" exact={true} component={DailyTaskMantraComponent} />
                 <Route path="/daily-task/hydration" exact={true} component={DailyTaskHydrationComponent} />
                 <Route path="/daily-task/mood" exact={true} component={DailyTaskMoodComponent} />
+                <Route path="/community-post/:id" exact={true} component={CommunityPostPage} />
                 <Route path="/dashboard" component={AppEntryTabsPage} />
                 <Redirect exact from="/" to="/home" />
                 <Route render={() => <Redirect to="/home" />} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { IonPage, IonContent, IonIcon, IonInput } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import {
@@ -9,6 +9,8 @@ import {
     ribbonOutline,
     close,
 } from "ionicons/icons";
+import {Capacitor} from "@capacitor/core";
+import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskMoodComponent() {
     const history = useHistory();
@@ -32,6 +34,20 @@ export default function DailyTaskMoodComponent() {
             setTimeout(() => setShowSuccess(false), 2500);
         }
     };
+
+    useEffect(()=>{
+        if(Capacitor.isNativePlatform()){
+            StatusBar.setBackgroundColor({ color: '#FFC107' }).then(()=>{
+                StatusBar.setStyle({ style:Style.Dark });
+            });
+
+            return ()=>{
+                StatusBar.setBackgroundColor({ color: '#ffffff' }).then(()=>{
+                    StatusBar.setStyle({ style:Style.Light });
+                });
+            }
+        }
+    },[])
 
     return (
         <IonPage>

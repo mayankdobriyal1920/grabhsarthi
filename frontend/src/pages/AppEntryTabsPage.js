@@ -6,8 +6,7 @@ import {
     IonTabButton,
     IonIcon,
     IonLabel,
-    IonModal,
-    IonContent, IonPage
+    IonPage
 } from '@ionic/react';
 import { Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 
@@ -31,6 +30,8 @@ import HeaderAfterLoginComponent from "../components/HeaderAfterLoginComponent";
 import useStore from "../zustand/useStore";
 import TTCUserDashboardPage from "./TTCUserDashboardPage";
 import OvulationTrackerPage from "../components/OvulationTrackerPage";
+import CommunityPage from "./CommunityPage";
+import BabyTrackerPageForPregnantPage from "./BabyTrackerPageForPregnantPage";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -82,10 +83,11 @@ const AppEntryTabsPage = () => {
                                     {(userInfo?.role === 3) ?
                                         <OvulationTrackerPage />
                                         :
-                                        <OvulationTrackerPage />
+                                        <BabyTrackerPageForPregnantPage />
                                     }
                                 </>
                             )} />
+                            <Route exact path="/dashboard/community" component={CommunityPage} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
                     </IonPage>
