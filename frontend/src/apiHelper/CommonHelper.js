@@ -35,6 +35,47 @@ import babyImg36 from '../theme/img/babyImages/baby36.png';
 import babyImg37 from '../theme/img/babyImages/baby37.png';
 import babyImg39 from '../theme/img/babyImages/baby39.png';
 
+import fruitIcon1 from '../theme/img/babyFruit/fruitIcon1.png';
+import fruitIcon2 from '../theme/img/babyFruit/fruitIcon2.png';
+import fruitIcon3 from '../theme/img/babyFruit/fruitIcon3.png';
+import fruitIcon4 from '../theme/img/babyFruit/fruitIcon4.png';
+import fruitIcon5 from '../theme/img/babyFruit/fruitIcon5.png';
+import fruitIcon6 from '../theme/img/babyFruit/fruitIcon6.png';
+import fruitIcon7 from '../theme/img/babyFruit/fruitIcon7.png';
+import fruitIcon8 from '../theme/img/babyFruit/fruitIcon8.png';
+import fruitIcon9 from '../theme/img/babyFruit/fruitIcon9.png';
+import fruitIcon10 from '../theme/img/babyFruit/fruitIcon10.png';
+import fruitIcon11 from '../theme/img/babyFruit/fruitIcon11.png';
+import fruitIcon12 from '../theme/img/babyFruit/fruitIcon12.png';
+import fruitIcon13 from '../theme/img/babyFruit/fruitIcon13.png';
+import fruitIcon14 from '../theme/img/babyFruit/fruitIcon14.png';
+import fruitIcon15 from '../theme/img/babyFruit/fruitIcon15.png';
+import fruitIcon16 from '../theme/img/babyFruit/fruitIcon16.png';
+import fruitIcon17 from '../theme/img/babyFruit/fruitIcon17.png';
+import fruitIcon18 from '../theme/img/babyFruit/fruitIcon18.png';
+import fruitIcon19 from '../theme/img/babyFruit/fruitIcon19.png';
+import fruitIcon20 from '../theme/img/babyFruit/fruitIcon20.png';
+import fruitIcon21 from '../theme/img/babyFruit/fruitIcon21.png';
+import fruitIcon22 from '../theme/img/babyFruit/fruitIcon22.png';
+import fruitIcon23 from '../theme/img/babyFruit/fruitIcon23.png';
+import fruitIcon24 from '../theme/img/babyFruit/fruitIcon24.png';
+import fruitIcon25 from '../theme/img/babyFruit/fruitIcon25.png';
+import fruitIcon26 from '../theme/img/babyFruit/fruitIcon26.png';
+import fruitIcon27 from '../theme/img/babyFruit/fruitIcon27.png';
+import fruitIcon28 from '../theme/img/babyFruit/fruitIcon28.png';
+import fruitIcon29 from '../theme/img/babyFruit/fruitIcon29.png';
+import fruitIcon30 from '../theme/img/babyFruit/fruitIcon30.png';
+import fruitIcon31 from '../theme/img/babyFruit/fruitIcon31.png';
+import fruitIcon32 from '../theme/img/babyFruit/fruitIcon32.png';
+import fruitIcon33 from '../theme/img/babyFruit/fruitIcon33.png';
+import fruitIcon34 from '../theme/img/babyFruit/fruitIcon34.png';
+import fruitIcon35 from '../theme/img/babyFruit/fruitIcon35.png';
+import fruitIcon36 from '../theme/img/babyFruit/fruitIcon36.png';
+import fruitIcon37 from '../theme/img/babyFruit/fruitIcon37.png';
+import fruitIcon38 from '../theme/img/babyFruit/fruitIcon38.png';
+import fruitIcon39 from '../theme/img/babyFruit/fruitIcon39.png';
+import fruitIcon40 from '../theme/img/babyFruit/fruitIcon40.png';
+
 export const _babyWeeklyGrowthContentSvg = [
     {}, // Prevent 0th position
     {
@@ -61,8 +102,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay hydrated and maintain a balanced diet.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon1',
-            message: 'I’m not here yet, Mama, but I’m dreaming of joining you soon! Your body is getting ready for me, like planting a tiny seed in a garden. I’m smaller than a poppy seed right now, just waiting to start growing. You’re creating a cozy home for me, and I can’t wait to sprout! Keep eating healthy and resting so we can start this adventure together. Your love is already making me feel so special, and I’m excited to grow big and strong with you!'
+            icon: fruitIcon1,
+            message: 'Hi, Mama! I’m a tiny poppy seed, not here yet. Eat healthy to help me sprout soon!'
         }
     },
     {
@@ -89,8 +130,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Get plenty of rest to support your body’s preparation.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon2',
-            message: 'Hi, Mama! I’m still getting ready to start my journey, like a tiny sesame seed waiting to sprout. Your body is working hard to make a perfect spot for me. I’m super tiny, not even here yet, but I’m so excited for what’s coming! Keep eating yummy foods like nuts and fruits to help me get started. Your love is like sunshine, helping me prepare to grow. Rest well and stay happy, because I can’t wait to be your little seed that blooms into a big, happy baby!'
+            icon: fruitIcon2,
+            message: 'Hi, Mama! I’m a sesame seed, ready to start. Eat nuts and rest to help me grow!'
         }
     },
     {
@@ -117,8 +158,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for early pregnancy symptoms like fatigue.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon3',
-            message: 'Yay, Mama, I’m here as a tiny poppy seed! I’m a little zygote, so small you can’t see me yet, but I’m busy traveling to your cozy womb. My cells are splitting fast, getting ready to grow big and strong. Your body is like a warm hug, keeping me safe. Eat lots of healthy foods like veggies to help me stick around. I’m so excited to start this adventure with you! Your love is making me feel so special already, and I can’t wait to grow bigger in your tummy!'
+            icon: fruitIcon3,
+            message: 'Yay, Mama! I’m a poppy seed zygote, traveling to your womb. Eat veggies to help me!'
         }
     },
     {
@@ -145,8 +186,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay calm and reduce stress through relaxation techniques.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon4',
-            message: 'Hey, Mama! I’m as tiny as a sesame seed, snug in your womb! My heart and brain are starting to form, and I’m growing so fast. The placenta is like a cozy blanket, keeping me fed and safe. You’re doing such a great job already! Eat small, yummy meals to help me grow strong. I’m so happy to be here with you, and your love makes me feel so special. Keep resting and staying calm, because I’m busy building my tiny body. I can’t wait to get bigger and meet you soon!'
+            icon: fruitIcon4,
+            message: 'Hi, Mama! I’m a sesame seed, snug in your womb. Eat small meals to help me grow!'
         }
     },
     {
@@ -173,8 +214,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Drink plenty of water to stay hydrated.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon5',
-            message: 'Hi, Mama! I’m as small as an apple seed, but my heart is starting to beat! My brain and spine are forming, and I’m growing fast in your cozy tummy. Your body is like a superhero, keeping me safe and warm. Eat small meals to feel better and take your vitamins to help my brain grow. I love that you’re taking care of us! Rest when you’re tired, because I’m busy building my tiny body. Your love makes me so happy, and I can’t wait to keep growing bigger with you!'
+            icon: fruitIcon5,
+            message: 'Hi, Mama! I’m an apple seed, heart beating! Eat small meals to help my brain grow.'
         }
     },
     {
@@ -201,8 +242,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Listen to your body and rest when needed.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon6',
-            message: 'Hello, Mama! I’m as big as a lentil now, and my tiny heart is beating strong! Blood is flowing, and my face is starting to form. I’m growing so fast in your cozy womb. You’re like my superhero, keeping me safe and warm. Eat small, yummy meals to help with nausea and take your vitamins for my heart. I love feeling your care! Try gentle walks to stay happy, and rest when you need to. I’m so excited to keep growing with your love, Mama!'
+            icon: fruitIcon6,
+            message: 'Hi, Mama! I’m a lentil, heart beating strong! Eat small meals to help me grow.'
         }
     },
     {
@@ -229,8 +270,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Keep stress low with mindfulness practices.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon7',
-            message: 'Hi, Mama! I’m as big as a blueberry now, and my heart is beating stronger! Tiny arms and legs are starting to sprout, and I’m growing fast in your tummy. Your body is my cozy home, keeping me safe and warm. Try ginger for nausea and eat yummy fruits to help me grow. Your love is like a big hug! Take your vitamins and rest when you’re tired. I’m so happy to be growing with you, and I can’t wait to wiggle more in your womb, Mama!'
+            icon: fruitIcon7,
+            message: 'Hi, Mama! I’m a blueberry, heart strong! Eat fruits to help my arms grow.'
         }
     },
     {
@@ -257,8 +298,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Get enough sleep to support your energy levels.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon8',
-            message: 'Hey, Mama! I’m the size of a raspberry now, with tiny fingers and toes forming! My face is starting to look more like me, and I’m growing so fast. Your womb is my cozy home, keeping me safe and warm. Eat calcium-rich foods like milk to help my bones grow strong. Your love makes me so happy! Take your vitamins and try light walks to stay healthy. Rest when you’re tired, because I’m busy becoming more human-like. I can’t wait to wiggle more for you, Mama!'
+            icon: fruitIcon8,
+            message: 'Hi, Mama! I’m a raspberry, with tiny fingers! Eat milk to help my bones grow.'
         }
     },
     {
@@ -285,8 +326,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay positive and connect with other moms-to-be.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon9',
-            message: 'Hi, Mama! I’m as big as a grape now, and I’m starting to wiggle! I’m officially a fetus, with tiny arms and legs growing fast. Your womb is my cozy nest, keeping me safe and happy. Eat foods like fish to help my brain grow smart. Your love is like a warm blanket! Take your vitamins and try gentle stretches to feel great. Rest when you need to, because I’m busy growing. I’m so excited to keep getting bigger with you, Mama, and I can’t wait to move more!'
+            icon: fruitIcon9,
+            message: 'Hi, Mama! I’m a grape, wiggling as a fetus! Eat fish to help my brain grow.'
         }
     },
     {
@@ -313,8 +354,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Celebrate reaching the end of the first trimester.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon10',
-            message: 'Hello, Mama! I’m the size of a kumquat now, looking more like a tiny human! My organs are forming, and my fingers and toes are clearer. Your womb is my cozy home, keeping me safe and warm. Eat protein like eggs to help me grow strong. Your love makes my heart beat happy! Take your vitamins and try light walks to stay healthy. Rest when you’re tired, because I’m busy growing fast. I’m so excited to be with you, Mama, and I can’t wait to keep getting bigger!'
+            icon: fruitIcon10,
+            message: 'Hi, Mama! I’m a kumquat, looking human! Eat eggs to help my organs grow.'
         }
     },
     {
@@ -341,8 +382,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for any unusual symptoms and report them.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon11',
-            message: 'Hi, Mama! I’m as big as a fig now, with a big head and a growing body! I’m practicing tiny kicks in your cozy womb. My organs are getting stronger, and I’m so happy to be here. Eat veggies to help me grow healthy. Your love is like a warm hug! Take your vitamins and try gentle stretches to feel good. Rest when you’re tired, because I’m busy getting bigger. I can’t wait to keep kicking for you, Mama, and I’m so excited to grow more with your care!'
+            icon: fruitIcon11,
+            message: 'Hi, Mama! I’m a fig, kicking in your womb! Eat veggies to help me grow strong.'
         }
     },
     {
@@ -369,8 +410,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Take time to relax and enjoy this milestone.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon12',
-            message: 'Hey, Mama! I’m the size of a lime now, moving and grooving in your womb! My face is looking cuter, and I’m full of energy. Your body is my cozy home, keeping me safe. Eat fruits to help me grow strong and avoid tummy troubles. Your love makes me so happy! Take your vitamins and try yoga to feel great. Rest when you need to, because I’m growing fast. I’m so excited to keep wiggling for you, Mama, and I can’t wait to get bigger!'
+            icon: fruitIcon12,
+            message: 'Hi, Mama! I’m a lime, moving freely! Eat fruits to help my organs grow.'
         }
     },
     {
@@ -397,8 +438,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Energy levels may improve; enjoy this phase.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon13',
-            message: 'Hi, Mama! I’m as big as a peach now, officially a fetus! My body is balancing out, and I’m moving more in your cozy womb. My organs are growing strong, and I love being here with you. Eat grains to keep us both healthy. Your love is like a big hug! Take your vitamins and try prenatal yoga to stay happy. Rest when you’re tired, because I’m getting bigger every day. I’m so excited to keep growing with you, Mama, and I can’t wait to wiggle more!'
+            icon: fruitIcon13,
+            message: 'Hi, Mama! I’m a peach, a fetus now! Eat grains to help me grow strong.'
         }
     },
     {
@@ -425,8 +466,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Connect with your baby through gentle touch.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon14',
-            message: 'Hello, Mama! I’m the size of a lemon now, with soft lanugo hair keeping me warm! I’m starting to make cute faces in your cozy womb. My body is getting stronger, and I’m moving more. Eat fruits to help me grow healthy. Your love makes my heart happy! Take your vitamins and moisturize your skin to feel great. Try light walks to stay active. Rest when you need to, because I’m busy growing. I’m so excited to be with you, Mama, and I can’t wait to keep getting bigger!'
+            icon: fruitIcon14,
+            message: 'Hi, Mama! I’m a lemon, with lanugo hair! Eat fruits to help me grow strong.'
         }
     },
     {
@@ -453,8 +494,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Talk or sing to your baby to bond.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon15',
-            message: 'Hi, Mama! I’m as big as an apple now, moving smoothly in your womb! My bones are getting stronger, and I can sense light. Your cozy tummy is my favorite place. Eat spinach to help my blood grow strong. Your love is like a warm hug! Take your vitamins and try yoga to stay flexible. Rest when you’re tired, because I’m growing fast. I’m so happy to be with you, Mama, and I can’t wait to keep getting bigger and stronger for you!'
+            icon: fruitIcon15,
+            message: 'Hi, Mama! I’m an apple, moving smoothly! Eat spinach to help my blood grow.'
         }
     },
     {
@@ -481,8 +522,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay active to boost your mood and energy.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon16',
-            message: 'Hey, Mama! I’m the size of an avocado now, with stronger bones! I might start sucking my thumb soon in your cozy womb. I’m moving more, and you might feel my flutters. Eat eggs to help my bones grow strong. Your love makes me so happy! Take your vitamins and keep good posture to feel great. Rest when you need to, because I’m busy growing. I’m so excited to keep wiggling for you, Mama, and I can’t wait to get bigger with your care!'
+            icon: fruitIcon16,
+            message: 'Hi, Mama! I’m an avocado, bones strong! Eat eggs to help me grow big.'
         }
     },
     {
@@ -509,8 +550,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor your weight gain and discuss with your doctor.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon17',
-            message: 'Hi, Mama! I’m as big as a turnip now, getting chubbier with a soft fat layer! I’m moving more in your cozy womb, and my heart is strong. Your body is keeping me so safe. Eat yogurt to help me grow healthy. Your love is like a warm blanket! Take your vitamins and use a pillow for better sleep. Try light walks to stay happy. I’m so excited to keep growing with you, Mama, and I can’t wait to wiggle more in your tummy!'
+            icon: fruitIcon17,
+            message: 'Hi, Mama! I’m a turnip, getting chubby! Eat yogurt to help me grow strong.'
         }
     },
     {
@@ -537,8 +578,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Read or talk to your baby to stimulate early language.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon18',
-            message: 'Hello, Mama! I’m the size of a bell pepper now, and I can hear your voice! It’s my favorite sound in your cozy womb. I’m kicking more, and my ears are ready. Eat fruits to keep us both healthy. Your love makes my heart happy! Take your vitamins and try relaxing to feel great. Talk to me to bond, because I love hearing you. Rest when you need to, Mama, because I’m growing fast. I’m so excited to keep getting bigger with you!'
+            icon: fruitIcon18,
+            message: 'Hi, Mama! I’m a bell pepper, hearing you! Eat fruits and talk to me to bond.'
         }
     },
     {
@@ -565,8 +606,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Enjoy feeling your baby’s movements.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon19',
-            message: 'Hi, Mama! I’m as big as a mango now, kicking stronger in your womb! My hair and nails are growing, and a protective layer keeps my skin safe. Your cozy tummy is my happy place. Eat veggies to help me grow healthy. Your love is like a big hug! Take your vitamins and try yoga to stay flexible. Drink water to keep us both strong. I’m so excited to keep getting chubbier with you, Mama, and I can’t wait to wiggle more for you!'
+            icon: fruitIcon19,
+            message: 'Hi, Mama! I’m a mango, kicking strong! Eat veggies to help my hair grow.'
         }
     },
     {
@@ -593,8 +634,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Celebrate the halfway mark of your pregnancy.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon20',
-            message: 'Yay, Mama! I’m as big as a banana now, halfway there! I love feeling your gentle touches in your cozy womb. I’m kicking more, and my organs are growing strong. Eat eggs to help me get bigger. Your love makes my heart so happy! Take your vitamins and massage your belly to bond with me. Rest when you’re tired, because I’m busy growing. I’m so excited to be with you, Mama, and I can’t wait to keep getting bigger for our cuddles!'
+            icon: fruitIcon20,
+            message: 'Hi, Mama! I’m a banana, halfway there! Eat eggs and touch me to bond.'
         }
     },
     {
@@ -621,8 +662,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Keep up with prenatal appointments.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon21',
-            message: 'Hi, Mama! I’m as big as a carrot now, stretching and wiggling in your womb! My muscles are getting stronger, and I’m so cozy here. Your body keeps me safe and happy. Eat yogurt to help my bones grow strong. Your love is like a warm hug! Take your vitamins and try light walks to stay active. Rest when you need to, because I’m growing fast. I’m so excited to keep getting bigger with you, Mama, and I can’t wait to wiggle more for you!'
+            icon: fruitIcon21,
+            message: 'Hi, Mama! I’m a carrot, wiggling more! Eat yogurt to help my bones grow.'
         }
     },
     {
@@ -649,8 +690,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay active with low-impact exercises.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon22',
-            message: 'Hello, Mama! I’m as big as a papaya now, covered in soft lanugo to keep me warm! I’m kicking more, and my hearing is getting sharper in your cozy womb. My skin has a protective layer, and I love hearing your voice. Eat greens to help me grow strong. Your love makes me so happy! Take your vitamins and try Kegels for labor. Stay active with yoga, and rest when tired. I’m so excited to keep growing with you, Mama, and I can’t wait to wiggle more!'
+            icon: fruitIcon22,
+            message: 'Hi, Mama! I’m a papaya, with lanugo! Eat greens and do Kegels for me.'
         }
     },
     {
@@ -677,8 +718,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest when you feel tired to conserve energy.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon23',
-            message: 'Hi, Mama! I’m as big as a grapefruit now, practicing breathing in your womb! My lungs are getting ready, and I’m moving more. My skin is filling out, and I’m so cozy here. Eat fruits to keep us both healthy. Your love is like a big hug! Take your vitamins and elevate your feet to feel good. Try light walks to stay active. Rest when you’re tired, because I’m growing fast. I’m so excited to keep getting stronger with you, Mama, and I can’t wait to kick more!'
+            icon: fruitIcon23,
+            message: 'Hi, Mama! I’m a grapefruit, breathing! Eat fruits to help my lungs grow.'
         }
     },
     {
@@ -705,8 +746,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Play music or talk to your baby to bond.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon24',
-            message: 'Hey, Mama! I’m as big as an ear of corn now, hearing sounds clearly in your womb! My skin is getting chubbier, and I’m kicking more. Your cozy tummy is my favorite place. Eat veggies to help me grow strong. Your love makes my heart happy! Take your vitamins and use moisturizer for your skin. Talk to me to bond, because I love your voice. Rest when you need to, Mama, because I’m growing fast. I’m so excited to keep getting bigger with you!'
+            icon: fruitIcon24,
+            message: 'Hi, Mama! I’m an ear of corn, hearing you! Eat veggies and talk to me.'
         }
     },
     {
@@ -733,8 +774,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for swelling and report to your doctor.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon25',
-            message: 'Hi, Mama! I’m as big as a rutabaga now, gaining weight fast in your womb! My reflexes are sharper, and I’m kicking more. My lungs are growing strong, and I’m so cozy here. Eat spinach to help my blood grow healthy. Your love is like a warm hug! Take your vitamins and try yoga to stay flexible. Rest when you’re tired, because I’m getting chubbier. I’m so excited to keep growing with you, Mama, and I can’t wait to kick more for you!'
+            icon: fruitIcon25,
+            message: 'Hi, Mama! I’m a rutabaga, kicking more! Eat spinach to help my blood grow.'
         }
     },
     {
@@ -761,8 +802,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay hydrated to support your body and baby.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon26',
-            message: 'Hello, Mama! I’m as big as a zucchini now, with lungs that are getting ready to breathe! I might be dreaming during naps in your cozy womb. I’m kicking more and getting chubbier. Eat eggs to help me grow strong. Your love makes my heart happy! Take your vitamins and use a pillow for better sleep. Try light walks to stay active. I’m so excited to keep growing with you, Mama, and I can’t wait to kick and wiggle more in your tummy!'
+            icon: fruitIcon26,
+            message: 'Hi, Mama! I’m a zucchini, dreaming! Eat eggs to help my lungs grow.'
         }
     },
     {
@@ -789,8 +830,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest to keep your energy levels high.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon27',
-            message: 'Hi, Mama! I’m as big as a cauliflower now, over 1 kg! My kicks are stronger, and my lungs and brain are growing fast in your cozy womb. I’m so happy here with you. Eat yogurt to help my bones grow strong. Your love is like a big hug! Take your vitamins and try Kegels for labor. Stay active with yoga to feel great. Rest when you’re tired, because I’m getting chubbier. I’m so excited to keep growing with you, Mama, and I can’t wait to kick more!'
+            icon: fruitIcon27,
+            message: 'Hi, Mama! I’m a cauliflower, over 1 kg! Eat yogurt to help my bones grow.'
         }
     },
     {
@@ -817,8 +858,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Talk to your baby to build a strong bond.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon28',
-            message: 'Hey, Mama! I’m as big as an eggplant now, and my eyes are opening! My brain is growing fast, and I’m kicking more in your cozy womb. I’m getting chubbier and love being here. Eat eggs to help me grow strong. Your love makes my heart happy! Take your vitamins and try light walks to stay active. Talk to me to bond, because I love your voice. Rest when you need to, Mama, because I’m growing fast. I’m so excited to keep getting bigger with you!'
+            icon: fruitIcon28,
+            message: 'Hi, Mama! I’m an eggplant, eyes open! Eat eggs and talk to me to bond.'
         }
     },
     {
@@ -845,8 +886,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor movements and report changes to your doctor.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon29',
-            message: 'Hi, Mama! I’m as big as a butternut squash now, storing fat to stay warm! My lungs are practicing breathing, and I’m kicking more in your cozy womb. I’m growing fast and love being here. Eat veggies to help me grow healthy. Your love is like a warm hug! Take your vitamins and try yoga to stay flexible. Rest when you’re tired, because I’m getting chubbier. I’m so excited to keep growing with you, Mama, and I can’t wait to kick more for you!'
+            icon: fruitIcon29,
+            message: 'Hi, Mama! I’m a butternut squash, getting fat! Eat veggies to help me grow.'
         }
     },
     {
@@ -873,8 +914,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay hydrated and rest when needed.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon30',
-            message: 'Hello, Mama! I’m as big as a cabbage now, getting rounder in your womb! My lungs are stronger, and I’m kicking more. My brain is growing fast, and I’m so cozy here. Eat milk to help my bones grow strong. Your love makes my heart happy! Take your vitamins and use a pillow for better sleep. Try light walks to stay active. Rest when you need to, Mama, because I’m growing fast. I’m so excited to keep getting bigger with you and can’t wait to wiggle more!'
+            icon: fruitIcon30,
+            message: 'Hi, Mama! I’m a cabbage, getting round! Eat milk to help my bones grow.'
         }
     },
     {
@@ -901,8 +942,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for swelling and report to your doctor.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon31',
-            message: 'Hi, Mama! I’m as big as a coconut now, with hardening bones! My lungs are growing, and I’m kicking more in your cozy womb. I’m getting chubbier and love being here. Eat eggs to help me grow strong. Your love is like a warm hug! Take your vitamins and try yoga to stay flexible. Rest when you’re tired, because I’m growing fast. I’m so excited to keep getting bigger with you, Mama, and I can’t wait to wiggle more in your tummy!'
+            icon: fruitIcon31,
+            message: 'Hi, Mama! I’m a coconut, bones hard! Eat eggs to help me grow strong.'
         }
     },
     {
@@ -929,8 +970,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest to conserve energy for the final weeks.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon32',
-            message: 'Hey, Mama! I’m as big as a jicama now, plumping up with baby fat! My skin is smoother, and I’m kicking more in your cozy womb. My lungs are growing strong, and I love being here. Eat fruits to keep us both healthy. Your love makes my heart happy! Take your vitamins and use moisturizer for your skin. Try light walks to stay active. Rest when you need to, Mama, because I’m growing fast. I’m so excited to keep getting bigger with you and can’t wait to wiggle more!'
+            icon: fruitIcon32,
+            message: 'Hi, Mama! I’m a jicama, getting chubby! Eat fruits to help me grow.'
         }
     },
     {
@@ -957,8 +998,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor baby’s movements daily.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon33',
-            message: 'Hi, Mama! I’m as big as a pineapple now, settling head-down for birth! My lungs are almost ready, and I’m kicking more in your cozy womb. I’m getting chubbier and love being here. Eat yogurt to help my bones grow strong. Your love is like a warm hug! Take your vitamins and try light walks to stay active. Rest when you’re tired, because I’m growing fast. I’m so excited to keep getting bigger with you, Mama, and I can’t wait to meet you soon!'
+            icon: fruitIcon33,
+            message: 'Hi, Mama! I’m a pineapple, head-down! Eat yogurt to help my bones grow.'
         }
     },
     {
@@ -985,8 +1026,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest when tired to stay strong.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon34',
-            message: 'Hello, Mama! I’m as big as a cantaloupe now, getting chubby fast! My lungs are practicing breathing, and I’m kicking more in your cozy womb. I’m so happy here with you. Eat veggies to help me grow healthy. Your love makes my heart happy! Take your vitamins and use a pillow for better sleep. Try gentle walks to stay active. Rest when you need to, Mama, because I’m growing fast. I’m so excited to keep getting bigger and can’t wait to meet you soon!'
+            icon: fruitIcon34,
+            message: 'Hi, Mama! I’m a cantaloupe, chubby! Eat veggies to help my lungs grow.'
         }
     },
     {
@@ -1013,8 +1054,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for signs of labor.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon35',
-            message: 'Hi, Mama! I’m as big as a honeydew melon now, and it’s getting snug in your womb! My organs are almost ready, and I’m kicking more. I’m chubby and so cozy here. Eat eggs to help me grow strong. Your love is like a warm hug! Take your vitamins and try yoga to stay flexible. Rest when you’re tired, because I’m growing fast. I’m so excited to keep getting bigger with you, Mama, and I can’t wait to meet you soon!'
+            icon: fruitIcon35,
+            message: 'Hi, Mama! I’m a honeydew, snug in here! Eat eggs to help me grow strong.'
         }
     },
     {
@@ -1041,8 +1082,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest to conserve energy for labor.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon36',
-            message: 'Hey, Mama! I’m as big as a romaine lettuce now, with all my organs formed! I’m chubby and kicking more in your cozy womb. My lungs are almost ready, and I love being here. Eat fruits to keep us both healthy. Your love makes my heart happy! Take your vitamins and use moisturizer for your skin. Rest to prepare for labor, because I’m growing fast. I’m so excited to keep getting bigger with you, Mama, and I can’t wait to meet you soon!'
+            icon: fruitIcon36,
+            message: 'Hi, Mama! I’m a romaine lettuce, organs ready! Eat fruits to help me grow.'
         }
     },
     {
@@ -1069,8 +1110,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for labor signs like contractions.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon37',
-            message: 'Hi, Mama! I’m as big as a Swiss chard now, full-term and ready! I’m kicking more and super chubby in your cozy womb. My body is all set to meet you. Eat veggies to keep us strong. Your love is like a big hug! Take your vitamins and try Kegels for labor. Rest to stay strong for delivery. I’m so excited to be almost ready to meet you, Mama, and I can’t wait for our first cuddle soon!'
+            icon: fruitIcon37,
+            message: 'Hi, Mama! I’m a Swiss chard, full-term! Eat veggies to help me for birth.'
         }
     },
     {
@@ -1097,8 +1138,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay relaxed and watch for labor signs.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon38',
-            message: 'Hello, Mama! I’m as big as a leek now, adding final fat layers! I’m ready for cuddles soon in your cozy womb. My lungs are strong, and I’m kicking more. Eat eggs to keep us both healthy. Your love makes my heart happy! Take your vitamins and try light walks to stay active. Rest to prepare for labor, because I’m almost here. I’m so excited to keep getting ready with you, Mama, and I can’t wait for our first cuddle soon!'
+            icon: fruitIcon38,
+            message: 'Hi, Mama! I’m a leek, ready for cuddles! Eat eggs to help me for birth.'
         }
     },
     {
@@ -1125,8 +1166,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor contractions and report to your doctor.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon39',
-            message: 'Hi, Mama! I’m as big as a mini watermelon now, fully ready to meet you! My body is strong, and I’m kicking a lot in your cozy womb. I’m so excited for our cuddles soon. Eat fruits to keep us healthy. Your love is like a warm hug! Take your vitamins and use a pillow for better sleep. Rest to stay strong for labor. I’m so thrilled to be almost here with you, Mama, and I can’t wait for our first big cuddle!'
+            icon: fruitIcon39,
+            message: 'Hi, Mama! I’m a mini watermelon, ready! Eat fruits to help me for birth.'
         }
     },
     {
@@ -1153,8 +1194,8 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay calm and watch for labor signs.',
         fruit_icon_with_message: {
-            icon: 'fruitIcon40',
-            message: 'Yay, Mama! I’m as big as a small pumpkin now, ready to meet you! My body is strong and fully formed in your cozy womb. I’m so excited for our first cuddle. Eat veggies to stay strong for delivery. Your love makes my heart happy! Take your vitamins and try light walks to encourage labor. Rest to prepare for our big moment. I’m so thrilled to be here with you, Mama, and I can’t wait to be in your arms soon!'
+            icon: fruitIcon40,
+            message: 'Hi, Mama! I’m a small pumpkin, ready to meet you! Eat veggies for birth.'
         }
     }
 ];

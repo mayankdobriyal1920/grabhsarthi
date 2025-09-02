@@ -32,6 +32,7 @@ import TTCUserDashboardPage from "./TTCUserDashboardPage";
 import OvulationTrackerPage from "../components/OvulationTrackerPage";
 import CommunityPage from "./CommunityPage";
 import BabyTrackerPageForPregnantPage from "./BabyTrackerPageForPregnantPage";
+import ClassesPage from "./ClassesPage";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -87,6 +88,7 @@ const AppEntryTabsPage = () => {
                                     }
                                 </>
                             )} />
+                            <Route exact path="/dashboard/classes" component={ClassesPage} />
                             <Route exact path="/dashboard/community" component={CommunityPage} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
