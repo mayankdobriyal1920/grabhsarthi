@@ -2814,7 +2814,7 @@ ion-toolbar:last-of-type {
 }
 .app-setting-page-dashboard .form-item ion-label {
     font-weight: 600;
-    font-size: var(--font-size-4);
+    font-size: var(--font-size-3);
     color: var(--gs-text);
 }
 .app-setting-page-dashboard .form-item ion-input,
@@ -2835,19 +2835,20 @@ ion-toolbar:last-of-type {
     align-items: center;
     gap: 6px;
 }
-.app-setting-page-dashboard .toggle-status span {
+
+.app-setting-page-dashboard .update_profile_select_input {
     font-weight: 500;
     font-size: var(--font-size-4);
+    --padding-start: 0;
     color: var(--gs-text);
 }
-.app-setting-page-dashboard .toggle-status span.active {
-    color: var(--gs-pink);
-    font-weight: 600;
-}
 
-/* Save Button */
-.app-setting-page-dashboard .save-btn {
-    margin-top: 20px;
+.footer-button-update-footer {
+    --background: #ffffff;
+    background: #ffffff;
+}
+.footer-button-update.save-btn {
+    margin: 20px;
     --background: var(--gs-pink);
     --border-radius: 12px;
     font-weight: bold;

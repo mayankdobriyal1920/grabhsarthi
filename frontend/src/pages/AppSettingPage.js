@@ -59,6 +59,7 @@ export default function AppSettingPage() {
                         <IonItem lines="none" className="form-item">
                             <IonLabel position="stacked">Pregnancy Status</IonLabel>
                             <IonSelect
+                                className={"update_profile_select_input"}
                                 interface="popover"
                                 placeholder="Select Status"
                                 value={isPregnant ? "Pregnant" : "TTC"}
@@ -71,9 +72,9 @@ export default function AppSettingPage() {
                     </div>
                 </div>
             </IonContent>
-            <IonFooter>
+            <IonFooter className="footer-button-update-footer">
                 {/* Save Button */}
-                <IonButton expand="block" className="save-btn">
+                <IonButton expand="block" className="save-btn footer-button-update">
                     Save
                 </IonButton>
             </IonFooter>
