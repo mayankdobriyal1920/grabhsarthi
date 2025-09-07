@@ -8,7 +8,7 @@ import {
     IonLabel,
     IonPage
 } from '@ionic/react';
-import { Route, Redirect, useLocation, useHistory } from 'react-router-dom';
+import { Route, Redirect, useLocation, useHistory } from 'react-router';
 
 // Import your pages/components
 import PregnantDashboardPage from './PregnantDashboardPage';
@@ -23,8 +23,7 @@ import {
     fitnessOutline,
     people,
     peopleOutline,
-    settingsOutline,
-    ellipsisHorizontal, settingsSharp, settings
+    settingsOutline, settings
 } from 'ionicons/icons';
 import HeaderAfterLoginComponent from "../components/HeaderAfterLoginComponent";
 import useStore from "../zustand/useStore";
@@ -33,6 +32,7 @@ import OvulationTrackerPage from "../components/OvulationTrackerPage";
 import CommunityPage from "./CommunityPage";
 import BabyTrackerPageForPregnantPage from "./BabyTrackerPageForPregnantPage";
 import ClassesPage from "./ClassesPage";
+import AppSettingPage from "./AppSettingPage";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -90,6 +90,7 @@ const AppEntryTabsPage = () => {
                             )} />
                             <Route exact path="/dashboard/classes" component={ClassesPage} />
                             <Route exact path="/dashboard/community" component={CommunityPage} />
+                            <Route exact path="/dashboard/settings" component={AppSettingPage} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
                     </IonPage>

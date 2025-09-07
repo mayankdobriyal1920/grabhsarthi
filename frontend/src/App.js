@@ -19,7 +19,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/common-style.css';
 import {IonReactRouter} from "@ionic/react-router";
-import {Redirect, Route} from "react-router";
+import { Redirect, Route } from 'react-router';
 import WithoutLoginHomePage from "./pages/WithoutLoginHomePage";
 import LoginPage from "./pages/LoginPage";
 import ChooseRolePageAfterLoginComponent from "./pages/ChooseRolePageAfterLoginComponent";
@@ -35,6 +35,7 @@ import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
 import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
 import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
 import CommunityPostPage from "./pages/CommunityPostPage";
+import AppBackButtonHandler from "./hooks/AppBackButtonHandler";
 
 setupIonicReact();
 
@@ -53,6 +54,7 @@ const AppEnterMainPage = () => {
 const PublicRoutes = () => {
     return (
         <IonReactRouter>
+            <AppBackButtonHandler/>
             <IonRouterOutlet>
                 <Route path="/home" exact={true} component={WithoutLoginHomePage} />
                 <Route path="/login" exact={true} component={LoginPage} />

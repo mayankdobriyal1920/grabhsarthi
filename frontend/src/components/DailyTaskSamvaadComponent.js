@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {IonPage, IonContent, IonIcon} from "@ionic/react";
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router";
 import pregSamvaadImg from "../theme/img/preg_samvaad.png";
 import {close, ribbonOutline} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";
@@ -9,7 +9,10 @@ import {StatusBar, Style} from "@capacitor/status-bar";
 export default function DailyTaskSamvaadComponent() {
     const history = useHistory();
     const [babySamvaadText,setBabySamvaadText] = useState('');
-    const handleGoHomePage = () => history.goBack();
+    const handleGoHomePage = () =>{
+        history.goBack();
+        window.history.back();
+    }
 
     useEffect(()=>{
         if(Capacitor.isNativePlatform()){

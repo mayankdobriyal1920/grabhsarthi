@@ -1,16 +1,17 @@
 import React, {useEffect} from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router";
 import {add, close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
 import hydrationImg from "../theme/img/hydration_bottal_img.png";
 import {Capacitor} from "@capacitor/core";
-import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskHydrationComponent() {
     const history = useHistory();
-    const handleGoHomePage = () => history.goBack();
-
+    const handleGoHomePage = () =>{
+        history.goBack();
+        window.history.back();
+    }
 
     useEffect(()=>{
         if(Capacitor.isNativePlatform()){

@@ -1,4 +1,7 @@
 import React from "react";
+import prenatalImg from "../theme/img/classImg/prenatal-img.png";
+import garbhsanskaarImg from "../theme/img/classImg/garbhsanskaar-img.png";
+import pregnencyyogaImg from "../theme/img/classImg/pregnencyyoga-img.png";
 
 const LiveClasses = () => {
     const classes = [
@@ -6,21 +9,24 @@ const LiveClasses = () => {
             id: 1,
             time: "10:00 AM",
             title: "Prenatal Yoga",
-            instructor: "Yamuna, Wombheal Instructor",
+            image:prenatalImg,
+            instructor: "Monika, Wombheal Instructor",
             action: "Join",
         },
         {
             id: 2,
             time: "11:00 AM",
-            title: "Meditation",
-            instructor: "Meghana, Garbhsamvaad Instructor",
-            action: "Notify Me",
+            title: "Garbh Sanskaar",
+            image:garbhsanskaarImg,
+            instructor: "Monika, Garbhsanskaar Instructor",
+            action: "Notify",
         },
         {
             id: 3,
             time: "1:00 PM",
-            title: "Antenatal Class",
-            instructor: "Neha, Wombheal Instructor",
+            title: "Pregnancy Yoga",
+            image:pregnencyyogaImg,
+            instructor: "Monika, Wombheal Instructor",
             action: "Join",
         },
     ];
@@ -31,8 +37,7 @@ const LiveClasses = () => {
                 {["Sun", "Mon", "Tue", "Wed", "Thu"].map((day, idx) => (
                     <button
                         key={idx}
-                        className={`day-btn ${day === "Tue" ? "active" : ""}`}
-                    >
+                        className={`day-btn ${day === "Tue" ? "active" : ""}`}>
                         {day}
                     </button>
                 ))}
@@ -41,10 +46,13 @@ const LiveClasses = () => {
             <div className="class-list">
                 {classes.map((cls) => (
                     <div key={cls.id} className="class-card">
-                        <div className="class-time">{cls.time}</div>
+                        <div className="class-img">
+                            <img src={cls.image}/>
+                        </div>
                         <div className="class-info">
                             <h3>{cls.title}</h3>
                             <p>{cls.instructor}</p>
+                            <div className="class-time">{cls.time}</div>
                         </div>
                         <button className="class-action">{cls.action}</button>
                     </div>

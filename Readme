@@ -5,8 +5,6 @@ RUN `nohup npm start` to build server parmanently
 77.37.44.252
 ZUAGxX4FqGwhwab.)U2f
 
-mysql user remote_user pass CA@cool12345
-
 location /api-ca-world {
 	proxy_pass http://localhost:4004;
 	proxy_http_version 1.1;

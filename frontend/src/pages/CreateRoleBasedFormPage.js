@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonPage, IonContent } from '@ionic/react';
-import {useHistory} from "react-router-dom";
+import {useHistory} from "react-router";
 
 const CreateRoleBasedFormPage = () => {
     const [form, setForm] = useState({

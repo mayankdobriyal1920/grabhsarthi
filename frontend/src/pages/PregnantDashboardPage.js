@@ -5,7 +5,7 @@ import {
     flame
 } from "ionicons/icons";
 import {_babyWeeklyGrowthContentSvg} from "../apiHelper/CommonHelper";
-import {useHistory} from "react-router-dom";
+import {useHistory} from "react-router";
 import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCComponentDailyTaskComponent";
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
 
@@ -13,7 +13,7 @@ export default function PregnantDashboardPage() {
     let currentWeek = 4;
     const history = useHistory();
     const goToPage = (page)=>{
-        history.push(page)
+        history.replace(page)
     }
     return (
         <IonPage>
@@ -27,7 +27,7 @@ export default function PregnantDashboardPage() {
                         <p>You’re in {_babyWeeklyGrowthContentSvg[currentWeek].week}</p>
                     </div>
 
-                    <div className="baby-growth-card">
+                    <div className="baby-growth-card" onClick={()=>goToPage('/dashboard/tracker')}>
                         <h2>Hi Mama!</h2>
                         <div className="content">
                             <div className="baby-blob">

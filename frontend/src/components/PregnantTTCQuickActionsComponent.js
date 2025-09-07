@@ -6,7 +6,7 @@ import {
     pulseOutline,
     peopleOutline,
 } from "ionicons/icons";
-import {useHistory} from "react-router-dom";
+import {useHistory} from "react-router";
 
 export default function PregnantTTCQuickActionsComponent() {
     const history = useHistory();

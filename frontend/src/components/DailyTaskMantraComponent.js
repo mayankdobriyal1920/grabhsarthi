@@ -1,13 +1,16 @@
 import React, {useEffect, useRef, useState} from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router";
 import {close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskMantraComponent() {
     const history = useHistory();
-    const handleGoHomePage = () => history.goBack();
+    const handleGoHomePage = () =>{
+        history.goBack();
+        window.history.back();
+    }
 
     const radius = 76;
     const circumference = 2 * Math.PI * radius;

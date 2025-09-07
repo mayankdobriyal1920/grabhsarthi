@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonPage, IonContent } from '@ionic/react';
-import {useHistory} from "react-router-dom";
+import {useHistory} from "react-router";
 
 const WithoutLoginHomePage = () => {
     const history = useHistory();

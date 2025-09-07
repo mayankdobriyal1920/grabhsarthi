@@ -17,7 +17,7 @@ export default function BabyTrackerPageForPregnantPage() {
     };
 
     const handleWeekChange = (dir) => {
-        if (dir === "prev" && currentWeek > 1) setCurrentWeek(currentWeek - 1);
+        if (dir === "prev" && currentWeek > 4) setCurrentWeek(currentWeek - 1);
         if (dir === "next" && currentWeek < 40) setCurrentWeek(currentWeek + 1);
     };
 

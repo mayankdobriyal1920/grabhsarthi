@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IonPage, IonContent, IonHeader, IonToolbar, IonButton, IonButtons, IonTitle, IonIcon } from "@ionic/react";
-import { useHistory } from "react-router-dom";
-import {close, fitness, fitnessOutline, pause, timer, timerOutline} from "ionicons/icons";
+import { IonPage, IonContent, IonIcon } from "@ionic/react";
+import { useHistory } from "react-router";
+import {close, fitnessOutline, timerOutline} from "ionicons/icons";
 import catAndCowPose from "../theme/img/yogaTasks/cat-cow-pose.gif";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskYogTaskComponent() {
     const history = useHistory();
-    const handleGoHomePage = () => history.goBack();
+    const handleGoHomePage = () =>{
+        history.goBack();
+        window.history.back();
+    }
 
     const radius = 51;
     const circumference = 2 * Math.PI * radius;

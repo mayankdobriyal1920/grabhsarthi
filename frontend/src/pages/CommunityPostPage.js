@@ -7,10 +7,9 @@ import {
     IonIcon, IonHeader, IonButtons, IonTitle,
 } from "@ionic/react";
 import {arrowBack,sendOutline} from "ionicons/icons";
-import moment from "moment/moment";
+import moment from "moment-timezone";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
-import {useHistory,useParams} from "react-router-dom";
-
+import {useHistory,useParams} from "react-router";
 
 const posts = [
     {
@@ -283,6 +282,7 @@ const CommunityPostPage = () => {
 
     const goBack = () => {
         history.goBack();
+        window.history.back();
     };
 
     return (

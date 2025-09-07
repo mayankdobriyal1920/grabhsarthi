@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { IonPage, IonContent, IonIcon, IonInput } from "@ionic/react";
-import { useHistory } from "react-router-dom";
+import { IonPage, IonContent, IonIcon } from "@ionic/react";
+import { useHistory } from "react-router";
 import {
     happyOutline,
     sadOutline,
@@ -14,7 +14,10 @@ import {StatusBar, Style} from "@capacitor/status-bar";
 
 export default function DailyTaskMoodComponent() {
     const history = useHistory();
-    const handleGoHomePage = () => history.goBack();
+    const handleGoHomePage = () =>{
+        history.goBack();
+        window.history.back();
+    }
 
     const moods = [
         { id: "happy", label: "Happy", icon: happyOutline },

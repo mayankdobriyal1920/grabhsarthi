@@ -1,6 +1,5 @@
 import babyImg1 from '../theme/img/babyImages/baby1.png';
 import babyImg2 from '../theme/img/babyImages/baby2.png';
-import babyImg3 from '../theme/img/babyImages/baby3.png';
 import babyImg4 from '../theme/img/babyImages/baby4.png';
 import babyImg5 from '../theme/img/babyImages/baby5.png';
 import babyImg6 from '../theme/img/babyImages/baby6.png';
@@ -72,99 +71,15 @@ import fruitIcon34 from '../theme/img/babyFruit/fruitIcon34.png';
 import fruitIcon35 from '../theme/img/babyFruit/fruitIcon35.png';
 import fruitIcon36 from '../theme/img/babyFruit/fruitIcon36.png';
 import fruitIcon37 from '../theme/img/babyFruit/fruitIcon37.png';
-import fruitIcon38 from '../theme/img/babyFruit/fruitIcon38.png';
-import fruitIcon39 from '../theme/img/babyFruit/fruitIcon39.png';
-import fruitIcon40 from '../theme/img/babyFruit/fruitIcon40.png';
 
 export const _babyWeeklyGrowthContentSvg = [
-    {}, // Prevent 0th position
-    {
-        week: '1st Week',
-        icon: babyImg1,
-        weight: '0 g',
-        height: 'N/A',
-        description: 'I’m not here yet 🌟. Your body is getting ready for me by preparing a cozy home. Hormones are working to support ovulation soon. It’s the start of our journey!',
-        progress: Math.round((1/40)*100),
-        insights: [
-            'Your body prepares for ovulation.',
-            'Hormones like estrogen are rising.',
-            'The uterine lining thickens.',
-            'Healthy eggs are maturing.',
-            'Lifestyle impacts fertility.',
-            'Stress can affect ovulation.'
-        ],
-        selfcare: 'Take prenatal vitamins with folic acid to help my early growth. Eat healthy foods like fruits and veggies. Avoid stress and get plenty of rest.',
-        checklist: [
-            'Schedule a preconception checkup.',
-            'Track your menstrual cycle.',
-            'Eat nutrient-rich foods.',
-            'Avoid alcohol and smoking.'
-        ],
-        reminder: 'Stay hydrated and maintain a balanced diet.',
-        fruit_icon_with_message: {
-            icon: fruitIcon1,
-            message: 'Hi, Mama! I’m a tiny poppy seed, not here yet. Eat healthy to help me sprout soon!'
-        }
-    },
-    {
-        week: '2nd Week',
-        icon: babyImg1,
-        weight: '0 g',
-        height: 'N/A',
-        description: 'Ovulation is near 🌸. Your body is preparing for me to start my journey. An egg is getting ready to meet sperm soon. It’s an exciting time for us!',
-        progress: Math.round((2/40)*100),
-        insights: [
-            'Ovulation happens around day 14.',
-            'An egg releases from the ovary.',
-            'Hormones support egg growth.',
-            'Fertility peaks now.',
-            'Healthy habits boost conception.',
-            'Stress may delay ovulation.'
-        ],
-        selfcare: 'Avoid alcohol and smoking to help conception. Eat foods like nuts and grains. Stay active with light walks and rest well to support your body.',
-        checklist: [
-            'Use an ovulation predictor kit.',
-            'Discuss medications with doctor.',
-            'Eat a balanced diet.',
-            'Get enough sleep.'
-        ],
-        reminder: 'Get plenty of rest to support your body’s preparation.',
-        fruit_icon_with_message: {
-            icon: fruitIcon2,
-            message: 'Hi, Mama! I’m a sesame seed, ready to start. Eat nuts and rest to help me grow!'
-        }
-    },
-    {
-        week: '3rd Week',
-        icon: babyImg1,
-        weight: '<0.1 g',
-        height: '<1 mm',
-        description: 'I’m a tiny zygote now 🌱! Fertilization happened, and I’m traveling to your womb to settle in. My cells are dividing fast. We’re on our way!',
-        progress: Math.round((3/40)*100),
-        insights: [
-            'Fertilization creates a zygote.',
-            'Cells divide rapidly now.',
-            'Implantation starts soon.',
-            'Hormones support pregnancy.',
-            'Embryo begins forming.',
-            'Your body adjusts quickly.'
-        ],
-        selfcare: 'Keep taking prenatal vitamins. Eat small, healthy meals to stay strong. Avoid heavy exercise and rest to help me settle in comfortably.',
-        checklist: [
-            'Take a pregnancy test if late.',
-            'Avoid strenuous activities.',
-            'Eat nutrient-rich foods.',
-            'Start a pregnancy journal.'
-        ],
-        reminder: 'Monitor for early pregnancy symptoms like fatigue.',
-        fruit_icon_with_message: {
-            icon: fruitIcon3,
-            message: 'Yay, Mama! I’m a poppy seed zygote, traveling to your womb. Eat veggies to help me!'
-        }
-    },
+    {},
+    {},
+    {},
+    {},
     {
         week: '4th Week',
-        icon: babyImg2,
+        icon: babyImg1,
         weight: '0.1 g',
         height: '1-2 mm',
         description: 'I’m snug in your womb 🏡! My cells are busy forming my heart and brain. The placenta is growing to keep me safe and fed. I’m tiny but growing fast!',
@@ -186,13 +101,13 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay calm and reduce stress through relaxation techniques.',
         fruit_icon_with_message: {
-            icon: fruitIcon4,
+            icon: fruitIcon1,
             message: 'Hi, Mama! I’m a sesame seed, snug in your womb. Eat small meals to help me grow!'
         }
     },
     {
         week: '5th Week',
-        icon: babyImg3,
+        icon: babyImg2,
         weight: '0.2 g',
         height: '2-3 mm',
         description: 'My neural tube is forming 🧠, building my brain and spine. I’m super tiny, but my heart is starting to beat. Your body is working hard to help me grow!',
@@ -214,7 +129,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Drink plenty of water to stay hydrated.',
         fruit_icon_with_message: {
-            icon: fruitIcon5,
+            icon: fruitIcon2,
             message: 'Hi, Mama! I’m an apple seed, heart beating! Eat small meals to help my brain grow.'
         }
     },
@@ -242,7 +157,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Listen to your body and rest when needed.',
         fruit_icon_with_message: {
-            icon: fruitIcon6,
+            icon: fruitIcon3,
             message: 'Hi, Mama! I’m a lentil, heart beating strong! Eat small meals to help me grow.'
         }
     },
@@ -270,7 +185,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Keep stress low with mindfulness practices.',
         fruit_icon_with_message: {
-            icon: fruitIcon7,
+            icon: fruitIcon4,
             message: 'Hi, Mama! I’m a blueberry, heart strong! Eat fruits to help my arms grow.'
         }
     },
@@ -298,7 +213,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Get enough sleep to support your energy levels.',
         fruit_icon_with_message: {
-            icon: fruitIcon8,
+            icon: fruitIcon5,
             message: 'Hi, Mama! I’m a raspberry, with tiny fingers! Eat milk to help my bones grow.'
         }
     },
@@ -326,7 +241,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay positive and connect with other moms-to-be.',
         fruit_icon_with_message: {
-            icon: fruitIcon9,
+            icon: fruitIcon6,
             message: 'Hi, Mama! I’m a grape, wiggling as a fetus! Eat fish to help my brain grow.'
         }
     },
@@ -354,7 +269,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Celebrate reaching the end of the first trimester.',
         fruit_icon_with_message: {
-            icon: fruitIcon10,
+            icon: fruitIcon7,
             message: 'Hi, Mama! I’m a kumquat, looking human! Eat eggs to help my organs grow.'
         }
     },
@@ -382,7 +297,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for any unusual symptoms and report them.',
         fruit_icon_with_message: {
-            icon: fruitIcon11,
+            icon: fruitIcon8,
             message: 'Hi, Mama! I’m a fig, kicking in your womb! Eat veggies to help me grow strong.'
         }
     },
@@ -410,7 +325,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Take time to relax and enjoy this milestone.',
         fruit_icon_with_message: {
-            icon: fruitIcon12,
+            icon: fruitIcon9,
             message: 'Hi, Mama! I’m a lime, moving freely! Eat fruits to help my organs grow.'
         }
     },
@@ -438,7 +353,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Energy levels may improve; enjoy this phase.',
         fruit_icon_with_message: {
-            icon: fruitIcon13,
+            icon: fruitIcon10,
             message: 'Hi, Mama! I’m a peach, a fetus now! Eat grains to help me grow strong.'
         }
     },
@@ -466,7 +381,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Connect with your baby through gentle touch.',
         fruit_icon_with_message: {
-            icon: fruitIcon14,
+            icon: fruitIcon11,
             message: 'Hi, Mama! I’m a lemon, with lanugo hair! Eat fruits to help me grow strong.'
         }
     },
@@ -494,7 +409,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Talk or sing to your baby to bond.',
         fruit_icon_with_message: {
-            icon: fruitIcon15,
+            icon: fruitIcon12,
             message: 'Hi, Mama! I’m an apple, moving smoothly! Eat spinach to help my blood grow.'
         }
     },
@@ -522,7 +437,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay active to boost your mood and energy.',
         fruit_icon_with_message: {
-            icon: fruitIcon16,
+            icon: fruitIcon13,
             message: 'Hi, Mama! I’m an avocado, bones strong! Eat eggs to help me grow big.'
         }
     },
@@ -550,7 +465,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor your weight gain and discuss with your doctor.',
         fruit_icon_with_message: {
-            icon: fruitIcon17,
+            icon: fruitIcon14,
             message: 'Hi, Mama! I’m a turnip, getting chubby! Eat yogurt to help me grow strong.'
         }
     },
@@ -578,7 +493,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Read or talk to your baby to stimulate early language.',
         fruit_icon_with_message: {
-            icon: fruitIcon18,
+            icon: fruitIcon15,
             message: 'Hi, Mama! I’m a bell pepper, hearing you! Eat fruits and talk to me to bond.'
         }
     },
@@ -606,7 +521,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Enjoy feeling your baby’s movements.',
         fruit_icon_with_message: {
-            icon: fruitIcon19,
+            icon: fruitIcon16,
             message: 'Hi, Mama! I’m a mango, kicking strong! Eat veggies to help my hair grow.'
         }
     },
@@ -634,7 +549,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Celebrate the halfway mark of your pregnancy.',
         fruit_icon_with_message: {
-            icon: fruitIcon20,
+            icon: fruitIcon17,
             message: 'Hi, Mama! I’m a banana, halfway there! Eat eggs and touch me to bond.'
         }
     },
@@ -662,7 +577,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Keep up with prenatal appointments.',
         fruit_icon_with_message: {
-            icon: fruitIcon21,
+            icon: fruitIcon18,
             message: 'Hi, Mama! I’m a carrot, wiggling more! Eat yogurt to help my bones grow.'
         }
     },
@@ -690,7 +605,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay active with low-impact exercises.',
         fruit_icon_with_message: {
-            icon: fruitIcon22,
+            icon: fruitIcon19,
             message: 'Hi, Mama! I’m a papaya, with lanugo! Eat greens and do Kegels for me.'
         }
     },
@@ -718,7 +633,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest when you feel tired to conserve energy.',
         fruit_icon_with_message: {
-            icon: fruitIcon23,
+            icon: fruitIcon20,
             message: 'Hi, Mama! I’m a grapefruit, breathing! Eat fruits to help my lungs grow.'
         }
     },
@@ -746,7 +661,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Play music or talk to your baby to bond.',
         fruit_icon_with_message: {
-            icon: fruitIcon24,
+            icon: fruitIcon21,
             message: 'Hi, Mama! I’m an ear of corn, hearing you! Eat veggies and talk to me.'
         }
     },
@@ -774,7 +689,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for swelling and report to your doctor.',
         fruit_icon_with_message: {
-            icon: fruitIcon25,
+            icon: fruitIcon22,
             message: 'Hi, Mama! I’m a rutabaga, kicking more! Eat spinach to help my blood grow.'
         }
     },
@@ -802,7 +717,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay hydrated to support your body and baby.',
         fruit_icon_with_message: {
-            icon: fruitIcon26,
+            icon: fruitIcon23,
             message: 'Hi, Mama! I’m a zucchini, dreaming! Eat eggs to help my lungs grow.'
         }
     },
@@ -830,7 +745,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest to keep your energy levels high.',
         fruit_icon_with_message: {
-            icon: fruitIcon27,
+            icon: fruitIcon24,
             message: 'Hi, Mama! I’m a cauliflower, over 1 kg! Eat yogurt to help my bones grow.'
         }
     },
@@ -858,7 +773,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Talk to your baby to build a strong bond.',
         fruit_icon_with_message: {
-            icon: fruitIcon28,
+            icon: fruitIcon25,
             message: 'Hi, Mama! I’m an eggplant, eyes open! Eat eggs and talk to me to bond.'
         }
     },
@@ -886,7 +801,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor movements and report changes to your doctor.',
         fruit_icon_with_message: {
-            icon: fruitIcon29,
+            icon: fruitIcon26,
             message: 'Hi, Mama! I’m a butternut squash, getting fat! Eat veggies to help me grow.'
         }
     },
@@ -914,7 +829,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay hydrated and rest when needed.',
         fruit_icon_with_message: {
-            icon: fruitIcon30,
+            icon: fruitIcon27,
             message: 'Hi, Mama! I’m a cabbage, getting round! Eat milk to help my bones grow.'
         }
     },
@@ -942,7 +857,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for swelling and report to your doctor.',
         fruit_icon_with_message: {
-            icon: fruitIcon31,
+            icon: fruitIcon28,
             message: 'Hi, Mama! I’m a coconut, bones hard! Eat eggs to help me grow strong.'
         }
     },
@@ -970,7 +885,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest to conserve energy for the final weeks.',
         fruit_icon_with_message: {
-            icon: fruitIcon32,
+            icon: fruitIcon29,
             message: 'Hi, Mama! I’m a jicama, getting chubby! Eat fruits to help me grow.'
         }
     },
@@ -998,7 +913,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor baby’s movements daily.',
         fruit_icon_with_message: {
-            icon: fruitIcon33,
+            icon: fruitIcon30,
             message: 'Hi, Mama! I’m a pineapple, head-down! Eat yogurt to help my bones grow.'
         }
     },
@@ -1026,7 +941,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest when tired to stay strong.',
         fruit_icon_with_message: {
-            icon: fruitIcon34,
+            icon: fruitIcon31,
             message: 'Hi, Mama! I’m a cantaloupe, chubby! Eat veggies to help my lungs grow.'
         }
     },
@@ -1054,7 +969,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for signs of labor.',
         fruit_icon_with_message: {
-            icon: fruitIcon35,
+            icon: fruitIcon32,
             message: 'Hi, Mama! I’m a honeydew, snug in here! Eat eggs to help me grow strong.'
         }
     },
@@ -1082,7 +997,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Rest to conserve energy for labor.',
         fruit_icon_with_message: {
-            icon: fruitIcon36,
+            icon: fruitIcon33,
             message: 'Hi, Mama! I’m a romaine lettuce, organs ready! Eat fruits to help me grow.'
         }
     },
@@ -1110,7 +1025,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor for labor signs like contractions.',
         fruit_icon_with_message: {
-            icon: fruitIcon37,
+            icon: fruitIcon34,
             message: 'Hi, Mama! I’m a Swiss chard, full-term! Eat veggies to help me for birth.'
         }
     },
@@ -1138,7 +1053,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay relaxed and watch for labor signs.',
         fruit_icon_with_message: {
-            icon: fruitIcon38,
+            icon: fruitIcon35,
             message: 'Hi, Mama! I’m a leek, ready for cuddles! Eat eggs to help me for birth.'
         }
     },
@@ -1166,7 +1081,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Monitor contractions and report to your doctor.',
         fruit_icon_with_message: {
-            icon: fruitIcon39,
+            icon: fruitIcon36,
             message: 'Hi, Mama! I’m a mini watermelon, ready! Eat fruits to help me for birth.'
         }
     },
@@ -1194,7 +1109,7 @@ export const _babyWeeklyGrowthContentSvg = [
         ],
         reminder: 'Stay calm and watch for labor signs.',
         fruit_icon_with_message: {
-            icon: fruitIcon40,
+            icon: fruitIcon37,
             message: 'Hi, Mama! I’m a small pumpkin, ready to meet you! Eat veggies for birth.'
         }
     }

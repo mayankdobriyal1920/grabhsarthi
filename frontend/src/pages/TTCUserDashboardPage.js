@@ -9,14 +9,14 @@ import {
     flame,
 } from "ionicons/icons";
 import CycleCalendarComponent from "../components/CycleCalendarComponent";
-import {useHistory} from "react-router-dom";
+import {useHistory} from "react-router";
 import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCComponentDailyTaskComponent";
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
 
 export default function TTCUserDashboardPage() {
     const history = useHistory();
     const goToPage = (page)=>{
-        history.push(page)
+        history.replace(page)
     }
 
     return (
@@ -32,7 +32,9 @@ export default function TTCUserDashboardPage() {
                     </div>
 
                     {/* Baby Growth Snapshot */}
-                    <CycleCalendarComponent/>
+                    <div onClick={()=>goToPage('/dashboard/tracker')}>
+                        <CycleCalendarComponent/>
+                    </div>
 
                     {/* Daily Tasks */}
                     <PregnantTTCComponentDailyTaskComponent type={'ttc'}/>
