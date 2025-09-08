@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import {close, fitnessOutline, timerOutline} from "ionicons/icons";
 import catAndCowPose from "../theme/img/yogaTasks/cat-cow-pose.gif";
 import {Capacitor} from "@capacitor/core";

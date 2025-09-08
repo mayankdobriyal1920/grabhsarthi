@@ -1,7 +1,7 @@
 import React from 'react';
 import {IonPage, IonContent, IonIcon} from '@ionic/react';
 import {phonePortraitOutline} from "ionicons/icons";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 
 const LoginPage = () => {
     const history = useHistory();

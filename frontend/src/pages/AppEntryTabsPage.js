@@ -61,6 +61,8 @@ const AppEntryTabsPage = () => {
         setShowMoreSheet(!showMoreSheet);
     };
 
+    console.log('here -dashboard');
+
     return (
         <IonTabs>
             <IonRouterOutlet>

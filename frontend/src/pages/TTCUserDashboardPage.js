@@ -9,7 +9,7 @@ import {
     flame,
 } from "ionicons/icons";
 import CycleCalendarComponent from "../components/CycleCalendarComponent";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCComponentDailyTaskComponent";
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
 

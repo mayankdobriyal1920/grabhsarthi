@@ -5,7 +5,7 @@ import {
     flame
 } from "ionicons/icons";
 import {_babyWeeklyGrowthContentSvg} from "../apiHelper/CommonHelper";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCComponentDailyTaskComponent";
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
 

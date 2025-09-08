@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import {close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";

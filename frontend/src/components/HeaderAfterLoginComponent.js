@@ -11,7 +11,7 @@ import {
     useIonAlert
 } from "@ionic/react";
 import {logOut, menuOutline, notifications} from "ionicons/icons";
-import {useHistory, useLocation} from "react-router";
+import {useHistory, useLocation} from "react-router-dom";
 import appLogo from "../theme/img/app-small-logo.png";
 
 const menuItems = [

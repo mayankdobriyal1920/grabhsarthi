@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {IonPage, IonContent, IonIcon} from "@ionic/react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import pregSamvaadImg from "../theme/img/preg_samvaad.png";
 import {close, ribbonOutline} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";

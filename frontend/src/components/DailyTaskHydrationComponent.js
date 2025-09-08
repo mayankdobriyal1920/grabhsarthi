@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import {add, close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
 import hydrationImg from "../theme/img/hydration_bottal_img.png";
 import {Capacitor} from "@capacitor/core";

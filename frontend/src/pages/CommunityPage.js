@@ -3,7 +3,7 @@ import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import { chatbubbleOutline, heartOutline} from "ionicons/icons";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
 import moment from "moment";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 
 const posts = [
     {

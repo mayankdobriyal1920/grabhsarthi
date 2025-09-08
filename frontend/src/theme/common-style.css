@@ -606,6 +606,7 @@ ion-button{
     font-size: var(--font-size-3);
     font-weight: 500;
     margin-bottom: 5px;
+    color: var(--gs-text);
 }
 
 .form-group input,
@@ -614,11 +615,16 @@ ion-button{
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: var(--font-size-3);
+    height: 43px;
+    color: var(--gs-text);
 }
 
 .form-group input[type="date"] {
-    color: #555;
+    color: var(--gs-text);
+    background: #ffffff;
+    height: 43px;
+    font-size: var(--font-size-3);
 }
 
 .switch-field {
@@ -2818,8 +2824,10 @@ ion-toolbar:last-of-type {
     color: var(--gs-text);
 }
 .app-setting-page-dashboard .form-item ion-input,
+.app-setting-page-dashboard .form-item ion-select,
+.app-setting-page-dashboard .form-item ion-date-time,
 .app-setting-page-dashboard .form-item ion-textarea {
-    --padding-start: 0;
+    --padding-start: 0!important;
     font-size: var(--font-size-4);
     color: var(--gs-text);
 }

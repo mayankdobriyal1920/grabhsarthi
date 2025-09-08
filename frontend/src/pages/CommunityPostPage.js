@@ -9,7 +9,7 @@ import {
 import {arrowBack,sendOutline} from "ionicons/icons";
 import moment from "moment-timezone";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
-import {useHistory,useParams} from "react-router";
+import {useHistory,useParams} from "react-router-dom";
 
 const posts = [
     {
