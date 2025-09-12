@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {IonPage, IonContent, IonIcon} from "@ionic/react";
+import {IonPage, IonContent, IonIcon, useIonViewDidLeave} from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import pregSamvaadImg from "../theme/img/preg_samvaad.png";
 import {close, ribbonOutline} from "ionicons/icons";
@@ -11,7 +11,6 @@ export default function DailyTaskSamvaadComponent() {
     const [babySamvaadText,setBabySamvaadText] = useState('');
     const handleGoHomePage = () =>{
         history.goBack();
-        window.history.back();
     }
 
     useEffect(()=>{
@@ -27,6 +26,13 @@ export default function DailyTaskSamvaadComponent() {
             }
         }
     },[])
+
+    useIonViewDidLeave(() => {
+        const el = document.querySelector('.ion-page-hidden');
+        if (el) el.classList.remove('ion-page-hidden');
+        const e2l = document.querySelector('.ion-page-invisible');
+        if (e2l) e2l.classList.remove('ion-page-invisible');
+    });
 
     return (
         <IonPage>

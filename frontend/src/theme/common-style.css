@@ -2,6 +2,7 @@
 html.md {
     --ion-default-font:'DM Sans',serif, sans-serif!important;
 }
+
 body,html,#root{
     font-family: var(--ion-default-font) !important;
 }
@@ -10,7 +11,7 @@ body,html,#root{
 }
 
 .main-content-page{
-    --padding-top: var(--header-bar-height);
+    --padding-top: 70px!important;
 }
 .with_login-mobile-menu {
     padding: 16px;
@@ -146,6 +147,7 @@ body,html,#root{
     background: white !important;
     border-bottom: 1px solid #dcdcdc;
     box-shadow: none !important;
+    height: 70px!important;
 
 }
 
@@ -545,7 +547,7 @@ ion-button{
     align-items: center;
 }
 
-.form-container {
+.profile-setup-page .form-container {
     width: 90%;
     max-width: 400px;
     margin: 5px auto;
@@ -554,23 +556,23 @@ ion-button{
     color: var(--gs-text-dark);
 }
 
-.form-title {
+.profile-setup-page .form-title {
     font-size: 22px;
     font-weight: bold;
     color: var(--gs-heading);
     margin-bottom: 10px;
     margin-top: 22px;
 }
-.switch-field .switch span{
+.profile-setup-page .switch-field .switch span{
     margin-top: -4px;
 }
-.form-step {
+.profile-setup-page .form-step {
     font-size: var(--font-size-3);
     color: var(--gs-text-dark);
     margin-bottom: 20px;
 }
 
-.toggle-buttons {
+.profile-setup-page .toggle-buttons {
     display: flex;
     justify-content: center;
     background: #ffe7e6;
@@ -580,7 +582,7 @@ ion-button{
     margin-bottom: 20px;
 }
 
-.toggle-btn {
+.profile-setup-page .toggle-btn {
     flex: 1;
     border: none;
     padding: 10px 0;
@@ -591,7 +593,7 @@ ion-button{
     transition: 0.3s;
 }
 
-.toggle-btn.active {
+.profile-setup-page .toggle-btn.active {
     background: var(--gs-pink);
     color: #fff;
 }
@@ -601,7 +603,7 @@ ion-button{
     margin-bottom: 20px;
 }
 
-.form-group label {
+.profile-setup-page .form-group label {
     display: block;
     font-size: var(--font-size-3);
     font-weight: 500;
@@ -609,41 +611,42 @@ ion-button{
     color: var(--gs-text);
 }
 
-.form-group input,
-.form-group select {
+.profile-setup-page .form-group input,
+.profile-setup-page .form-group select {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 10px;
+    background: #ffffff;
     font-size: var(--font-size-3);
-    height: 43px;
+    height: 45px;
     color: var(--gs-text);
 }
 
-.form-group input[type="date"] {
+.profile-setup-page .form-group input[type="date"] {
     color: var(--gs-text);
     background: #ffffff;
-    height: 43px;
+    height: 45px;
     font-size: var(--font-size-3);
 }
 
-.switch-field {
+.profile-setup-page .switch-field {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.switch {
+.profile-setup-page .switch {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.switch input {
+.profile-setup-page .switch input {
     display: none;
 }
 
-.switch-slider {
+.profile-setup-page .switch-slider {
     width: 40px;
     height: 20px;
     background: var(--gs-pink);
@@ -652,7 +655,7 @@ ion-button{
     cursor: pointer;
 }
 
-.switch-slider::after {
+.profile-setup-page .switch-slider::after {
     content: "";
     width: 16px;
     height: 16px;
@@ -664,7 +667,7 @@ ion-button{
     transition: 0.3s;
 }
 
-.switch input:checked + .switch-slider::after {
+.profile-setup-page .switch input:checked + .switch-slider::after {
     transform: translateX(20px);
 }
 
@@ -697,11 +700,11 @@ ion-button{
     transition: all 0.5s;
 }
 
-.submit-btn:hover::before {
+.profile-setup-page .submit-btn:hover::before {
     left: 100%;
 }
 
-.submit-btn:hover {
+.profile-setup-page .submit-btn:hover {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
@@ -2147,7 +2150,7 @@ ion-toolbar:last-of-type {
 }
 
 .card_for_tracker_info .card_for_tracker_info_inner_ul{
-   padding-left: 20px;
+    padding-left: 20px;
 }
 .card_for_tracker_info .card_for_tracker_info_inner_ul li{
     margin-bottom: 10px;
@@ -2383,15 +2386,21 @@ ion-toolbar:last-of-type {
     background: #ffffff;
     box-shadow: none!important;
 }
-.community-post-page-header ion-icon {
-    font-size: var(--font-size-2);
-    color: var(--gs-text);
+.community-post-page-header ion-back-button {
+    color: var(--gs-pink);
 }
 .community-post-page-header ion-title {
     font-size: var(--font-size-3);
     color: var(--gs-text);
 }
-
+.sub-page-header {
+    display: grid;
+    grid-template-rows: auto auto;
+    padding: 10px 15px;
+}
+ion-title{
+    text-align: center!important;
+}
 
 .baby-tracker-page-dashboard {
     padding: 16px;

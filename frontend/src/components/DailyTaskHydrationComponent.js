@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { IonPage, IonContent, IonIcon } from "@ionic/react";
+import {IonPage, IonContent, IonIcon, useIonViewDidLeave} from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import {add, close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
 import hydrationImg from "../theme/img/hydration_bottal_img.png";
@@ -10,7 +10,6 @@ export default function DailyTaskHydrationComponent() {
     const history = useHistory();
     const handleGoHomePage = () =>{
         history.goBack();
-        window.history.back();
     }
 
     useEffect(()=>{
@@ -26,6 +25,13 @@ export default function DailyTaskHydrationComponent() {
             }
         }
     },[])
+
+    useIonViewDidLeave(() => {
+        const el = document.querySelector('.ion-page-hidden');
+        if (el) el.classList.remove('ion-page-hidden');
+        const e2l = document.querySelector('.ion-page-invisible');
+        if (e2l) e2l.classList.remove('ion-page-invisible');
+    });
 
     return (
         <IonPage>

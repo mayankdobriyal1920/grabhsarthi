@@ -35,12 +35,10 @@ import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
 import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
 import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
 import CommunityPostPage from "./pages/CommunityPostPage";
-import AppBackButtonHandler from "./hooks/AppBackButtonHandler";
 
 setupIonicReact();
 
 const AppEnterMainPage = () => {
-
     return (
         <IonReactRouter>
             <IonRouterOutlet>
@@ -54,7 +52,6 @@ const AppEnterMainPage = () => {
 const PublicRoutes = () => {
     return (
         <IonReactRouter>
-            <AppBackButtonHandler/>
             <IonRouterOutlet>
                 <Route path="/home" exact={true} component={WithoutLoginHomePage} />
                 <Route path="/login" exact={true} component={LoginPage} />

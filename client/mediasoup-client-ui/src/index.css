@@ -183,7 +183,7 @@ body {
 .video-room {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   background: #000000;
   font-family: Arial, sans-serif;
   position: relative;
@@ -370,7 +370,7 @@ body {
 .join-screen {
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100dvh;
 }
 
 /* Join button */
@@ -401,7 +401,7 @@ body {
   }
 }
 .teacher-screen {
-  height: 100vh;
+  height: 100dvh;
   width: 100%;
   background: #f5f5f5; /* light neutral background */
   display: flex;
@@ -657,7 +657,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
   padding: 20px;
 }
 
@@ -731,7 +731,7 @@ body {
 .video-room-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   background: #101010;
   display: flex;
   flex-direction: column;
@@ -811,7 +811,7 @@ body {
   justify-content: center;
   gap: 16px;
   padding: 14px;
-  margin-top: 50px;
+  margin-top: 10px;
   background: rgba(0,0,0,0.7);
 }
 
@@ -1002,14 +1002,23 @@ body {
   position: absolute;
   top: 4px;
   right: 4px;
+  gap: 5px;
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
 .menu-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 20px;
+  color: #000000;
   cursor: pointer;
+  background: #ffffffe6;
+  border: 1px solid #0000001a;
+  border-radius: 12px;
+  font-size: 12px;
+  padding: 5px 8px;
+  right: 6px;
+  top: 6px;
+  transition: background .2s;
+  z-index: 5;
 }
 
 .dropdown-menu {
@@ -1061,4 +1070,93 @@ body {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Keep your borders */
+.main-video-container .main-video-grid.teacher video { border: 2px solid #ce0000;   border-radius: 10px;}
+.main-video-container .main-video-grid.participant video { border: 2px solid #0097ff;   border-radius: 10px;}
+
+
+.main-video-container {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  justify-content: center;   /* center leftover space horizontally */
+  align-content: center;     /* center leftover space vertically */
+  background: #0b0b0b;
+  overflow: auto;
+  padding: 20px;
+  height: 100%;
+}
+
+/* Tiles (square via inline grid track sizing from the hook) */
+.main-video-container .main-video-grid {
+  border-radius: 10px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  position: relative;
+  background: #000;
+}
+
+/* Videos always fully visible inside the square (no cropping) */
+.main-video-container .main-video-grid video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* fit, don't cover */
+  display: block;
+  background: #000;      /* letterbox bars as needed */
+}
+
+/* optional: slight animation on resize */
+@media (prefers-reduced-motion: no-preference) {
+  .main-video-container .main-video-grid { transition: width 120ms, height 120ms; }
+}
+
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* fills square or rectangle nicely */
+  border-radius: 12px;    /* soft corners */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transform: scaleX(-1)!important;
+  /* Beauty filter combo */
+  filter: brightness(1.05) /* mild glow */
+  contrast(1.08) /* preserves detail */
+  saturate(1.15) /* liveliness in skin tones */
+  sepia(0.02) /* faint warmth */
+  hue-rotate(339deg) /* pinkish tint */
+  blur(0.08px);
+  transition: filter 0.4s ease, transform 0.3s ease;
+}
+
+.main-video-grid.hidden {
+  display: none !important;
+}
+
+.pin-badge {
+  top: 6px;
+  right: 6px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 6px 18px;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.2s;
+}
+
+.pin-badge:hover {
+  background: #f0f0ff;
+}
+
+.pin-badge.active {
+  background: #e0d6ff;
+  border-color: #8a5cff;
+  color: #5a3cff;
+}
+.full-screen-container{
+  grid-template-columns:unset!important;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { IonPage, IonContent, IonIcon } from "@ionic/react";
+import {IonPage, IonContent, IonIcon} from "@ionic/react";
 import { chatbubbleOutline, heartOutline} from "ionicons/icons";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
 import moment from "moment";
@@ -134,6 +134,7 @@ const CommunityPage = () => {
     const openPostPage = (id)=>{
         history.push('/community-post/'+id)
     }
+
     return (
         <IonPage className="community-page">
             <IonContent

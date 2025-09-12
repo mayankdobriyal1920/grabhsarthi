@@ -7,6 +7,7 @@ import {
     actionToSendVideoChunkDataToServerFinishProcess,
 } from "./api/CommonApiHelper";
 import ParticipantThumbnail from "./ParticipantThumbnail";
+import {useVideoCallGridLayout} from "./hooks/useVideoCallGridLayout";
 
 const SOCKET_URL = "https://garbhsarthi.com";
 const RECORD_INTERVAL = 1000;
@@ -30,7 +31,9 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
     const mediaRecorderRef = useRef(null);
     const [isRecordingPaused, setIsRecordingPaused] = useState(false);
     const [isScreenSharing, setIsScreenSharing] = useState(false);
-
+    const containerRef = useRef(null);
+    const [pinnedSocketId, setPinnedSocketId] = useState(null);
+    useVideoCallGridLayout(containerRef);
 
     useEffect(() => {
         socketRef.current = io(SOCKET_URL, {autoConnect: false});
@@ -690,6 +693,11 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
         );
     };
 
+    const togglePin = (socketId) => {
+        setPinnedSocketId(prev => (prev === socketId ? null : socketId));
+    };
+
+
     return (
         <div className="video-room-container">
             {waitingApproval && (
@@ -700,9 +708,9 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
 
             <div className={`video-room ${waitingApproval ? 'hidden' : ''}`}>
                 {/* Main Video */}
-                <div className="main-video">
+                <div className={`main-video-container ${pinnedSocketId ? 'full-screen-container' : ''}`} ref={containerRef}>
                     {isTeacher ? (
-                        <div className={"teacher_video_main"}>
+                        <div className={`main-video-grid teacher ${pinnedSocketId && pinnedSocketId !== "local" ? "hidden" : ""}`}>
                             <>
                                 <video style={{display:`${videoOff ? 'none' : 'block' }`}} ref={localVideoRef} muted autoPlay playsInline/>
                                 {videoOff && (
@@ -710,6 +718,14 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                                         <span>You</span>
                                     </div>
                                 )}
+                                <div className="actions-in-part-three">
+                                <button
+                                    className={`pin-badge ${pinnedSocketId === "local" ? "active" : ""}`}
+                                    onClick={() => togglePin("local")}
+                                >
+                                    {pinnedSocketId === "local" ? "Unpin" : "Pin"}
+                                </button>
+                                </div>
                             </>
                         </div>
                     ) : (
@@ -719,24 +735,31 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                                         <ParticipantThumbnail
                                             key={p.socketId}
                                             p={p}
+                                            pinnedSocketId={pinnedSocketId}
+                                            togglePin={togglePin}
                                             isTeacher={isTeacher}
                                         />
                                     )
                             )}
                         </>
                     )}
-                </div>
 
-                {/* Thumbnails */}
-                <div className="thumbnails-bar">
                     {!isTeacher && (
-                        <div className="participant-thumbnail thumbnail">
+                        <div className={`main-video-grid participant ${pinnedSocketId && pinnedSocketId !== "local" ? "hidden" : ""}`}>
                             <video style={{display:`${videoOff ? 'none' : 'block' }`}} ref={localVideoRef} muted autoPlay playsInline/>
                             {videoOff && (
                                 <div className="name-placeholder">
                                     <span>You</span>
                                 </div>
                             )}
+                            <div className="actions-in-part-three">
+                            <button
+                                className={`pin-badge ${pinnedSocketId === "local" ? "active" : ""}`}
+                                onClick={() => togglePin("local")}
+                            >
+                                {pinnedSocketId === "local" ? "Unpin" : "Pin"}
+                            </button>
+                            </div>
                         </div>
                     )}
                     {participants.map(
@@ -747,11 +770,15 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
                                     p={p}
                                     isTeacher={isTeacher}
                                     onMute={handleMute}
+                                    pinnedSocketId={pinnedSocketId}
+                                    togglePin={togglePin}
                                     onKick={() => kickUser(p.socketId)}
                                 />
                             )
                     )}
                 </div>
+
+
 
                 {/* Controls */}
                 <div className="controls-bar">

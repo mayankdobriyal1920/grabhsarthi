@@ -2,9 +2,9 @@ import React from "react";
 import { IonIcon } from "@ionic/react";
 import {
     videocamOutline,
-    libraryOutline,
     pulseOutline,
     peopleOutline,
+    settingsOutline,
 } from "ionicons/icons";
 import {useHistory} from "react-router-dom";
 
@@ -16,21 +16,21 @@ export default function PregnantTTCQuickActionsComponent() {
 
     return (
         <div className="chips">
-            <button className="chip">
+            <button className="chip" onClick={()=>goToPage('/dashboard/classes')}>
                 <IonIcon icon={videocamOutline} />
-                <span>Live Classes</span>
+                <span>Classes</span>
             </button>
-            <button className="chip">
-                <IonIcon icon={libraryOutline} />
-                <span>Video Library</span>
-            </button>
-            <button className="chip">
+            <button className="chip" onClick={()=>goToPage('/dashboard/tracker')}>
                 <IonIcon icon={pulseOutline} />
                 <span>Trackers</span>
             </button>
             <button className="chip">
-                <IonIcon icon={peopleOutline} />
+                <IonIcon icon={peopleOutline} onClick={()=>goToPage('/dashboard/community')}/>
                 <span>Community</span>
+            </button>
+            <button className="chip" onClick={()=>goToPage('/dashboard/settings')}>
+                <IonIcon icon={settingsOutline} />
+                <span>Settings</span>
             </button>
         </div>
     );

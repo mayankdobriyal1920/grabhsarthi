@@ -8,7 +8,7 @@ import {
     IonLabel,
     IonPage
 } from '@ionic/react';
-import { Route, Redirect, useLocation, useHistory } from 'react-router';
+import { Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 
 // Import your pages/components
 import PregnantDashboardPage from './PregnantDashboardPage';
@@ -17,18 +17,16 @@ import PregnantDashboardPage from './PregnantDashboardPage';
 import {
     home,
     homeOutline,
-    newspaper,
-    newspaperOutline,
     fitness,
     fitnessOutline,
     people,
     peopleOutline,
-    settingsOutline, settings
+    settingsOutline, settings, videocamOutline, videocam
 } from 'ionicons/icons';
 import HeaderAfterLoginComponent from "../components/HeaderAfterLoginComponent";
 import useStore from "../zustand/useStore";
 import TTCUserDashboardPage from "./TTCUserDashboardPage";
-import OvulationTrackerPage from "../components/OvulationTrackerPage";
+import OvulationTrackerPage from "./OvulationTrackerPage";
 import CommunityPage from "./CommunityPage";
 import BabyTrackerPageForPregnantPage from "./BabyTrackerPageForPregnantPage";
 import ClassesPage from "./ClassesPage";
@@ -60,8 +58,6 @@ const AppEntryTabsPage = () => {
         }
         setShowMoreSheet(!showMoreSheet);
     };
-
-    console.log('here -dashboard');
 
     return (
         <IonTabs>
@@ -119,7 +115,7 @@ const AppEntryTabsPage = () => {
                     className="custom-ripple-color"
                     selected={currentPath === '/dashboard/classes'}
                 >
-                    <IonIcon icon={currentPath === '/dashboard/classes' ? newspaper : newspaperOutline} />
+                    <IonIcon icon={currentPath === '/dashboard/classes' ? videocam : videocamOutline} />
                     <IonLabel>Classes</IonLabel>
                 </IonTabButton>
 

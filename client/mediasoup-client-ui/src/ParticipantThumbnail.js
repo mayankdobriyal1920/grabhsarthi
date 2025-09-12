@@ -1,7 +1,9 @@
 
 import React, { useRef, useState, useEffect } from "react";
 
-function ParticipantThumbnail({ p, isTeacher, onKick, onMute }) {
+function ParticipantThumbnail({
+                                  p, isTeacher, onKick, onMute, pinnedSocketId, togglePin
+                              }) {
     const videoRef = useRef(null);
     const audioRef = useRef(null);
     const menuRef = useRef(null);
@@ -45,7 +47,7 @@ function ParticipantThumbnail({ p, isTeacher, onKick, onMute }) {
     }
 
     return (
-        <div className={`${p.role !== "teacher" ? 'participant-thumbnail  thumbnail' : 'teacher_video_main'}`} data-role={p.role}>
+        <div className={`main-video-grid ${p.role !== "teacher" ?  'participant' : 'teacher'} ${pinnedSocketId && pinnedSocketId !== p.socketId ? "hidden" : ""}`} data-role={p.role}>
             {p.streams?.video &&
                 <>
                     {p.streams?.video && !p.mutedVideo ? (
@@ -59,8 +61,14 @@ function ParticipantThumbnail({ p, isTeacher, onKick, onMute }) {
             }
             {p.streams?.audio && <audio ref={audioRef} autoPlay playsInline />}
 
-            {isTeacher && p.role !== "teacher" && (
+            {isTeacher && p.role !== "teacher" ? (
                 <div className="actions-in-part-three">
+                    <button
+                        className={`pin-badge ${pinnedSocketId === p.socketId ? "active" : ""}`}
+                        onClick={() => togglePin(p.socketId)}
+                    >
+                        {pinnedSocketId === p.socketId ? "Unpin" : "Pin"}
+                    </button>
                     <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>⋮</button>
                     {menuOpen && (
                         <div ref={menuRef} className="dropdown-menu">
@@ -71,7 +79,18 @@ function ParticipantThumbnail({ p, isTeacher, onKick, onMute }) {
                         </div>
                     )}
                 </div>
-            )}
+            ):
+                (
+                    <div className="actions-in-part-three">
+                        <button
+                            className={`pin-badge ${pinnedSocketId === p.socketId ? "active" : ""}`}
+                            onClick={() => togglePin(p.socketId)}
+                        >
+                            {pinnedSocketId === p.socketId ? "Unpin" : "Pin"}
+                        </button>
+                    </div>
+                )
+            }
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IonPage, IonContent, IonIcon } from "@ionic/react";
+import {IonPage, IonContent, IonIcon, useIonViewDidLeave} from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import {close, fitnessOutline, timerOutline} from "ionicons/icons";
 import catAndCowPose from "../theme/img/yogaTasks/cat-cow-pose.gif";
@@ -10,7 +10,6 @@ export default function DailyTaskYogTaskComponent() {
     const history = useHistory();
     const handleGoHomePage = () =>{
         history.goBack();
-        window.history.back();
     }
 
     const radius = 51;
@@ -51,6 +50,14 @@ export default function DailyTaskYogTaskComponent() {
             }
         }
     },[])
+
+
+    useIonViewDidLeave(() => {
+        const el = document.querySelector('.ion-page-hidden');
+        if (el) el.classList.remove('ion-page-hidden');
+        const e2l = document.querySelector('.ion-page-invisible');
+        if (e2l) e2l.classList.remove('ion-page-invisible');
+    });
 
     return (
         <IonPage>

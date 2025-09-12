@@ -4,12 +4,13 @@ import {
     IonContent,
     IonFooter,
     IonButton,
-    IonIcon, IonHeader, IonButtons, IonTitle,
+    IonIcon, IonHeader, IonButtons, IonTitle, useIonViewDidLeave, IonBackButton,
 } from "@ionic/react";
 import {arrowBack,sendOutline} from "ionicons/icons";
 import moment from "moment-timezone";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
 import {useHistory,useParams} from "react-router-dom";
+import { useIonRouter } from "@ionic/react";
 
 const posts = [
     {
@@ -258,6 +259,7 @@ const CommunityPostPage = () => {
     ]);
     const [newComment, setNewComment] = useState("");
     const history = useHistory();
+    const ionRouter = useIonRouter();
 
     const handleAddComment = () => {
         if (!newComment.trim()) return;
@@ -280,18 +282,30 @@ const CommunityPostPage = () => {
         }
     }, [id]);
 
+    // const goBack = () => {
+    //     history.goBack();
+    // };
+
     const goBack = () => {
-        history.goBack();
-        window.history.back();
+        if (!ionRouter.canGoBack()) {
+            ionRouter.push("/home", "root"); // fallback if no history
+        } else {
+            ionRouter.goBack();
+        }
     };
+
+    useIonViewDidLeave(() => {
+        const el = document.querySelector('.ion-page-hidden');
+        if (el) el.classList.remove('ion-page-hidden');
+        const e2l = document.querySelector('.ion-page-invisible');
+        if (e2l) e2l.classList.remove('ion-page-invisible');
+    });
 
     return (
         <IonPage className="community-post-page">
-            <IonHeader className="community-post-page-header">
+            <IonHeader className="community-post-page-header sub-page-header">
                 <IonButtons>
-                    <IonButton onClick={()=>goBack()} slot={'start'}>
-                        <IonIcon icon={arrowBack}></IonIcon>
-                    </IonButton>
+                    <IonBackButton slot={'start'}/>
                     <IonTitle>
                         Community Post
                     </IonTitle>

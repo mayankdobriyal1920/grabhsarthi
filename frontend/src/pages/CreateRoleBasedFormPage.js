@@ -6,11 +6,11 @@ const CreateRoleBasedFormPage = () => {
     const [form, setForm] = useState({
         role: 'Pregnant Mom',
         fullName: '',
-        dueDate: '',
+        dueDate: new Date(),
         fatherName: '',
         firstPregnancy: true,
         language: 'English',
-        lastPeriodDate: '',
+        lastPeriodDate: new Date(),
         cycleLength: '',
     });
 
@@ -100,6 +100,7 @@ const CreateRoleBasedFormPage = () => {
                                 <label>Due Date</label>
                                 <input
                                     type="date"
+                                    placeholder="yyyy/mm/dd"
                                     value={form.dueDate}
                                     onChange={(e) => handleChange("dueDate", e.target.value)}
                                 />
