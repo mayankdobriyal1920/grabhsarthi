@@ -3,8 +3,8 @@ import { create } from 'zustand';
 const useStore = create((set) => ({
     // ----- USER SIGNIN STATE ----- //
     userAuthDetail: { userInfo: null, loading: false },
-    signinRequest: () => set({ userAuthDetail: { userInfo: null, loading: true } }),
-    signinSuccess: (userData) => set({ userAuthDetail: { userInfo: userData, loading: false } }),
+    startUserAuthDetail: () => set({ userAuthDetail: { userInfo: null, loading: true } }),
+    setUserAuthDetail: (userData) => set({ userAuthDetail: { userInfo: userData, loading: false } }),
     signOut: () => set({ userAuthDetail: { userInfo: null, loading: false } }),
     otpValidationError:false,
     setOtpValidationError: (error) => set({ otpValidationError: error }),

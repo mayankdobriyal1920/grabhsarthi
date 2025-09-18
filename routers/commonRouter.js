@@ -1,130 +1,18 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {
-    actionToSendOtpApiCall,
     actionToVerifyLoginUserOtpApiCall,
-    actionToGetCurrentUserProfileDataApiCall
+    actionToGetCurrentUserProfileDataApiCall, actionToInsertNewUserLoginData, actionToVerifyUserPhoneApiCall
 } from "../models/commonModel.js";
 import {
     callFunctionToSendOtp,
     createNewSessionWithUserDataAndRole,
-    deleteOldSessionFileFromSessionStore
+    deleteOldSessionFileFromSessionStore, updateCommonApiCall
 } from "../models/helpers/commonModelHelper.js";
 
 
 const commonRouter = express.Router();
 let storeUserPhoneOtbObj = {};
-
-commonRouter.post(
-    '/actionToSendOtpApiCall',
-    expressAsyncHandler(async (req, res) => {
-        let responseToSend = {
-            success:0,
-        }
-        const phone = req.body.phone;
-        actionToSendOtpApiCall(req.body)
-            .then(user => {
-                if(user?.id) {
-                    responseToSend = {
-                        success:0,
-                        error:'phone',
-                        message:'Mobile no already registered'
-                    }
-                    res.status(200).send(responseToSend);
-                }else{
-                   // const otp = Math.floor(1000 + Math.random() * 9000);
-                    const otp = 1234;
-                    console.log(otp);
-
-                    callFunctionToSendOtp(phone,otp);
-
-                    storeUserPhoneOtbObj[phone] = otp;
-                    responseToSend = {
-                        success:1,
-                    }
-                    res.status(200).send(responseToSend);
-                }
-            }).catch(error => {
-            res.status(500).send(error);
-        })
-    })
-);
-
-commonRouter.post(
-    '/actionToSendOtpForLoginApiCall',
-    expressAsyncHandler(async (req, res) => {
-        let responseToSend = {
-            success:0,
-        }
-        const phone = req.body.phone;
-        actionToSendOtpApiCall(req.body)
-            .then(user => {
-                if(!user?.id) {
-                    responseToSend = {
-                        success:0,
-                        error:'phone',
-                        message:'Mobile not registered'
-                    }
-                    res.status(200).send(responseToSend);
-                }else{
-                    //const otp = Math.floor(1000 + Math.random() * 9000);
-                    const otp = 1234;
-                    console.log(otp);
-
-                    callFunctionToSendOtp(phone,otp);
-
-                    storeUserPhoneOtbObj[phone] = otp;
-                    responseToSend = {
-                        success:1,
-                    }
-                    res.status(200).send(responseToSend);
-                }
-            }).catch(error => {
-            res.status(500).send(error);
-        })
-    })
-);
-
-commonRouter.post(
-    '/actionToVerifyLoginUserOtpApiCall',
-    expressAsyncHandler(async (req, res) => {
-        let responseToSend = {
-            success:0,
-        }
-        const otp = req.body.otp;
-        const phone = req.body.phone;
-        actionToVerifyLoginUserOtpApiCall(req.body.phone)
-            .then(user => {
-                if(user?.id) {
-                    if (Number(storeUserPhoneOtbObj[phone]) === Number(otp)) {
-                        createNewSessionWithUserDataAndRole(req, user).then(() => {
-                            res.status(200).send({
-                                success: 1,
-                                userData: user,
-                                message: 'Session data retrieved successfully',
-                            });
-                        })
-                }else {
-                        responseToSend = {
-                            success: 0,
-                            error:'otp',
-                            message: 'OTP is not correct'
-                        }
-                        res.status(200).send(responseToSend);
-                    }
-                }else {
-                    responseToSend = {
-                        success:0,
-                        error:'phone',
-                        message:'Mobile not registered'
-                    }
-                    res.status(200).send(responseToSend);
-                }
-            }).catch(error => {
-            res.status(500).send(error);
-        })
-    })
-);
 
 commonRouter.post(
     '/actionToGetCurrentUserSessionDataApiCall',
@@ -177,6 +65,75 @@ commonRouter.post(
                 message: 'User logged out',
             });
         });
+    })
+);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+commonRouter.post(
+    '/actionToGenerateOtpForPhoneNumberApiCall',
+    expressAsyncHandler(async (req, res) => {
+        let responseToSend = {
+            success:1,
+        }
+        const phone = req.body.phone;
+        //const otp = Math.floor(1000 + Math.random() * 9000);
+        const otp = 1234;
+        callFunctionToSendOtp(phone,otp);
+        actionToVerifyUserPhoneApiCall(req.body.phone)
+            .then((user) => {
+                if(user?.id) {
+                    let dataToSend = {
+                        column: `otp = ?`,
+                        value: [otp, user?.id],
+                        whereCondition: `id = ?`,
+                        returnColumnName: "id",
+                        tableName: "app_user",
+                    };
+                    updateCommonApiCall(dataToSend).then(() => {
+                        res.status(200).send(responseToSend);
+                    });
+                }else {
+                    actionToInsertNewUserLoginData(phone,otp).then(() => {
+                        res.status(200).send(responseToSend);
+                    })
+                }
+            }).catch(error => {
+            res.status(500).send(error);
+        })
+    })
+);
+
+
+commonRouter.post(
+    '/actionToVerifyOtpAndLoginSignupUserApiCall',
+    expressAsyncHandler(async (req, res) => {
+        let responseToSend = {
+            success:0,
+        }
+        const otp = req.body.otp;
+        const phone = req.body.phone;
+        actionToVerifyLoginUserOtpApiCall(phone,otp)
+            .then(user => {
+                if(user?.id) {
+                    createNewSessionWithUserDataAndRole(req, user).then(() => {
+                        res.status(200).send({
+                            success: 1,
+                            userData: user,
+                            message: 'Session data retrieved successfully',
+                        });
+                    })
+                }else{
+                    res.status(200).send({
+                        success: 0,
+                        error:'otp',
+                        message: 'OTP is not correct'
+                    });
+                }
+            }).catch(error => {
+            res.status(500).send(error);
+        })
     })
 );
 

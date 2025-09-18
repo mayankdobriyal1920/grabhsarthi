@@ -1,53 +1,55 @@
 export const loginUserQuery = () => {
     return `
         SELECT
-            app_user.id,
-            app_user.name,
-            app_user.profile_url,
-            app_user.role,
-            app_user.phone_number,
-            JSON_OBJECT(
-                    'id', sub_admin_users.id,
-                    'name', sub_admin_users.name,
-                    'profile_picture', sub_admin_users.profile_url,
-                    'role', sub_admin_users.role,
-                    'phone_number', sub_admin_users.phone_number
-            ) AS sub_admin
-        FROM app_user
-                 LEFT JOIN app_user AS sub_admin_users
-                           ON sub_admin_users.id = app_user.created_by
-        WHERE app_user.phone_number = ?;
-    `;
-};
-
-export const checkMobNumberAlreadyExistQuery = () => {
-    return `
-        SELECT
-            app_user.id,
-            app_user.name
-        FROM app_user
-        WHERE app_user.phone_number = ?;
+            u.id,
+            u.role,
+            u.phone,
+            u.uid,
+            u.active_profile_id,
+            u.created_at,
+            'profile', JSON_OBJECT(
+                    'id', p.id,
+                    'user_id', p.user_id,
+                    'role', p.role,
+                    'full_name', p.full_name,
+                    'due_date', p.due_date,
+                    'father_name', p.father_name,
+                    'first_pregnancy', p.first_pregnancy,
+                    'last_period_date', p.last_period_date,
+                    'cycle_length', p.cycle_length,
+                    'language', p.language,
+                    'created_at', p.created_at
+            )
+        FROM app_user u
+                 LEFT JOIN profile p ON p.id = u.active_profile_id
+        WHERE u.phone = ? AND u.otp = ?;
     `;
 };
 
 export const getUserByIdQuery = () => {
     return `
         SELECT
-            app_user.id,
-            app_user.name,
-            app_user.profile_url,
-            app_user.role,
-            app_user.phone_number,
-            JSON_OBJECT(
-                    'id', sub_admin_users.id,
-                    'name', sub_admin_users.name,
-                    'profile_picture', sub_admin_users.profile_url,
-                    'role', sub_admin_users.role,
-                    'phone_number', sub_admin_users.phone_number
-            ) AS sub_admin
-        FROM app_user
-                 LEFT JOIN app_user AS sub_admin_users
-                           ON sub_admin_users.id = app_user.created_by
-        WHERE app_user.id = ?
+            u.id,
+            u.role,
+            u.phone,
+            u.uid,
+            u.active_profile_id,
+            u.created_at,
+            'profile', JSON_OBJECT(
+                    'id', p.id,
+                    'user_id', p.user_id,
+                    'role', p.role,
+                    'full_name', p.full_name,
+                    'due_date', p.due_date,
+                    'father_name', p.father_name,
+                    'first_pregnancy', p.first_pregnancy,
+                    'last_period_date', p.last_period_date,
+                    'cycle_length', p.cycle_length,
+                    'language', p.language,
+                    'created_at', p.created_at
+                       )
+        FROM app_user u
+                 LEFT JOIN profile p ON p.id = u.active_profile_id
+        WHERE u.id = ?
     `;
 };

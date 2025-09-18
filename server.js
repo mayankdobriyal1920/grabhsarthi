@@ -8,6 +8,7 @@ import cors from "cors";
 import mediasoup from "mediasoup";
 import ffmpeg from "fluent-ffmpeg";
 import crypto from "crypto";
+import commonRouter from "./routers/commonRouter.js";
 
 const APP_PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
 const ANNOUNCED_HOST = process.env.ANNOUNCED_HOST || "garbhsarthi.com";
@@ -682,6 +683,8 @@ app.post("/api/turn-credentials", (req, res) => {
 
 // health
 app.get("/api/health", (req, res) => res.json({ ok: true }));
+
+app.use("/api/common", commonRouter);
 
 // ---------- start server (already started when router created) ----------
 console.log("Server module loaded.");

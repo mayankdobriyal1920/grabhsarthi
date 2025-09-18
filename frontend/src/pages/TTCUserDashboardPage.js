@@ -1,10 +1,6 @@
 import React from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import {
-    videocamOutline,
-    libraryOutline,
-    pulseOutline,
-    peopleOutline,
     leafOutline,
     flame,
 } from "ionicons/icons";
