@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
     IonPage,
     IonContent,
@@ -24,27 +24,8 @@ const LoginPage = () => {
     const [error, setError] = useState("");
     const [loadingApiCall, setLoadingApiCall] = useState(false);
     const [otpError, setOtpError] = useState(false);
-
     const inputRefs = useRef([]);
     const intervalRef = useRef(null);
-
-    const handleChange = (e, index) => {
-        const value = e.target.value.replace(/[^0-9]/g, "");
-        if (value) {
-            const newOtp = [...otp];
-            newOtp[index] = value;
-            setOtp(newOtp);
-            if (index < 5) {
-                inputRefs.current[index + 1].focus();
-            }
-        }
-    };
-
-    const handleKeyDown = (e, index) => {
-        if (e.key === "Backspace" && !otp[index] && index > 0) {
-            inputRefs.current[index - 1].focus();
-        }
-    };
 
     const formatTime = (seconds) => {
         const m = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -73,6 +54,7 @@ const LoginPage = () => {
             setTimer(900);
         }
         setError("");
+        setOtpError("");
         setOtp(new Array(6).fill(""));
         setLoadingApiCall(true);
         actionToGenerateOtpForPhoneNumber(phoneNumber).then(()=>{
@@ -88,7 +70,7 @@ const LoginPage = () => {
 
     const handleVerifyOtpCall = () => {
         setLoadingApiCall(true);
-        actionToGenerateVerifyOtpAndLoginSignupUser(phoneNumber,otp).then((responseData)=>{
+        actionToGenerateVerifyOtpAndLoginSignupUser(phoneNumber,otp.toString().replaceAll(',','')).then((responseData)=>{
             setLoadingApiCall(false);
             if(responseData?.success === 1) {
                 setUserAuthDetail(responseData?.userData);
@@ -98,6 +80,81 @@ const LoginPage = () => {
             }
         })
     }
+
+    const handleChange = (e, index) => {
+        const raw = e.target.value.replace(/\D/g, "");
+        const newOtp = [...otp];
+
+        if (raw.length === 0) {
+            // user cleared the input
+            newOtp[index] = "";
+            setOtp(newOtp);
+            return;
+        }
+
+        // only keep the last digit typed (avoids multi-char on mobile keyboards)
+        newOtp[index] = raw.slice(-1);
+        setOtp(newOtp);
+
+        // move focus forward
+        if (index < 5) {
+            inputRefs.current[index + 1]?.focus();
+        }
+    };
+
+    const handleKeyDown = (e, index) => {
+        if (e.key === "Backspace") {
+            e.preventDefault(); // stop the browser from changing caret behavior
+
+            const newOtp = [...otp];
+
+            if (newOtp[index]) {
+                // if there's a digit here, clear it
+                newOtp[index] = "";
+                setOtp(newOtp);
+                return;
+            }
+
+            // current empty -> move focus left and clear that one too (optional)
+            if (index > 0) {
+                inputRefs.current[index - 1]?.focus();
+                // OPTIONAL: also clear previous cell on backspace
+                // const prev = [...newOtp];
+                // if (prev[index - 1]) {
+                //   prev[index - 1] = "";
+                //   setOtp(prev);
+                // }
+            }
+        }
+
+        if (e.key === "Delete") {
+            e.preventDefault();
+            const newOtp = [...otp];
+            newOtp[index] = "";
+            setOtp(newOtp);
+        }
+
+        if (e.key === "ArrowLeft" && index > 0) {
+            e.preventDefault();
+            inputRefs.current[index - 1]?.focus();
+        }
+        if (e.key === "ArrowRight" && index < 5) {
+            e.preventDefault();
+            inputRefs.current[index + 1]?.focus();
+        }
+    };
+
+    // Optional: paste "123456" into the first box to fill all
+    const handlePaste = (e) => {
+        const text = e.clipboardData.getData("text").replace(/\D/g, "");
+        if (!text) return;
+        const digits = text.slice(0, 6).split("");
+        const next = new Array(6).fill("");
+        for (let i = 0; i < digits.length; i++) next[i] = digits[i];
+        setOtp(next);
+        const last = Math.min(digits.length, 6) - 1;
+        if (last >= 0) inputRefs.current[last]?.focus();
+    };
 
     return (
         <IonPage>
@@ -148,8 +205,8 @@ const LoginPage = () => {
                 <IonModal
                     isOpen={showOtpModal}
                     onDidDismiss={() => setShowOtpModal(false)}
-                    breakpoints={[0, 0.4]}
-                    initialBreakpoint={0.4}
+                    breakpoints={[0, 0.5]}
+                    initialBreakpoint={0.5}
                     className="otp-modal"
                 >
                     <div className="otp-container">
@@ -167,20 +224,24 @@ const LoginPage = () => {
                                 <input
                                     key={i}
                                     type="text"
+                                    inputMode="numeric"
+                                    autoComplete="one-time-code"
                                     maxLength="1"
                                     value={digit}
                                     ref={(el) => (inputRefs.current[i] = el)}
                                     onChange={(e) => handleChange(e, i)}
                                     onKeyDown={(e) => handleKeyDown(e, i)}
+                                    onPaste={i === 0 ? handlePaste : undefined}
                                     className="otp-box"
                                 />
                             ))}
                         </div>
-                        {(otpError) ?
                         <p className={"error-text"}>
-                            Incorrected OTP Please enter valid otp!
-                        </p>:''
+                        {(otpError) ?
+                            'Incorrected OTP Please enter valid otp!'
+                            :''
                         }
+                        </p>
 
                         <div className="otp-timer">
                             {timer > 0 ? (

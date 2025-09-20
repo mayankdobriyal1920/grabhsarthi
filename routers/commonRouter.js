@@ -2,7 +2,10 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {
     actionToVerifyLoginUserOtpApiCall,
-    actionToGetCurrentUserProfileDataApiCall, actionToInsertNewUserLoginData, actionToVerifyUserPhoneApiCall
+    actionToGetCurrentUserProfileDataApiCall,
+    actionToInsertNewUserLoginData,
+    actionToVerifyUserPhoneApiCall,
+    actionToSaveUserProfileDataApiCall, actionToUpdateUserProfileDataApiCall
 } from "../models/commonModel.js";
 import {
     callFunctionToSendOtp,
@@ -12,7 +15,6 @@ import {
 
 
 const commonRouter = express.Router();
-let storeUserPhoneOtbObj = {};
 
 commonRouter.post(
     '/actionToGetCurrentUserSessionDataApiCall',
@@ -54,6 +56,42 @@ commonRouter.post(
 );
 
 commonRouter.post(
+    '/actionToSaveUserProfileDataApiCall',
+    expressAsyncHandler(async (req, res) => {
+        // Check if the session exists and the user is logged in
+        if (req?.session?.userSessionData?.id) {
+            actionToSaveUserProfileDataApiCall(req?.session?.userSessionData?.id,req.body).then(responseData => {
+                res.status(200).send(responseData);
+            })
+        } else {
+            // If no session found, return unauthorized response
+            res.status(200).send({
+                success: false,
+                message: 'No active session found. User is not logged in.',
+            });
+        }
+    })
+);
+
+commonRouter.post(
+    '/actionToUpdateUserProfileDataApiCall',
+    expressAsyncHandler(async (req, res) => {
+        // Check if the session exists and the user is logged in
+        if (req?.session?.userSessionData?.id) {
+            actionToUpdateUserProfileDataApiCall(req?.session?.userSessionData?.id,req.body).then(responseData => {
+                res.status(200).send(responseData);
+            })
+        } else {
+            // If no session found, return unauthorized response
+            res.status(200).send({
+                success: false,
+                message: 'No active session found. User is not logged in.',
+            });
+        }
+    })
+);
+
+commonRouter.post(
     '/actionToLogoutUserSessionApiCall',
     expressAsyncHandler(async (req, res) => {
         // Check if the session exists and the user is logged in
@@ -78,8 +116,8 @@ commonRouter.post(
             success:1,
         }
         const phone = req.body.phone;
-        //const otp = Math.floor(1000 + Math.random() * 9000);
-        const otp = 1234;
+        //const otp = Math.floor(100000 + Math.random() * 900000);
+        const otp = 123456;
         callFunctionToSendOtp(phone,otp);
         actionToVerifyUserPhoneApiCall(req.body.phone)
             .then((user) => {

@@ -1,34 +1,30 @@
 import React, { useRef, useState, useEffect,useMemo } from "react";
-import {IonPage, IonContent, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardContent} from "@ionic/react";
+import {IonPage, IonContent, IonIcon} from "@ionic/react";
 import {fitness} from "ionicons/icons";
 import moment from "moment-timezone";
+import CycleCalendarComponent from "../components/CycleCalendarComponent";
+import useStore from "../zustand/useStore";
 
 const OvulationTracker = () => {
+    const { userAuthDetail } = useStore();
+    const { userInfo } = userAuthDetail || {};
+    const profile = userInfo?.profile || {};
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [scanning, setScanning] = useState(false);
     const [bpm, setBpm] = useState(null);
-    const [timeLeft, setTimeLeft] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(0)
     const [messageHtml, setMessageHtml] = useState(null);
-    const [lmp, setLmp] = useState(moment()); // default
-    const [cycleLength, setCycleLength] = useState(35);
+    const [lmp, setLmp] = useState(moment(profile?.last_period_date));
+    const [cycleLength, setCycleLength] = useState(profile?.cycle_length);
     const [baselineBpm, setBaselineBpm] = useState(null);
     const [baselineData, setBaselineData] = useState([]);
     const [detectedOvulationDay, setDetectedOvulationDay] = useState(null);
 
-    const ovulationDay = useMemo(() => {
-        if (!lmp) return null;
-        return moment(lmp).add(cycleLength - 14, "days");
-    }, [lmp, cycleLength]);
-
-    const fertileStart = useMemo(() => ovulationDay ? moment(ovulationDay).subtract(5, "days") : null, [ovulationDay]);
-    const fertileEnd = useMemo(() => ovulationDay ? moment(ovulationDay).add(1, "days") : null, [ovulationDay]);
-    const displayMonth = useMemo(() => ovulationDay ? moment(ovulationDay).startOf("month") : moment(lmp).startOf("month"), [ovulationDay, lmp]);
-
-
     const handleLmpChange = (e) => {
         if(e.target.value){
             setLmp(moment(e.target.value));
+            console.log(moment(e.target.value).format('YYYY-MM-DD'))
         }
     };
 
@@ -347,9 +343,9 @@ const OvulationTracker = () => {
                             <div className={"message_icon_grid"}>
                                 <p className="bpm_heading">{!scanning && bpm ? `${bpm} BPM` : scanning ? "Scanning..." : "Scan Heart Rate"}</p>
                                 {scanning ? (
-                                    <div className="scan-info">
-                                        <p className="timer">{timeLeft}s remaining</p>
-                                    </div>
+                                        <div className="scan-info">
+                                            <p className="timer">{timeLeft}s remaining</p>
+                                        </div>
                                     ):
                                     <div className="scan-info">
                                         <p className="timer">Scan Timer</p>
@@ -377,7 +373,7 @@ const OvulationTracker = () => {
                                 <div className="input-field">
                                     <input
                                         type="date"
-                                        value={lmp.toISOString().split("T")[0]}
+                                        value={lmp.format('YYYY-MM-DD')}
                                         onChange={handleLmpChange}
                                     />
                                 </div>
@@ -404,44 +400,21 @@ const OvulationTracker = () => {
                     </div>
 
                     {/* Calendar */}
-                    <div className="card calendar-card">
-                        <h3>{displayMonth.format("MMMM YYYY")}</h3>
-                        <div className="calendar-grid">
-                            <span>S</span><span>M</span><span>T</span>
-                            <span>W</span><span>T</span><span>F</span><span>S</span>
+                    <CycleCalendarComponent
+                        profile={profile} // role (2/3) comes from DB
+                        lastPeriodDateStr={
+                            moment.isMoment(lmp)
+                                ? lmp.format("YYYY-MM-DD")
+                                : typeof lmp === "string"
+                                    ? lmp
+                                    : undefined
+                        }
+                        cycleLength={Number(cycleLength) || undefined}
+                        timezone="Asia/Kolkata"
+                        period_length={Number(profile?.period_length) || undefined} // uses snake_case prop
+                        lutealPhaseDays={14}
+                    />
 
-                            {Array.from({ length: moment(displayMonth).daysInMonth() }, (_, i) => {
-                                const day = moment(displayMonth).date(i + 1);
-
-                                const isOvulation = day.isSame(ovulationDay, "day");
-                                const isFertile = day.isBetween(fertileStart, fertileEnd, "day", "[]");
-                                const isToday = day.isSame(moment(), "day");
-
-                                return (
-                                    <span
-                                        key={i}
-                                        className={
-                                            isOvulation
-                                                ? "ovulation-day"
-                                                : isFertile
-                                                    ? "highlight"
-                                                    : isToday
-                                                        ? "today"
-                                                        : ""
-                                        }>
-                                  {i + 1}
-                                </span>
-                                );
-                            })}
-                        </div>
-
-                        <p className="ovulation-text">
-                            Predicted Ovulation: <strong>{ovulationDay.format("ddd, DD MMM YYYY")}</strong>
-                        </p>
-                        <p className="fertile-window">
-                            {fertileStart.format("DD MMM")} – {fertileEnd.format("DD MMM")}
-                        </p>
-                    </div>
 
 
                     {/* Dynamic Fertility Message */}

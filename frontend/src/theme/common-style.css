@@ -556,13 +556,6 @@ ion-button{
     color: var(--gs-text-dark);
 }
 
-.profile-setup-page .form-title {
-    font-size: 22px;
-    font-weight: bold;
-    color: var(--gs-heading);
-    margin-bottom: 10px;
-    margin-top: 22px;
-}
 .profile-setup-page .switch-field .switch span{
     margin-top: -4px;
 }
@@ -572,43 +565,69 @@ ion-button{
     margin-bottom: 20px;
 }
 
-.profile-setup-page .toggle-buttons {
+.profile_setup_header_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 19px;
+    background: var(--gs-heading);
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    text-align: center;
+}
+
+.profile_setup_header_container .form-title {
+    font-size: var(--font-size-0);
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+    margin-top: 22px;
+}
+
+.profile_setup_header_container .toggle-buttons {
     display: flex;
     justify-content: center;
-    background: #ffe7e6;
+    background: var(--gs-heading-light);
     border-radius: 25px;
     padding: 4px;
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-.profile-setup-page .toggle-btn {
+.profile_setup_header_container .toggle-btn {
     flex: 1;
     border: none;
     padding: 10px 0;
+    font-size: var(--font-size-3);
     border-radius: 25px;
     background: transparent;
     font-weight: 500;
     cursor: pointer;
+    color: #fff;
     transition: 0.3s;
 }
 
-.profile-setup-page .toggle-btn.active {
-    background: var(--gs-pink);
-    color: #fff;
+.required-icon {
+    margin-left: 4px;
+    color:var(--gs-pink);
 }
 
-.form-group {
+.profile_setup_header_container .toggle-btn.active {
+    background: var(--gs-heading);
+}
+
+.profile-setup-page .form-group {
     text-align: left;
     margin-bottom: 20px;
 }
 
 .profile-setup-page .form-group label {
-    display: block;
+    display: flex;
     font-size: var(--font-size-3);
     font-weight: 500;
     margin-bottom: 5px;
     color: var(--gs-text);
+    align-items: center;
 }
 
 .profile-setup-page .form-group input,
@@ -1101,81 +1120,6 @@ ion-toolbar:last-of-type {
     background: #00d200;
 }
 
-
-.ttc-dashboard .cycle-card {
-    background: var(--white);
-    border-radius: 16px;
-    box-shadow: var(--gs-icon-shadow);
-    padding: 14px;
-    margin: 12px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: var(--gs-text);
-}
-
-.ttc-dashboard .cycle-card .dash-card-head h3 {
-    font-size: var(--font-size-3);
-    font-weight: bold;
-    color: var(--gs-text-dark);
-    margin: 2px 0 12px 7px;
-}
-
-.ttc-dashboard .cycle-card .dash-card-body {
-    text-align: center;
-    color: var(--gs-text-dark);
-}
-
-.ttc-dashboard .cycle-card .calendar-strip {
-    font-size: var(--font-size-3);
-    color: #8a8f85;
-    display: grid;
-    margin-bottom: 6px;
-    grid-template-columns: 15% 15% 15% 15% 15% 15% 15%;
-}
-
-.ttc-dashboard .cycle-card .calendar-dates {
-    font-size: var(--font-size-3);
-    color: #8a8f85;
-    display: grid;
-    margin-bottom: 6px;
-    grid-template-columns: 15% 15% 15% 15% 15% 15% 15%;
-}
-
-.ttc-dashboard .cycle-card .calendar-dates span {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-size-4);
-    color: var(--gs-text-dark);
-}
-
-.ttc-dashboard .cycle-card .calendar-strip span {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-size-4);
-    color: var(--gs-text-dark);
-}
-
-.ttc-dashboard .cycle-card .calendar-dates span.active {
-    background: #ffedf0;
-    color: var(--gs-pink);
-    font-weight: 600;
-}
-
-.ttc-dashboard .cycle-card .status-text {
-    font-size: var(--font-size-4);
-    color: var(--gs-pink);
-    font-weight: bold;
-    margin: 15px;
-}
 .progress_bar_div_with_percentage .percentage_bar_main {
     position: relative;
     height: 4px;
@@ -1841,7 +1785,7 @@ ion-toolbar:last-of-type {
 }
 .ovulation-dashboard-wrap {
     color: var(--gs-text);
-    padding: 20px;
+    padding: 20px 10px;
 }
 
 /* Page Title */
@@ -2890,6 +2834,7 @@ ion-title{
     border-radius: 24px 24px 0 0;
     padding: 24px;
     width: 100%;
+    height: 100%;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
     animation: slideUp 0.3s ease;
     text-align: center;
@@ -2964,4 +2909,133 @@ ion-title{
     to {
         transform: translateY(0);
     }
+}
+
+
+.main_cycle_calendar_section {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--gs-icon-shadow);
+    padding: 14px;
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--gs-text);
+}
+
+.main_cycle_calendar_section .dash-card-head h3 {
+    font-size: var(--font-size-3);
+    font-weight: bold;
+    color: var(--gs-text-dark);
+    margin: 2px 0 12px 0px;
+}
+
+.main_cycle_calendar_section .dash-card-body {
+    text-align: center;
+    color: var(--gs-text-dark);
+}
+
+.main_cycle_calendar_section .calendar-dates span {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-4);
+    color: var(--gs-text-dark);
+}
+
+.main_cycle_calendar_section .calendar-strip span {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-4);
+    color: var(--gs-text-dark);
+}
+
+
+.main_cycle_calendar_section .calendar-strip {
+    font-size: var(--font-size-3);
+    color: #8a8f85;
+    display: grid;
+    margin-bottom: 6px;
+    gap: 8px;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.main_cycle_calendar_section .calendar-dates {
+    display: grid;
+    font-size: var(--font-size-3);
+    color: #8a8f85;
+    margin-bottom: 6px;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.main_cycle_calendar_section .calendar-dates > span.period {
+    background: rgba(255, 99, 132, 0.25);
+}
+.main_cycle_calendar_section .calendar-dates > span.fertile {
+    background: rgba(75, 192, 192, 0.25);
+}
+
+.main_cycle_calendar_section .calendar-dates > span.today {
+    background: var(--gs-samvaad-task-color);
+    color: #ffffff;
+}
+
+.main_cycle_calendar_section .legend {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+.main_cycle_calendar_section .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 20px;
+    border-radius: 10px;
+    font-size: var(--font-size-4);
+    background: rgba(0,0,0,0.06);
+    color:var(--gs-text);
+}
+.setting_page.profile-setup-page .form-container {
+    width: 100%;
+}
+.setting_page.profile-setup-page .profile_setup_header_container {
+    padding-bottom: 0px!important;
+}
+.main_cycle_calendar_section .calendar-dates span.active {
+    background: #ffedf0;
+    color: var(--gs-pink);
+    font-weight: 600;
+}
+
+.main_cycle_calendar_section .status-text {
+    font-size: var(--font-size-4);
+    color: var(--gs-pink);
+    font-weight: bold;
+    margin: 15px;
+}
+.main_cycle_calendar_section .calendar-dates > span.ovulation {
+    background: var(--gs-pink);
+    border: var(--gs-pink);
+    color:#ffffff;
+}
+
+.main_cycle_calendar_section .legend-item.period { background: rgba(255, 99, 132, 0.25); }
+.main_cycle_calendar_section .legend-item.fertile { background: rgba(75, 192, 192, 0.25); }
+.main_cycle_calendar_section .legend-item.ovulation {
+    background: var(--gs-pink);
+    color:#ffffff;
+}
+.main_cycle_calendar_section .legend-item.today {
+    background: var(--gs-samvaad-task-color);
+    color: #ffffff;
 }

@@ -63,7 +63,7 @@ const ChooseRolePageAfterLoginComponent = () => {
                             className="submit-btn"
                             disabled={!chosen}
                             tabIndex={0}
-                            onClick={()=>goToPage('create-profile')}
+                            onClick={()=>goToPage('dashboard')}
                             aria-disabled={!chosen}>
                             Continue
                         </button>)

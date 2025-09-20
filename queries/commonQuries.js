@@ -7,7 +7,7 @@ export const loginUserQuery = () => {
             u.uid,
             u.active_profile_id,
             u.created_at,
-            'profile', JSON_OBJECT(
+            JSON_OBJECT(
                     'id', p.id,
                     'user_id', p.user_id,
                     'role', p.role,
@@ -17,9 +17,9 @@ export const loginUserQuery = () => {
                     'first_pregnancy', p.first_pregnancy,
                     'last_period_date', p.last_period_date,
                     'cycle_length', p.cycle_length,
-                    'language', p.language,
+                    'period_length', p.period_length,
                     'created_at', p.created_at
-            )
+            ) as profile
         FROM app_user u
                  LEFT JOIN profile p ON p.id = u.active_profile_id
         WHERE u.phone = ? AND u.otp = ?;
@@ -35,7 +35,7 @@ export const getUserByIdQuery = () => {
             u.uid,
             u.active_profile_id,
             u.created_at,
-            'profile', JSON_OBJECT(
+            JSON_OBJECT(
                     'id', p.id,
                     'user_id', p.user_id,
                     'role', p.role,
@@ -45,9 +45,9 @@ export const getUserByIdQuery = () => {
                     'first_pregnancy', p.first_pregnancy,
                     'last_period_date', p.last_period_date,
                     'cycle_length', p.cycle_length,
-                    'language', p.language,
+                    'period_length', p.period_length,
                     'created_at', p.created_at
-                       )
+            ) as profile
         FROM app_user u
                  LEFT JOIN profile p ON p.id = u.active_profile_id
         WHERE u.id = ?

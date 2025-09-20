@@ -34,7 +34,6 @@ import AppSettingPage from "./AppSettingPage";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
-    const [showMoreSheet, setShowMoreSheet] = useState(false);
     const menuRef = React.useRef(null);
     const {userAuthDetail} = useStore();
     const {userInfo} = userAuthDetail;
@@ -47,16 +46,6 @@ const AppEntryTabsPage = () => {
 
     const gotToPage = (path) => {
         history.replace(path);
-        setShowMoreSheet(false);
-    };
-
-    const callFunctionToOpenShowMoreSheet = () => {
-        const tabBarEl = document.querySelector('.main-tab-bar');
-        if (tabBarEl) {
-            const tabHeight = tabBarEl.getBoundingClientRect().height;
-            document.documentElement.style.setProperty('--tab-bar-height', `${tabHeight}px`);
-        }
-        setShowMoreSheet(!showMoreSheet);
     };
 
     return (

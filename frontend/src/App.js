@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {setupIonicReact, IonApp, IonRouterOutlet} from '@ionic/react';
+import {setupIonicReact, IonApp, IonRouterOutlet, IonLoading} from '@ionic/react';
 import '@ionic/react/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
@@ -35,15 +35,38 @@ import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
 import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
 import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
 import CommunityPostPage from "./pages/CommunityPostPage";
+import {actionToGetUserSessionData} from "./apiHelper/CommonAction";
+import useStore from "./zustand/useStore";
 
 setupIonicReact();
+
+const AppCreateRoleMainPage = () => {
+    return (
+        <IonReactRouter>
+            <IonRouterOutlet>
+                <Route path="/dashboard" exact={true} component={CreateRoleBasedFormPage} />
+                <Redirect exact from="/" to="/dashboard" />
+                <Route render={() => <Redirect to="/dashboard" />} />
+            </IonRouterOutlet>
+        </IonReactRouter>
+    );
+}
+
 
 const AppEnterMainPage = () => {
     return (
         <IonReactRouter>
             <IonRouterOutlet>
-                <Redirect  exact from="/"  to="/dashboard-home" />
-                <Route render={() => <Redirect to="/dashboard-home" />} />
+                <Route path="/daily-task/yoga" exact={true} component={DailyTaskYogTaskComponent} />
+                <Route path="/daily-task/meditation" exact={true} component={DailyTaskMeditationTaskComponent} />
+                <Route path="/daily-task/samvaad" exact={true} component={DailyTaskSamvaadComponent} />
+                <Route path="/daily-task/mantra" exact={true} component={DailyTaskMantraComponent} />
+                <Route path="/daily-task/hydration" exact={true} component={DailyTaskHydrationComponent} />
+                <Route path="/daily-task/mood" exact={true} component={DailyTaskMoodComponent} />
+                <Route path="/community-post/:id" exact={true} component={CommunityPostPage} />
+                <Route path="/dashboard" component={AppEntryTabsPage} />
+                <Redirect exact from="/" to="/dashboard" />
+                <Route render={() => <Redirect to="/dashboard" />} />
             </IonRouterOutlet>
         </IonReactRouter>
     );
@@ -55,16 +78,6 @@ const PublicRoutes = () => {
             <IonRouterOutlet>
                 <Route path="/home" exact={true} component={WithoutLoginHomePage} />
                 <Route path="/login" exact={true} component={LoginPage} />
-                <Route path="/choose-role" exact={true} component={ChooseRolePageAfterLoginComponent} />
-                <Route path="/create-profile" exact={true} component={CreateRoleBasedFormPage} />
-                <Route path="/daily-task/yoga" exact={true} component={DailyTaskYogTaskComponent} />
-                <Route path="/daily-task/meditation" exact={true} component={DailyTaskMeditationTaskComponent} />
-                <Route path="/daily-task/samvaad" exact={true} component={DailyTaskSamvaadComponent} />
-                <Route path="/daily-task/mantra" exact={true} component={DailyTaskMantraComponent} />
-                <Route path="/daily-task/hydration" exact={true} component={DailyTaskHydrationComponent} />
-                <Route path="/daily-task/mood" exact={true} component={DailyTaskMoodComponent} />
-                <Route path="/community-post/:id" exact={true} component={CommunityPostPage} />
-                <Route path="/dashboard" component={AppEntryTabsPage} />
                 <Redirect exact from="/" to="/home" />
                 <Route render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
@@ -73,13 +86,13 @@ const PublicRoutes = () => {
 };
 
 const App = () => {
-    // const dispatch = useDispatch();
-    // const userSession = useSelector((state) => state.userSession);
-    // const {userInfo} = useSelector((state) => state.userAuthDetail);
+    const {userAuthDetail,userSession} = useStore();
+    const {userInfo} = userAuthDetail;
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
-    // useEffect(() => {
-    //     dispatch(actionToGetUserSessionData());
-    // }, []);
+
+    useEffect(() => {
+        actionToGetUserSessionData();
+    }, []);
 
     useEffect(()=>{
         if(Capacitor.isNativePlatform()){
@@ -111,13 +124,12 @@ const App = () => {
     }else{
         return (
             <IonApp>
-                {/*{(!userSession?.loading) ?*/}
-                {/*    <React.Fragment>*/}
-                {/*        {userInfo?.id ? <AppEnterMainPage/> : <PublicRoutes/>}*/}
-                {/*    </React.Fragment>:''*/}
-                {/*}*/}
-                {/*<IonLoading className={"loading_loader_spinner_container"} isOpen={userSession?.loading} message={"Loading..."}/>*/}
-                <PublicRoutes/>
+                {(!userSession?.loading) ?
+                    <React.Fragment>
+                        {userInfo?.id ? (userInfo?.role) ? <AppEnterMainPage/> : <AppCreateRoleMainPage/> : <PublicRoutes/>}
+                    </React.Fragment>:''
+                }
+                <IonLoading className={"loading_loader_spinner_container"} isOpen={userSession?.loading} message={"Loading..."}/>
             </IonApp>
         );
     }

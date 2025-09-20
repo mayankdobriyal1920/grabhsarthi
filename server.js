@@ -9,6 +9,9 @@ import mediasoup from "mediasoup";
 import ffmpeg from "fluent-ffmpeg";
 import crypto from "crypto";
 import commonRouter from "./routers/commonRouter.js";
+import pool from "./models/connection.js";
+import session from 'express-session';
+import MySQLStore from 'express-mysql-session';
 
 const APP_PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
 const ANNOUNCED_HOST = process.env.ANNOUNCED_HOST || "garbhsarthi.com";
@@ -25,10 +28,45 @@ const app = express();
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost',
+    'https://localhost',
     'https://garbhsarthi.com',
     'https://meet.garbhsarthi.com',
+    'https://app.garbhsarthi.com',
 ];
 
+
+
+// MySQL Session Store Configuration
+const MySQLSessionStore = MySQLStore(session);
+const sessionStore = new MySQLSessionStore(
+    {
+        clearExpired: true,
+        checkExpirationInterval: 900000, // Clear expired sessions every 15 mins
+        expiration: 86400000, // Sessions expire after 1 day (24 hours)
+    },
+    pool
+);
+
+// Trust proxy for secure cookies
+app.set('trust proxy', 1);
+
+// Session Middleware
+app.use(
+    session({
+        store: sessionStore,
+        secret: process.env.SESSION_SECRET || 'garbh-sarthi-session-store', // Use environment variable for secret
+        resave: false,
+        saveUninitialized: false,
+        name: 'garbh-sarthi-session', // Use dynamic session name
+        cookie: {
+            expires: new Date(Date.now() + 31536000000),  // 1 year expiration
+            httpOnly: true,
+            sameSite: 'None',
+            secure: true,  // Ensure HTTPS for secure cookies
+            maxAge: 31536000000  // 1 year max age
+        },
+    })
+);
 
 // CORS Middleware
 app.use(
@@ -39,7 +77,7 @@ app.use(
 
             // Check if the origin is in the allowedOrigins array
             if (allowedOrigins.includes(origin)) {
-                return callback(null, origin); // Explicitly allow the origin
+                return callback(null, true); // Origin is allowed and can send credentials
             } else {
                 return callback(new Error('Not allowed by CORS')); // Block other origins
             }

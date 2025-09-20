@@ -4,7 +4,7 @@ import {
     IonCol,
     IonContent,
     IonHeader,
-    IonIcon,
+    IonIcon, IonLoading,
     IonMenu,
     IonRow,
     IonToolbar,
@@ -13,6 +13,8 @@ import {
 import {logOut, menuOutline, notifications} from "ionicons/icons";
 import {useHistory, useLocation} from "react-router-dom";
 import appLogo from "../theme/img/app-small-logo.png";
+import {actionToLogoutUserSession} from "../apiHelper/CommonAction";
+import useStore from "../zustand/useStore";
 
 const menuItems = [
     { label: 'Home', pathName:'/dashboard/home' },
@@ -22,9 +24,12 @@ const menuItems = [
 ];
 export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,setCurrentPath}){
     const [menuOpen, setMenuOpen] = useState(false);
+    const [userLogoutLoading, setUserLogoutLoading] = useState(false);
     const history = useHistory();
     const {pathname} = useLocation();
     const [presentAlert] = useIonAlert();
+    const {userAuthDetail} = useStore();
+    const {userInfo} = userAuthDetail;
 
     const goToPage =(page)=>{
         const menu = menuRef.current;
@@ -74,7 +79,7 @@ export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,se
                 {
                     text: 'Yes',
                     handler: () => {
-                        //actionToLogoutUserSession(signOut,setUserSession);
+                        actionToLogoutUserSession(setUserLogoutLoading);
                     },
                 },
             ],
@@ -108,13 +113,13 @@ export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,se
                             <IonRow className={"with_login-menu-item-header-row"}>
                                 <IonCol size="3">
                                     <div className="profile-avatar">
-                                        <div className="avatar-pill">M</div>
+                                        <div className="avatar-pill">{userInfo?.profile?.full_name?.substring(0,1)}</div>
                                     </div>
                                 </IonCol>
                                 <IonCol size="9">
                                     <div className={"user_full_info"}>
-                                            <div className="user_full_name">Monika Kothari</div>
-                                        <div className="user_full_contact">+91-7017935899</div>
+                                        <div className="user_full_name">{userInfo?.profile?.full_name}</div>
+                                        <div className="user_full_contact">+91-{userInfo?.phone}</div>
                                     </div>
                                 </IonCol>
                             </IonRow>
@@ -195,6 +200,7 @@ export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,se
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>
+                <IonLoading className={"loading_loader_spinner_container"} isOpen={userLogoutLoading} message={"Loading..."}/>
             </IonHeader>
         </>
     )
