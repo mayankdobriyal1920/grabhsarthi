@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {
-    IonPage,
     IonContent,
     IonFooter,
     IonButton,
-    IonIcon, IonHeader, IonButtons, IonTitle, useIonViewDidLeave, IonBackButton,
+    IonIcon, IonHeader, IonButtons, IonToolbar, IonModal,
 } from "@ionic/react";
-import {arrowBack,sendOutline} from "ionicons/icons";
+import {arrowBack, sendOutline} from "ionicons/icons";
 import moment from "moment-timezone";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
-import {useHistory,useParams} from "react-router-dom";
 import { useIonRouter } from "@ionic/react";
+import useStore from "../zustand/useStore";
+import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
 
 const posts = [
     {
@@ -136,8 +136,9 @@ const posts = [
 ];
 
 const CommunityPostPage = () => {
-    const {id} = useParams();
     const [post,setPost] = useState(null);
+    const {commonActionSheetPopupData} = useStore();
+    const {page,popupData} = commonActionSheetPopupData;
     const [comments, setComments] = useState([
         {
             id: 1,
@@ -258,8 +259,6 @@ const CommunityPostPage = () => {
         }
     ]);
     const [newComment, setNewComment] = useState("");
-    const history = useHistory();
-    const ionRouter = useIonRouter();
 
     const handleAddComment = () => {
         if (!newComment.trim()) return;
@@ -276,40 +275,29 @@ const CommunityPostPage = () => {
     };
 
     useEffect(() => {
-        if(id) {
-            let postData = posts.filter((p) => Number(p?.id) === Number(id));
+        if(popupData?.id) {
+            let postData = posts.filter((p) => Number(p?.id) === Number(popupData?.id));
             setPost(postData[0]);
         }
-    }, [id]);
-
-    // const goBack = () => {
-    //     history.goBack();
-    // };
+    }, [popupData]);
 
     const goBack = () => {
-        if (!ionRouter.canGoBack()) {
-            ionRouter.push("/home", "root"); // fallback if no history
-        } else {
-            ionRouter.goBack();
-        }
+        actionToSetCommonActionSheetPopupData('');
     };
 
-    useIonViewDidLeave(() => {
-        const el = document.querySelector('.ion-page-hidden');
-        if (el) el.classList.remove('ion-page-hidden');
-        const e2l = document.querySelector('.ion-page-invisible');
-        if (e2l) e2l.classList.remove('ion-page-invisible');
-    });
-
     return (
-        <IonPage className="community-post-page">
+        <IonModal isOpen={page === 'community-post'} className="community-post-page">
             <IonHeader className="community-post-page-header sub-page-header">
-                <IonButtons>
-                    <IonBackButton slot={'start'}/>
-                    <IonTitle>
+                <IonToolbar>
+                    <IonButtons slot="start">
+                        <IonButton onClick={()=>goBack()} slot={'start'}>
+                            <IonIcon icon={arrowBack}></IonIcon>
+                        </IonButton>
+                    </IonButtons>
+                    <div className={"header_title_sub_header"}>
                         Community Post
-                    </IonTitle>
-                </IonButtons>
+                    </div>
+                </IonToolbar>
             </IonHeader>
             <IonContent fullscreen className={"community-post-dashboard"}>
                 <div className="dash-wrap community-post-dashboard-wrap community-dashboard-wrap">
@@ -388,7 +376,7 @@ const CommunityPostPage = () => {
                 </div>
             </IonFooter>
             {/* Comment Input */}
-        </IonPage>
+        </IonModal>
     );
 };
 

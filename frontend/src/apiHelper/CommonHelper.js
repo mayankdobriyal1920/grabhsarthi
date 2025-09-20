@@ -1146,3 +1146,31 @@ export function _formatTimeMMSS(seconds) {
         String(remainingSeconds % 10)         // Ones place of seconds
     ];
 }
+
+
+// utils/gestation.js
+export function _getGestationalWeeksFromLMP(lmpString, { maxWeeks = 40 } = {}) {
+    if (!lmpString) return null;
+
+    // Normalize to local midnight to avoid TZ drift
+    const today = new Date();
+    const todayLocalMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    // Parse LMP (expecting 'YYYY-MM-DD' or ISO). If it fails, return null.
+    const lmp = new Date(lmpString);
+    if (Number.isNaN(lmp.getTime())) return null;
+    const lmpLocalMidnight = new Date(lmp.getFullYear(), lmp.getMonth(), lmp.getDate());
+
+    // Days since LMP (if LMP is in the future, clamp to 0)
+    const diffMs = Math.max(0, todayLocalMidnight - lmpLocalMidnight);
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    // Obstetric convention: Week 1 starts on LMP day.
+    // So 0–6 days -> week 1, 7–13 -> week 2, etc.
+    const weekNumber = Math.min(maxWeeks, Math.floor(diffDays / 7) + 1);
+
+    // Days into current week (0–6)
+    const daysIntoWeek = diffDays % 7;
+
+    return { weekNumber, daysIntoWeek, totalDays: diffDays };
+}

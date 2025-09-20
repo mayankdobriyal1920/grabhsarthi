@@ -3,7 +3,7 @@ import {IonPage, IonContent, IonIcon} from "@ionic/react";
 import { chatbubbleOutline, heartOutline} from "ionicons/icons";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
 import moment from "moment";
-import {useHistory} from "react-router-dom";
+import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
 
 const posts = [
     {
@@ -130,9 +130,8 @@ const posts = [
 
 
 const CommunityPage = () => {
-    const history = useHistory();
     const openPostPage = (id)=>{
-        history.push('/community-post/'+id)
+        actionToSetCommonActionSheetPopupData('community-post',{id});
     }
 
     return (
@@ -144,6 +143,7 @@ const CommunityPage = () => {
                 <div className="dash-wrap community-dashboard-wrap">
                     {posts.map((post) => (
                         <div key={post.id} onClick={()=>openPostPage(post.id)} className="card community-card">
+
                             {/* User Info */}
                             <div className="card-header">
                                 <div style={{color:'#ffffff',background:post.color}} className={"user_avatar_circle_cont"}>

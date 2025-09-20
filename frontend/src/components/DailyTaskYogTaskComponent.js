@@ -1,15 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import {IonPage, IonContent, IonIcon, useIonViewDidLeave} from "@ionic/react";
-import { useHistory } from "react-router-dom";
+import {IonContent, IonIcon, IonModal} from "@ionic/react";
 import {close, fitnessOutline, timerOutline} from "ionicons/icons";
 import catAndCowPose from "../theme/img/yogaTasks/cat-cow-pose.gif";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";
+import useStore from "../zustand/useStore";
+import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
 
 export default function DailyTaskYogTaskComponent() {
-    const history = useHistory();
+    const {commonActionSheetPopupData} = useStore();
+    const {page} = commonActionSheetPopupData;
+
     const handleGoHomePage = () =>{
-        history.goBack();
+        actionToSetCommonActionSheetPopupData('');
     }
 
     const radius = 51;
@@ -52,15 +55,8 @@ export default function DailyTaskYogTaskComponent() {
     },[])
 
 
-    useIonViewDidLeave(() => {
-        const el = document.querySelector('.ion-page-hidden');
-        if (el) el.classList.remove('ion-page-hidden');
-        const e2l = document.querySelector('.ion-page-invisible');
-        if (e2l) e2l.classList.remove('ion-page-invisible');
-    });
-
     return (
-        <IonPage>
+        <IonModal isOpen={page === 'daily-task-yoga'}>
             <IonContent fullscreen scrollEvents={true} className="pregnant-dashboard task_section_container_wrap">
                 <div className="header_for_task_section">
                     <h1>Yoga</h1>
@@ -125,6 +121,6 @@ export default function DailyTaskYogTaskComponent() {
                     </div>
                 </div>
             </IonContent>
-        </IonPage>
+        </IonModal>
     );
 }

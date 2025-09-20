@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { IonPage, IonContent, IonIcon, IonLoading } from "@ionic/react";
 import { starSharp } from "ionicons/icons";
-import { actionToGetCurrentUserProfileData, actionToSaveUserProfileData } from "../apiHelper/CommonAction";
+import {
+    actionToGetUserSessionData,
+    actionToSaveUserProfileData
+} from "../apiHelper/CommonAction";
 
 const ROLE = {
     PREGNANT_MOM: 2,
@@ -98,7 +101,7 @@ const CreateRoleBasedFormPage = () => {
         setLoadingApiCall(true);
         actionToSaveUserProfileData(payload)
             .then(() => {
-                actionToGetCurrentUserProfileData();
+                actionToGetUserSessionData();
             })
             .finally(() => setLoadingApiCall(false));
     };

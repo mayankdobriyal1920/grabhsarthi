@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     IonPage,
     IonContent,
     IonIcon,
 } from "@ionic/react";
 import { chevronBack, chevronForward } from "ionicons/icons";
-import { _babyWeeklyGrowthContentSvg } from "../apiHelper/CommonHelper";
-import { useHistory } from "react-router-dom";
+import {_babyWeeklyGrowthContentSvg, _getGestationalWeeksFromLMP} from "../apiHelper/CommonHelper";
+import useStore from "../zustand/useStore";
+import moment from "moment-timezone";
+import {useLocation} from "react-router-dom";
 
 export default function BabyTrackerPageForPregnantPage() {
-    const [currentWeek, setCurrentWeek] = useState(4);
-    const history = useHistory();
+    const { userAuthDetail } = useStore();
+    const { userInfo } = userAuthDetail || {};
+    const profile = userInfo?.profile || {}
+    const [currentWeek, setCurrentWeek] = useState(0);
+    const location = useLocation();
 
-    const goToPage = (page) => {
-        history.push(page);
-    };
+    useEffect(() => {
+        const lmpString = profile?.last_period_date ? moment(profile.last_period_date, "YYYY-MM-DD", true) : null;
+        // Pick your LMP source (adjust these to your actual shape)
+        const ga = _getGestationalWeeksFromLMP(lmpString, { maxWeeks: 40 });
+        const currentWeekIndex = ga ? Math.max(0, Math.min(39, ga.weekNumber - 1)) : 0;
+        setCurrentWeek(currentWeekIndex)
+    }, [location]);
 
     const handleWeekChange = (dir) => {
         if (dir === "prev" && currentWeek > 4) setCurrentWeek(currentWeek - 1);

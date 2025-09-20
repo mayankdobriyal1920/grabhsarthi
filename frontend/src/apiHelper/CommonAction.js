@@ -86,6 +86,10 @@ export const actionToGetCurrentUserProfileData = () => {
     }
 }
 
+export const actionToSetCommonActionSheetPopupData = (page = '',popupData = null) => {
+    const {setCommonActionSheetPopupData} = useStore.getState();
+    setCommonActionSheetPopupData({page,popupData});
+}
 export const actionToLogoutUserSession = (setUserLogoutLoading) => {
     setUserLogoutLoading(false);
     const {setUserAuthDetail} = useStore.getState();

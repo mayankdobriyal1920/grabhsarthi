@@ -8,7 +8,7 @@ import {
     IonLabel,
     IonPage
 } from '@ionic/react';
-import { Route, Redirect, useLocation, useHistory } from 'react-router-dom';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 
 // Import your pages/components
 import PregnantDashboardPage from './PregnantDashboardPage';
@@ -37,16 +37,11 @@ const AppEntryTabsPage = () => {
     const menuRef = React.useRef(null);
     const {userAuthDetail} = useStore();
     const {userInfo} = userAuthDetail;
-    const history = useHistory();
     const { pathname } = useLocation();
 
     useEffect(() => {
         setCurrentPath(pathname);
     }, [pathname]);
-
-    const gotToPage = (path) => {
-        history.replace(path);
-    };
 
     return (
         <IonTabs>
@@ -57,24 +52,12 @@ const AppEntryTabsPage = () => {
                         <HeaderAfterLoginComponent menuRef={menuRef} currentPath={currentPath} setCurrentPath={setCurrentPath} pageId={"main-menu-content"} />
                         {/* Nested outlet for tab pages */}
                         <IonRouterOutlet id="main-menu-content">
-                            <Route exact path="/dashboard/home" render={()=>(
-                                <>
-                                    {(userInfo?.role === 3) ?
-                                        <TTCUserDashboardPage />
-                                        :
-                                        <PregnantDashboardPage />
-                                    }
-                                </>
-                            )} />
-                            <Route exact path="/dashboard/tracker" render={()=>(
-                                <>
-                                    {(userInfo?.role === 3) ?
-                                        <OvulationTrackerPage />
-                                        :
-                                        <BabyTrackerPageForPregnantPage />
-                                    }
-                                </>
-                            )} />
+                            <Route exact path="/dashboard/home" component={
+                                userInfo?.role === 3 ? TTCUserDashboardPage : PregnantDashboardPage
+                               } />
+                            <Route exact path="/dashboard/tracker" component={
+                                userInfo?.role === 3 ? OvulationTrackerPage : BabyTrackerPageForPregnantPage
+                            } />
                             <Route exact path="/dashboard/classes" component={ClassesPage} />
                             <Route exact path="/dashboard/community" component={CommunityPage} />
                             <Route exact path="/dashboard/settings" component={AppSettingPage} />

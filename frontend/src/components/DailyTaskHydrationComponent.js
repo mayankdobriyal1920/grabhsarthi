@@ -1,15 +1,18 @@
 import React, {useEffect} from "react";
-import {IonPage, IonContent, IonIcon, useIonViewDidLeave} from "@ionic/react";
-import { useHistory } from "react-router-dom";
+import {IonPage, IonContent, IonIcon, IonModal} from "@ionic/react";
 import {add, close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
 import hydrationImg from "../theme/img/hydration_bottal_img.png";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";
+import useStore from "../zustand/useStore";
+import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
 
 export default function DailyTaskHydrationComponent() {
-    const history = useHistory();
+    const {commonActionSheetPopupData} = useStore();
+    const {page} = commonActionSheetPopupData;
+
     const handleGoHomePage = () =>{
-        history.goBack();
+        actionToSetCommonActionSheetPopupData('');
     }
 
     useEffect(()=>{
@@ -26,15 +29,9 @@ export default function DailyTaskHydrationComponent() {
         }
     },[])
 
-    useIonViewDidLeave(() => {
-        const el = document.querySelector('.ion-page-hidden');
-        if (el) el.classList.remove('ion-page-hidden');
-        const e2l = document.querySelector('.ion-page-invisible');
-        if (e2l) e2l.classList.remove('ion-page-invisible');
-    });
 
     return (
-        <IonPage>
+        <IonModal isOpen={page === 'daily-task-hydration'}>
             <IonContent fullscreen scrollEvents={true} className="pregnant-dashboard task_section_container_wrap hydration_main_container">
                 <div className="header_for_task_section hydration">
                     <h1>{`Today's`} Hydration</h1>
@@ -70,6 +67,6 @@ export default function DailyTaskHydrationComponent() {
                     </div>
                 </div>
             </IonContent>
-        </IonPage>
+        </IonModal>
     );
 }

@@ -1,70 +1,77 @@
 // src/components/CycleCalendarComponent.js
 import React, { useMemo } from "react";
-import moment from "moment-timezone";
+import moment from "moment";
 
 const DEFAULTS = {
     periodLengthDays: 5,
     lutealPhaseDays: 14,
     minCycle: 20,
     maxCycle: 40,
-    timezone: "Asia/Kolkata",
 };
 
 // helper to clamp integer safely
 const clampInt = (n, min, max) =>
-    Number.isInteger(n) ? Math.max(min, Math.min(max, n)) : null;
+    Number.isFinite(n) && Number.isInteger(Number(n))
+        ? Math.max(min, Math.min(max, Number(n)))
+        : null;
 
 const CycleCalendarComponent = ({
-                                profile = {},
-                                lastPeriodDateStr,        // optional override: "YYYY-MM-DD"
-                                cycleLength,              // optional override: number
-                                month,                    // optional moment() date within month to display
-                                timezone = DEFAULTS.timezone,
-                                periodLengthDays = DEFAULTS.periodLengthDays, // explicit override wins
-                                lutealPhaseDays = DEFAULTS.lutealPhaseDays,
-                                minCycle = DEFAULTS.minCycle,
-                                maxCycle = DEFAULTS.maxCycle,
-                                className = "",
+                                    profile = {},
+                                    lastPeriodDateStr,        // optional override: "YYYY-MM-DD"
+                                    cycleLength,              // optional override: number
+                                    month,                    // optional moment()/Date/string within month to display
+                                    // IGNORING TIMEZONE INTENTIONALLY
+                                    periodLengthDays,         // optional explicit override (2–10). If undefined, fall back to profile/default.
+                                    lutealPhaseDays = DEFAULTS.lutealPhaseDays,
+                                    minCycle = DEFAULTS.minCycle,
+                                    maxCycle = DEFAULTS.maxCycle,
+                                    className = "",
                                 }) => {
     const role = Number(profile?.role ?? 0); // 2 = Pregnant Mom, 3 = TTC
     const isTTC = role === 3;
 
     const lmpStr = lastPeriodDateStr ?? profile?.last_period_date ?? null;
+
+    // cycle length: prop -> profile -> null
     const cycLen = Number.isInteger(cycleLength)
         ? cycleLength
-        : Number(profile?.cycle_length) || null;
+        : Number.isFinite(Number(profile?.cycle_length))
+            ? Number(profile?.cycle_length)
+            : null;
 
+    // resolve period length: explicit prop -> profile -> default
     const profilePeriodLen = clampInt(Number(profile?.period_length), 2, 10);
-
+    const explicitPeriodLen = clampInt(Number(periodLengthDays), 2, 10);
     const resolvedPeriodLength =
-         profilePeriodLen ?? // if caller passed a valid override, use it
-         clampInt(periodLengthDays, 2, 10) ??                  // else use profile value if valid
-        DEFAULTS.periodLengthDays;           // else fallback default
+        explicitPeriodLen ?? profilePeriodLen ?? DEFAULTS.periodLengthDays;
 
-    const startOfMonth = useMemo(
-        () =>
-            month
-                ? moment.tz(month, timezone).startOf("month")
-                : moment.tz(timezone).startOf("month"),
-        [month, timezone]
-    );
+    const isValidISODate = (s) => /^\d{4}-\d{2}-\d{2}$/.test(String(s || ""));
+    const within = (day, start, end) => day.isBetween(start, end, "day", "[]");
+
+    // month boundaries (local time, no timezone)
+    const startOfMonth = useMemo(() => {
+        const base = month ? moment(month) : moment();
+        return base.startOf("month");
+    }, [month]);
+
     const endOfMonth = useMemo(
         () => startOfMonth.clone().endOf("month"),
         [startOfMonth]
     );
 
-    const isValidISODate = (s) => /^\d{4}-\d{2}-\d{2}$/.test(String(s || ""));
-    const within = (day, start, end) => day.isBetween(start, end, "day", "[]");
-
     const cycleBlocks = useMemo(() => {
         if (!isTTC) return [];
         if (!isValidISODate(lmpStr)) return [];
-        if (!Number.isInteger(cycLen) || cycLen < minCycle || cycLen > maxCycle) return [];
+        if (!Number.isInteger(cycLen) || cycLen < minCycle || cycLen > maxCycle)
+            return [];
 
-        const lastPeriodStart = moment.tz(lmpStr, "YYYY-MM-DD", true, timezone);
+        // Parse LMP strictly at local midnight
+        const lastPeriodStart = moment(lmpStr, "YYYY-MM-DD", true);
         if (!lastPeriodStart.isValid()) return [];
 
         const results = [];
+
+        // Find a cycle anchor just before the visible month so we cover overlaps
         let cycleStart = lastPeriodStart.clone();
 
         while (cycleStart.isAfter(startOfMonth, "day")) {
@@ -73,20 +80,22 @@ const CycleCalendarComponent = ({
         while (cycleStart.isBefore(startOfMonth, "day")) {
             cycleStart = cycleStart.clone().add(cycLen, "days");
         }
+        // Step back one full cycle to ensure we include spillovers at the start
         cycleStart = cycleStart.clone().subtract(cycLen, "days");
 
+        // Generate through a buffer past month end to catch late overlaps
         const monthEndBuffer = endOfMonth.clone().add(cycLen, "days");
         let cur = cycleStart.clone();
 
         while (cur.isSameOrBefore(monthEndBuffer, "day")) {
             const periodStart = cur.clone();
-            const periodEnd = periodStart.clone().add(resolvedPeriodLength - 1, "days"); // <-- uses resolved value
+            const periodEnd = periodStart.clone().add(resolvedPeriodLength - 1, "days");
 
-            const ovulationOffset = cycLen - lutealPhaseDays;
+            const ovulationOffset = cycLen - lutealPhaseDays; // typical rule of thumb
             const ovulationDay = periodStart.clone().add(ovulationOffset, "days");
 
             const fertileStart = ovulationDay.clone().subtract(5, "days");
-            const fertileEnd = ovulationDay.clone().add(1, "days");
+            const fertileEnd = ovulationDay.clone().add(1, "days"); // include ovulation & day after
 
             const intersectsMonth =
                 within(periodStart, startOfMonth, endOfMonth) ||
@@ -105,6 +114,7 @@ const CycleCalendarComponent = ({
                     fertileEnd,
                 });
             }
+
             cur = cur.clone().add(cycLen, "days");
         }
 
@@ -119,7 +129,6 @@ const CycleCalendarComponent = ({
         endOfMonth,
         resolvedPeriodLength,
         lutealPhaseDays,
-        timezone,
     ]);
 
     const isPeriodDay = (day) =>
@@ -146,10 +155,8 @@ const CycleCalendarComponent = ({
         return days;
     }, [startOfMonth, endOfMonth]);
 
-    const weekStart = useMemo(
-        () => moment.tz(timezone).startOf("week").add(1, "day"),
-        [timezone]
-    );
+    // Monday-first row labels using ISO week (no timezone)
+    const weekStart = useMemo(() => moment().startOf("isoWeek"), []);
     const daysOfWeek = useMemo(
         () => Array.from({ length: 7 }, (_, i) => weekStart.clone().add(i, "days")),
         [weekStart]
@@ -173,7 +180,7 @@ const CycleCalendarComponent = ({
                 {/* Dates grid */}
                 <div className="calendar-dates">
                     {daysInMonth.map((day, idx) => {
-                        const isToday = moment.tz(timezone).isSame(day, "day");
+                        const isToday = moment().isSame(day, "day");
 
                         const fertile = showTTCInfo ? isFertileDay(day) : false;
                         const period = showTTCInfo ? isPeriodDay(day) : false;

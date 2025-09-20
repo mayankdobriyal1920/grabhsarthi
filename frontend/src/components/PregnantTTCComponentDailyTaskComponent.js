@@ -1,17 +1,16 @@
 import React from "react";
-import {useHistory} from "react-router-dom";
+import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
 
 export default function PregnantTTCComponentDailyTaskComponent({type}) {
-    const history = useHistory();
     const goToPage = (page)=>{
-        history.push(page)
+        actionToSetCommonActionSheetPopupData(page);
     }
     return (
         <div className="card tasks task_main_card">
             <h3>Daily Tasks</h3>
 
             <div className="tasks-grid">
-                <div className="task" onClick={()=>goToPage('/daily-task/yoga')}>
+                <div className="task" onClick={()=>goToPage('daily-task-yoga')}>
                     <div className="task-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#e08500" height="40px" width="40px"
                              version="1.1" id="Capa_1" viewBox="0 0 370.001 370.001">
@@ -30,7 +29,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                     <span>Yoga</span>
                 </div>
 
-                <div className="task" onClick={()=>goToPage('/daily-task/meditation')}>
+                <div className="task" onClick={()=>goToPage('daily-task-meditation')}>
                     <div className="task-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#966dff" height="40px" width="40px"
                              version="1.1" id="Capa_1" viewBox="0 0 380 380">
@@ -54,7 +53,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                 </div>
 
                 <div className="task">
-                    <div className="task-icon" onClick={()=>goToPage('/daily-task/samvaad')}>
+                    <div className="task-icon" onClick={()=>goToPage('daily-task-samvaad')}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
                              viewBox="0 0 24 24" fill="none">
                             <path fillRule="evenodd" clipRule="evenodd"
@@ -75,7 +74,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                     }
                 </div>
 
-                <div className="task" onClick={()=>goToPage('/daily-task/mantra')}>
+                <div className="task" onClick={()=>goToPage('daily-task-mantra')}>
                     <div className="task-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
                              viewBox="0 0 24 24" fill="none">
@@ -93,7 +92,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                     <span>Mantra</span>
                 </div>
 
-                <div className="task" onClick={()=>goToPage('/daily-task/hydration')}>
+                <div className="task" onClick={()=>goToPage('daily-task-hydration')}>
                     <div className="task-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#8cc7d5" width="40px" height="40px"
                              viewBox="0 0 32 32" version="1.1">
@@ -110,7 +109,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                     <span>Hydration</span>
                 </div>
 
-                <div className="task" onClick={()=>goToPage('/daily-task/mood')}>
+                <div className="task" onClick={()=>goToPage('daily-task-mood')}>
                     <div className="task-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
                              viewBox="0 0 24 24" fill="none">

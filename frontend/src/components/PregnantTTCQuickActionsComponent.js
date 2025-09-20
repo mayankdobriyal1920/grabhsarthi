@@ -11,7 +11,7 @@ import {useHistory} from "react-router-dom";
 export default function PregnantTTCQuickActionsComponent() {
     const history = useHistory();
     const goToPage = (page)=>{
-        history.push(page)
+        history.replace(page)
     }
 
     return (

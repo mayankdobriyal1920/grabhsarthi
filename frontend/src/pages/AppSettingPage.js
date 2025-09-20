@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { IonPage, IonContent, IonIcon, IonLoading } from "@ionic/react";
 import { starSharp } from "ionicons/icons";
 import {
-    actionToGetCurrentUserProfileData,
+    actionToGetUserSessionData,
     actionToUpdateUserProfileData
 } from "../apiHelper/CommonAction";
 import useStore from "../zustand/useStore";
-import {useHistory} from "react-router-dom";
 
 const ROLE = {
     PREGNANT_MOM: 2,
@@ -17,7 +16,6 @@ const AppSettingPage = () => {
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
     const profile = userInfo?.profile || {};
-    const history = useHistory();
 
     const [form, setForm] = useState({
         role: userInfo?.role,
@@ -108,10 +106,8 @@ const AppSettingPage = () => {
         setLoadingApiCall(true);
         actionToUpdateUserProfileData(payload)
             .then(() => {
-                actionToGetCurrentUserProfileData();
-                history.replace('/dashboard');
-            })
-            .finally(() => setLoadingApiCall(false));
+                actionToGetUserSessionData();
+            }).finally(() => setLoadingApiCall(false));
     };
 
     const Label = ({ htmlFor, children, required }) => (

@@ -29,6 +29,9 @@ const useStore = create((set) => ({
     getOtpSuccess: () => set({ userOtpDetails: { loading: false, success: true, error: null } }),
     getOtpFail: () => set({ userOtpDetails: { loading: false, success: false, error:'Wrong OTP!!' } }),
 
+    commonActionSheetPopupData: {page:'',popupData:null},
+    setCommonActionSheetPopupData: (data) => set({ commonActionSheetPopupData: data }),
+
 }));
 
 export default useStore;

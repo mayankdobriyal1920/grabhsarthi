@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from "react";
-import {IonPage, IonContent, IonIcon, useIonViewDidLeave} from "@ionic/react";
-import { useHistory } from "react-router-dom";
+import {IonContent, IonIcon, IonModal} from "@ionic/react";
 import pregSamvaadImg from "../theme/img/preg_samvaad.png";
 import {close, ribbonOutline} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";
+import useStore from "../zustand/useStore";
+import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
 
 export default function DailyTaskSamvaadComponent() {
-    const history = useHistory();
     const [babySamvaadText,setBabySamvaadText] = useState('');
+    const {commonActionSheetPopupData} = useStore();
+    const {page} = commonActionSheetPopupData;
+
     const handleGoHomePage = () =>{
-        history.goBack();
+        actionToSetCommonActionSheetPopupData('');
     }
 
     useEffect(()=>{
@@ -27,15 +30,8 @@ export default function DailyTaskSamvaadComponent() {
         }
     },[])
 
-    useIonViewDidLeave(() => {
-        const el = document.querySelector('.ion-page-hidden');
-        if (el) el.classList.remove('ion-page-hidden');
-        const e2l = document.querySelector('.ion-page-invisible');
-        if (e2l) e2l.classList.remove('ion-page-invisible');
-    });
-
     return (
-        <IonPage>
+        <IonModal isOpen={page === 'daily-task-samvaad'}>
             <IonContent fullscreen scrollEvents={true} className="pregnant-dashboard task_section_container_wrap samvaad_main_container">
                 <div className="header_for_task_section samvaad">
                     <h1>Garbh Samvaad</h1>
@@ -79,6 +75,6 @@ export default function DailyTaskSamvaadComponent() {
                     </div>
                 </div>
             </IonContent>
-        </IonPage>
+        </IonModal>
     );
 }

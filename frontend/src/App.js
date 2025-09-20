@@ -22,12 +22,13 @@ import {IonReactRouter} from "@ionic/react-router";
 import { Redirect, Route } from 'react-router';
 import WithoutLoginHomePage from "./pages/WithoutLoginHomePage";
 import LoginPage from "./pages/LoginPage";
-import ChooseRolePageAfterLoginComponent from "./pages/ChooseRolePageAfterLoginComponent";
 import CreateRoleBasedFormPage from "./pages/CreateRoleBasedFormPage";
 import AppEntryTabsPage from "./pages/AppEntryTabsPage";
 import {Capacitor} from "@capacitor/core";
 import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
+import {actionToGetUserSessionData} from "./apiHelper/CommonAction";
+import useStore from "./zustand/useStore";
 import DailyTaskYogTaskComponent from "./components/DailyTaskYogTaskComponent";
 import DailyTaskMeditationTaskComponent from "./components/DailyTaskMeditationTaskComponent";
 import DailyTaskSamvaadComponent from "./components/DailyTaskSamvaadComponent";
@@ -35,53 +36,27 @@ import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
 import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
 import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
 import CommunityPostPage from "./pages/CommunityPostPage";
-import {actionToGetUserSessionData} from "./apiHelper/CommonAction";
-import useStore from "./zustand/useStore";
 
 setupIonicReact();
 
-const AppCreateRoleMainPage = () => {
+const AppEnterMainPage = ({userRole}) => {
     return (
-        <IonReactRouter>
-            <IonRouterOutlet>
-                <Route path="/dashboard" exact={true} component={CreateRoleBasedFormPage} />
-                <Redirect exact from="/" to="/dashboard" />
-                <Route render={() => <Redirect to="/dashboard" />} />
-            </IonRouterOutlet>
-        </IonReactRouter>
-    );
-}
-
-
-const AppEnterMainPage = () => {
-    return (
-        <IonReactRouter>
-            <IonRouterOutlet>
-                <Route path="/daily-task/yoga" exact={true} component={DailyTaskYogTaskComponent} />
-                <Route path="/daily-task/meditation" exact={true} component={DailyTaskMeditationTaskComponent} />
-                <Route path="/daily-task/samvaad" exact={true} component={DailyTaskSamvaadComponent} />
-                <Route path="/daily-task/mantra" exact={true} component={DailyTaskMantraComponent} />
-                <Route path="/daily-task/hydration" exact={true} component={DailyTaskHydrationComponent} />
-                <Route path="/daily-task/mood" exact={true} component={DailyTaskMoodComponent} />
-                <Route path="/community-post/:id" exact={true} component={CommunityPostPage} />
-                <Route path="/dashboard" component={AppEntryTabsPage} />
-                <Redirect exact from="/" to="/dashboard" />
-                <Route render={() => <Redirect to="/dashboard" />} />
-            </IonRouterOutlet>
-        </IonReactRouter>
+        <>
+            <Route path="/dashboard" component={userRole ? AppEntryTabsPage : CreateRoleBasedFormPage} />
+            <Redirect exact from="/" to="/dashboard" />
+            <Route render={() => <Redirect to="/dashboard" />} />
+        </>
     );
 }
 
 const PublicRoutes = () => {
     return (
-        <IonReactRouter>
-            <IonRouterOutlet>
-                <Route path="/home" exact={true} component={WithoutLoginHomePage} />
-                <Route path="/login" exact={true} component={LoginPage} />
-                <Redirect exact from="/" to="/home" />
-                <Route render={() => <Redirect to="/home" />} />
-            </IonRouterOutlet>
-        </IonReactRouter>
+        <>
+            <Route path="/home" exact={true} component={WithoutLoginHomePage} />
+            <Route path="/login" exact={true} component={LoginPage} />
+            <Redirect exact from="/" to="/home" />
+            <Route render={() => <Redirect to="/home" />} />
+        </>
     );
 };
 
@@ -126,10 +101,22 @@ const App = () => {
             <IonApp>
                 {(!userSession?.loading) ?
                     <React.Fragment>
-                        {userInfo?.id ? (userInfo?.role) ? <AppEnterMainPage/> : <AppCreateRoleMainPage/> : <PublicRoutes/>}
+                        <IonReactRouter>
+                            <IonRouterOutlet>
+                                {userInfo?.id ? <AppEnterMainPage userRole={userInfo?.role}/> : <PublicRoutes/>}
+                            </IonRouterOutlet>
+                        </IonReactRouter>
                     </React.Fragment>:''
                 }
+
                 <IonLoading className={"loading_loader_spinner_container"} isOpen={userSession?.loading} message={"Loading..."}/>
+                <CommunityPostPage/>
+                <DailyTaskYogTaskComponent/>
+                <DailyTaskMeditationTaskComponent/>
+                <DailyTaskSamvaadComponent/>
+                <DailyTaskMantraComponent/>
+                <DailyTaskHydrationComponent/>
+                <DailyTaskMoodComponent/>
             </IonApp>
         );
     }
