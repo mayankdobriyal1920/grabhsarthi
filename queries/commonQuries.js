@@ -7,6 +7,7 @@ export const loginUserQuery = () => {
             u.uid,
             u.active_profile_id,
             u.created_at,
+            u.color,
             JSON_OBJECT(
                     'id', p.id,
                     'user_id', p.user_id,
@@ -35,6 +36,7 @@ export const getUserByIdQuery = () => {
             u.uid,
             u.active_profile_id,
             u.created_at,
+            u.color,
             JSON_OBJECT(
                     'id', p.id,
                     'user_id', p.user_id,

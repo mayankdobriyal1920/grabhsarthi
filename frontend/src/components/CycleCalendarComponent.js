@@ -218,10 +218,9 @@ const CycleCalendarComponent = ({
                 {/* Legend / Status */}
                 {showTTCInfo ? (
                     <div className="legend">
-                        <span className="legend-item period">Predicted Period</span>
+                        <span className="legend-item period">Periods</span>
                         <span className="legend-item fertile">Fertile Window</span>
                         <span className="legend-item ovulation">Ovulation</span>
-                        <span className="legend-item today">Today</span>
                     </div>
                 ) : isTTC ? (
                     <p className="status-text">

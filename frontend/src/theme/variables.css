@@ -197,4 +197,7 @@ http://ionicframework.com/docs/theming/ */
     --gs-hydration-task-color: #8cc7d5;
     --gs-mood-task-color: #FFC107;
 
+
+  --ncp-primary: var(--gs-pink); --ncp-text: #111827; --ncp-muted: #6b7280; --ncp-border: #e5e7eb; --ncp-surface: #ffffff; --ncp-surface-2: #f9fafb;
+
 }
