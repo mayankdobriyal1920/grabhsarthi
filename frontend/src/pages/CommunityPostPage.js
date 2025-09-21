@@ -8,7 +8,6 @@ import {
 import {arrowBack, sendOutline} from "ionicons/icons";
 import moment from "moment-timezone";
 import {_generateRandomPastelColor} from "../apiHelper/CommonHelper";
-import { useIonRouter } from "@ionic/react";
 import useStore from "../zustand/useStore";
 import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
 
@@ -290,7 +289,7 @@ const CommunityPostPage = () => {
             <IonHeader className="community-post-page-header sub-page-header">
                 <IonToolbar>
                     <IonButtons slot="start">
-                        <IonButton onClick={()=>goBack()} slot={'start'}>
+                        <IonButton onClick={()=>goBack()}>
                             <IonIcon icon={arrowBack}></IonIcon>
                         </IonButton>
                     </IonButtons>

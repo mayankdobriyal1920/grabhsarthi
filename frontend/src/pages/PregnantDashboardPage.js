@@ -1,15 +1,13 @@
 import React from "react";
-import { IonPage, IonContent, IonIcon } from "@ionic/react";
-import { leafOutline, flame } from "ionicons/icons";
+import {IonPage, IonContent, IonIcon, IonRouterLink} from "@ionic/react";
+import {leafOutline, flame, chevronForward} from "ionicons/icons";
 import {_babyWeeklyGrowthContentSvg, _getGestationalWeeksFromLMP} from "../apiHelper/CommonHelper";
-import { useHistory } from "react-router-dom";
 import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCComponentDailyTaskComponent";
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
 import useStore from "../zustand/useStore";
 import moment from "moment/moment";
 
 export default function PregnantDashboardPage() {
-    const history = useHistory();
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
     const profile = userInfo?.profile || {};
@@ -39,10 +37,6 @@ export default function PregnantDashboardPage() {
     // Progress as percent of 40 weeks (clamped)
     const progressPercent = ga ? Math.min(100, Math.round((ga.weekNumber / 40) * 100)) : 0;
 
-    const goToPage = (page) => {
-        history.replace(page);
-    };
-
     return (
         <IonPage>
             <IonContent fullscreen className="dash --peach-bg pregnant-dashboard main-content-page">
@@ -64,8 +58,15 @@ export default function PregnantDashboardPage() {
                         )}
                     </div>
 
-                    <div className="baby-growth-card" onClick={() => goToPage("/dashboard/tracker")}>
-                        <h2>Hi Mama!</h2>
+                    <div className="baby-growth-card">
+                        <div className={"heading_and_detail_button"}>
+                            <h2>Hi Mama!</h2>
+                            <IonRouterLink routerLink={"/dashboard/tracker"} className={"heading_and_detail_button_chevron_icon"}>
+                                <div>
+                                    Details <IonIcon icon={chevronForward}></IonIcon>
+                                </div>
+                            </IonRouterLink>
+                        </div>
                         <div className="content">
                             <div className="baby-blob">
                                 {weekContent.icon ? (

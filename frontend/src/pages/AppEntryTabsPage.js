@@ -31,6 +31,7 @@ import CommunityPage from "./CommunityPage";
 import BabyTrackerPageForPregnantPage from "./BabyTrackerPageForPregnantPage";
 import ClassesPage from "./ClassesPage";
 import AppSettingPage from "./AppSettingPage";
+import {actionToConnectSocketServer, actionToGetCommunityAllPostData} from "../apiHelper/CommonAction";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -42,6 +43,11 @@ const AppEntryTabsPage = () => {
     useEffect(() => {
         setCurrentPath(pathname);
     }, [pathname]);
+
+    useEffect(() => {
+        actionToGetCommunityAllPostData();
+        actionToConnectSocketServer();
+    }, []);
 
     return (
         <IonTabs>

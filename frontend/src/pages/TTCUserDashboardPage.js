@@ -1,7 +1,6 @@
 import React from "react";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import { leafOutline, flame } from "ionicons/icons";
-import { useHistory } from "react-router-dom";
 import moment from "moment";
 import useStore from "../zustand/useStore";
 
@@ -10,7 +9,6 @@ import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCCom
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
 
 export default function TTCUserDashboardPage() {
-    const history = useHistory();
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
 
@@ -26,10 +24,6 @@ export default function TTCUserDashboardPage() {
         ? Number(profile.cycle_length)
         : undefined;
 
-    const goToPage = (page) => {
-        history.replace(page);
-    };
-
     return (
         <IonPage>
             <IonContent
@@ -44,16 +38,15 @@ export default function TTCUserDashboardPage() {
                     </div>
 
                     {/* Cycle Calendar (clickable to open tracker) */}
-                    <div onClick={() => goToPage("/dashboard/tracker")}>
-                        <CycleCalendarComponent
-                            profile={profile} // carries role (2/3)
-                            lastPeriodDateStr={lmp?.isValid() ? lmp.format("YYYY-MM-DD") : undefined}
-                            cycleLength={cycleLength}
-                            timezone="Asia/Kolkata"
-                            periodLengthDays={profile?.period_length}
-                            lutealPhaseDays={14}
-                        />
-                    </div>
+                    <CycleCalendarComponent
+                        isDashboardPage={true}
+                        profile={profile} // carries role (2/3)
+                        lastPeriodDateStr={lmp?.isValid() ? lmp.format("YYYY-MM-DD") : undefined}
+                        cycleLength={cycleLength}
+                        timezone="Asia/Kolkata"
+                        periodLengthDays={profile?.period_length}
+                        lutealPhaseDays={14}
+                    />
 
                     {/* Daily Tasks */}
                     <PregnantTTCComponentDailyTaskComponent type="ttc" />

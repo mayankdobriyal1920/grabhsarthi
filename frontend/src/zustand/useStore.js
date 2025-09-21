@@ -32,6 +32,20 @@ const useStore = create((set) => ({
     commonActionSheetPopupData: {page:'',popupData:null},
     setCommonActionSheetPopupData: (data) => set({ commonActionSheetPopupData: data }),
 
+    communityPostIsInUploadingMode: {status:false,progress:0},
+    setCommunityPostIsInUploadingMode: (data) => set({ communityPostIsInUploadingMode: data }),
+
+    communityAllPostData: { loading: false, communityPost: [],offset:0,totalCount:0},
+    requestCommunityAllPostData: () => set({ communityAllPostData: { loading: true, communityPost:[],offset:0,totalCount:0} }),
+    setCommunityAllPostData: (data) => set({
+                                            communityAllPostData: {
+                                                loading: false,
+                                                communityPost: data?.communityPost || [],
+                                                offset: data?.offset || 0,
+                                                totalCount: data?.totalCount || 0
+                                            },
+                                        }),
+
 }));
 
 export default useStore;

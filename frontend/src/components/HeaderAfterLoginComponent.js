@@ -10,7 +10,7 @@ import {
     IonToolbar,
     useIonAlert
 } from "@ionic/react";
-import {logOut, menuOutline, notifications} from "ionicons/icons";
+import {menuOutline, notifications} from "ionicons/icons";
 import {useHistory, useLocation} from "react-router-dom";
 import appLogo from "../theme/img/app-small-logo.png";
 import {actionToLogoutUserSession} from "../apiHelper/CommonAction";
@@ -191,11 +191,6 @@ export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,se
                             <div className="notification-icon">
                                 <IonIcon icon={notifications}/>
                                 <span className="notification-badge">2</span>
-                            </div>
-                        </IonButton>
-                        <IonButton onClick={() => callFunctionToLogoutUser()} className="header_button">
-                            <div className="notification-icon">
-                                <IonIcon icon={logOut}/>
                             </div>
                         </IonButton>
                     </IonButtons>

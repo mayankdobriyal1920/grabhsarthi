@@ -14,11 +14,12 @@ import session from 'express-session';
 import MySQLStore from 'express-mysql-session';
 
 const APP_PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
-const ANNOUNCED_HOST = process.env.ANNOUNCED_HOST || "garbhsarthi.com";
-const UPLOAD_PATH = process.env.UPLOAD_PATH || "/var/www/html/garbhsarthi/recording-upload-data";
-const TEACHER_SECRET = process.env.TEACHER_SECRET || "monika1212";
+const ANNOUNCED_HOST = "garbhsarthi.com";
+const UPLOAD_PATH = "/var/www/html/garbhsarthi/public/uploads/recording-upload-data";
+const TEACHER_SECRET = "monika1212";
 // Use a fixed room id (same every time)
 const ROOM_ID = process.env.ROOM_ID || "main-classroom";
+export let userSocketIdsObject = {};
 
 fs.mkdirSync(UPLOAD_PATH, { recursive: true });
 
@@ -91,8 +92,30 @@ app.use(express.json({ limit: "300mb" }));
 app.use(express.urlencoded({ extended: true, limit: "300mb" }));
 
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
 
+// Initialize Socket.IO
+const io = new Server(server, {
+    cors: {
+        origin: allowedOrigins,
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+    path: '/api-socket',
+});
+
+io.on('connection', (socket) => {
+    userSocketIdsObject[socket.id] = socket;
+
+    socket.on('message', (data) => {
+        io.emit('message', data);
+    });
+
+    socket.on('disconnect', () => {
+        if(userSocketIdsObject[socket.id]){
+            delete userSocketIdsObject[socket.id];
+        }
+    });
+});
 
 // ---------- mediasoup setup ----------
 const mediaCodecs = [

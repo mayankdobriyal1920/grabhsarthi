@@ -1,6 +1,13 @@
-import React, { useMemo, useRef, useState } from "react";
-import { IonModal, IonList, IonItem, IonFooter, IonContent, IonIcon, IonText, useIonToast } from "@ionic/react";
-import { closeOutline, imageOutline, filmOutline, cloudUploadOutline, trashOutline } from "ionicons/icons";
+import React, { useRef, useState } from "react";
+import {
+    IonModal,
+    IonContent,
+    IonIcon,
+    useIonToast,
+    IonHeader, IonToolbar, IonButtons, IonButton
+} from "@ionic/react";
+import {imageOutline, filmOutline, cloudUploadOutline, trashOutline, arrowBack} from "ionicons/icons";
+import {actionToPostNewCommunityPostData} from "../apiHelper/CommonAction";
 
 const MAX_IMAGE_DIMENSION = 1280;
 const IMAGE_QUALITY = 0.8;
@@ -49,7 +56,7 @@ async function compressVideo(file) {
     return new File([outBlob], file.name.replace(/\.[a-z0-9]+$/i, "_compressed.webm"), { type: outBlob.type, lastModified: Date.now() });
 }
 
-export default function AddCommunityPostModal({ isOpen, onClose, onReady }) {
+export default function AddCommunityPostModal({ isOpen, onClose }) {
     const [message, setMessage] = useState("");
     const [attachment, setAttachment] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -58,12 +65,10 @@ export default function AddCommunityPostModal({ isOpen, onClose, onReady }) {
     const inputRef = useRef(null);
     const [present] = useIonToast();
 
-    const objectType = useMemo(() => {
-        if (!attachment) return "text"; if (isImage(attachment)) return "image"; if (isVideo(attachment)) return "video"; return "text";
-    }, [attachment]);
 
     const reset = () => { setMessage(""); setAttachment(null); setPreviewUrl(null); setErrors({}); setSubmitting(false); };
     const closeAndReset = () => { reset(); onClose && onClose(); };
+
 
     const onPickFile = (e) => {
         const file = e.target.files?.[0]; if (!file) return;
@@ -72,13 +77,16 @@ export default function AddCommunityPostModal({ isOpen, onClose, onReady }) {
         const url = URL.createObjectURL(file); setPreviewUrl((old) => { if (old) URL.revokeObjectURL(old); return url; });
     };
 
+
     const removeAttachment = () => {
         if (previewUrl) URL.revokeObjectURL(previewUrl); setPreviewUrl(null); setAttachment(null);
     };
 
+
     const validate = () => {
         const errs = {}; if (!message || message.trim().length < 3) errs.message = "Please enter at least 3 characters."; if (attachment && !(isImage(attachment) || isVideo(attachment))) errs.attachment = "Only image/video files are allowed."; setErrors(errs); return Object.keys(errs).length === 0;
     };
+
 
     const onSubmit = async () => {
         if (!validate()) { present({ message: "Fix the errors before submitting.", duration: 1800, color: "danger" }); return; }
@@ -87,73 +95,87 @@ export default function AddCommunityPostModal({ isOpen, onClose, onReady }) {
             let finalFile = attachment;
             if (finalFile && isImage(finalFile)) finalFile = await compressImage(finalFile);
             else if (finalFile && isVideo(finalFile)) finalFile = await compressVideo(finalFile);
-            const payload = { message: message.trim(), object_type: finalFile ? (isImage(finalFile) ? "image" : "video") : "text", created_at: new Date().toISOString(), created_by: 1, attachment: finalFile ? { name: finalFile.name, type: finalFile.type, size_bytes: finalFile.size, preview_url: URL.createObjectURL(finalFile) } : null };
-            console.log("community_post form payload =>", payload);
-            onReady && onReady(payload);
-            present({ message: "Post ready! Check console for payload.", duration: 1800, color: "success" });
-            closeAndReset();
-        } catch (e) { console.error(e); present({ message: "Failed to prepare post.", duration: 2000, color: "danger" }); setSubmitting(false); }
+            const object_type = finalFile ? (isImage(finalFile) ? "image" : "video") : "text";
+            const formData = new FormData();
+            formData.append("message", message.trim());
+            formData.append("object_type", object_type);
+            if (finalFile) formData.append("attachment", finalFile, finalFile.name); // field name MUST be 'attachment'
+            console.log("community_post form formData =>", { message: message.trim(), object_type, attachment: finalFile && { name: finalFile.name, type: finalFile.type, size: finalFile.size } });
+            console.log('test',formData);
+            actionToPostNewCommunityPostData(formData);
+            setSubmitting(false);
+            //closeAndReset();
+        } catch (e) { console.error(e); present({ message: "Failed to upload post.", duration: 2000, color: "danger" }); setSubmitting(false); }
     };
 
     return (
-        <IonModal isOpen={isOpen} initialBreakpoint={0.75} breakpoints={[0, 0.5, 0.75, 1]} onDidDismiss={closeAndReset} className="new-community-post-modal">
+        <IonModal isOpen={isOpen} onDidDismiss={closeAndReset} className="new-community-post-modal community-post-page">
+            <IonHeader className="community-post-page-header sub-page-header">
+                <IonToolbar>
+                    <IonButtons slot="start">
+                        <IonButton onClick={()=>closeAndReset()}>
+                            <IonIcon icon={arrowBack}></IonIcon>
+                        </IonButton>
+                    </IonButtons>
+                    <div className={"header_title_sub_header"}>
+                        Create Post
+                    </div>
+                    <IonButtons slot="end">
+                        <button type={"button"} onClick={onSubmit} disabled={submitting || (!previewUrl && !message?.trim()?.length)} className="ncp-post">
+                            Post
+                        </button>
+                    </IonButtons>
+                </IonToolbar>
+            </IonHeader>
             <IonContent>
-                {/* Custom Header */}
-                <div className="ncp-header">
-                    <button className="ncp-close" onClick={closeAndReset} aria-label="Close"><IonIcon icon={closeOutline} /></button>
-                    <div className="ncp-title">Create Post</div>
-                    <button className="ncp-post" onClick={onSubmit} disabled={submitting}>{submitting ? "Preparing…" : "Post"}</button>
-                </div>
-
                 {/* Form Body */}
                 <div className="ncp-body">
                     {/* Custom Textarea */}
                     <div className="ncp-textarea-wrap">
-            <textarea
-                className="ncp-textarea"
-                value={message}
-                placeholder="What's on your mind?"
-                maxLength={500}
-                onChange={(e) => setMessage(e.target.value)}
-            />
+                        <textarea
+                            className="ncp-textarea"
+                            value={message}
+                            placeholder="What's on your mind?"
+                            maxLength={500}
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
                         <div className="ncp-charcount">{message.length}/500</div>
                     </div>
                     {errors.message && <div className="error-text">{errors.message}</div>}
 
-                    {/* Attachment picker */}
-                    <div className="ncp-attach-row">
-                        <input ref={inputRef} type="file" accept="image/*,video/*" onChange={onPickFile} style={{ display: "none" }} />
-                        <button className="ncp-attach-btn" onClick={() => inputRef.current?.click()}>
-                            <IonIcon icon={cloudUploadOutline} />
-                            <span>Add photo/video</span>
-                        </button>
-                        {attachment && (
-                            <div className="ncp-attach-meta">
-                                <IonIcon icon={isImage(attachment) ? imageOutline : filmOutline} />
-                                <span className="file-name">{attachment.name}</span>
-                            </div>
-                        )}
-                    </div>
-                    {errors.attachment && <div className="error-text">{errors.attachment}</div>}
-
                     {/* Instagram-like preview tile with delete */}
-                    {previewUrl && (
-                        <div className="ncp-preview-tile">
-                            {attachment && isImage(attachment) ? (
-                                <img src={previewUrl} alt="preview" />
-                            ) : (
-                                <video src={previewUrl || undefined} controls />
-                            )}
-                            <button className="ncp-delete" onClick={removeAttachment} aria-label="Remove attachment">
-                                <IonIcon icon={trashOutline} />
-                            </button>
-                        </div>
-                    )}
+                    {previewUrl ? (
+                            <div className="ncp-preview-tile">
+                                {attachment && isImage(attachment) ? (
+                                    <img src={previewUrl} alt="preview" />
+                                ) : (
+                                    <video src={previewUrl || undefined} controls />
+                                )}
+                                <button className="ncp-delete" onClick={removeAttachment} aria-label="Remove attachment">
+                                    <IonIcon icon={trashOutline} />
+                                </button>
+                            </div>
+                        ):
+                        <>
+                            {/* Attachment picker */}
+                            <div className="ncp-attach-row">
+                                <input ref={inputRef} type="file" accept="image/*,video/*" onChange={onPickFile} style={{ display: "none" }} />
+                                <button className="ncp-attach-btn" onClick={() => inputRef.current?.click()}>
+                                    <IonIcon icon={cloudUploadOutline} />
+                                    <span>Add photo/video</span>
+                                </button>
+                                {attachment && (
+                                    <div className="ncp-attach-meta">
+                                        <IonIcon icon={isImage(attachment) ? imageOutline : filmOutline} />
+                                        <span className="file-name">{attachment.name}</span>
+                                    </div>
+                                )}
+                            </div>
+                            {errors.attachment && <div className="error-text">{errors.attachment}</div>}
+                        </>
+                    }
                 </div>
             </IonContent>
-
-            {/* Footer kept minimal for safe area padding on iOS */}
-            <IonFooter className="ncp-footer-spacer" />
         </IonModal>
     );
 }

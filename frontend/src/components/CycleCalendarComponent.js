@@ -1,6 +1,8 @@
 // src/components/CycleCalendarComponent.js
 import React, { useMemo } from "react";
 import moment from "moment";
+import {IonIcon, IonRouterLink} from "@ionic/react";
+import {chevronForward} from "ionicons/icons";
 
 const DEFAULTS = {
     periodLengthDays: 5,
@@ -16,6 +18,7 @@ const clampInt = (n, min, max) =>
         : null;
 
 const CycleCalendarComponent = ({
+                                    isDashboardPage,
                                     profile = {},
                                     lastPeriodDateStr,        // optional override: "YYYY-MM-DD"
                                     cycleLength,              // optional override: number
@@ -165,7 +168,18 @@ const CycleCalendarComponent = ({
     return (
         <div className={`cycle-card main_cycle_calendar_section ${className || ""}`}>
             <div className="dash-card-head">
-                <h3>Cycle Calendar</h3>
+                {(isDashboardPage) ?
+                    <div className={"heading_and_detail_button"}>
+                        <h3>Cycle Calendar</h3>
+                        <IonRouterLink routerLink={"/dashboard/tracker"} className={"heading_and_detail_button_chevron_icon"}>
+                            <div>
+                               Details <IonIcon icon={chevronForward}></IonIcon>
+                            </div>
+                        </IonRouterLink>
+                    </div>
+                    :
+                    <h3>Cycle Calendar</h3>
+                }
                 <small>{startOfMonth.format("MMMM YYYY")}</small>
             </div>
 

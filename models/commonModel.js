@@ -1,5 +1,7 @@
 import pool from "./connection.js";
 import {
+    actionToGetCommunityAllPostDataCountQuery,
+    actionToGetCommunityAllPostDataQuery, actionToGetCommunityPostByIdQuery,
     getUserByIdQuery,
     loginUserQuery,
 } from "../queries/commonQuries.js";
@@ -20,6 +22,7 @@ export const actionToVerifyLoginUserOtpApiCall = (phone,otp) => {
         })
     })
 }
+
 
 export const actionToVerifyUserPhoneApiCall = (phone) => {
     return new Promise(function(resolve, reject) {
@@ -258,13 +261,13 @@ export const actionToUpdateUserProfileDataApiCall = (userId, payload = {}) => {
 };
 
 
-export const actionToInsertNewUserLoginData = (phone,otp) => {
+export const actionToInsertNewUserLoginData = (phone,otp,color) => {
     return new Promise(function (resolve) {
         const uid = _generateUniqueIdForBackend();
         let insertData = {
-            alias: ["?","?","?"],
-            column: ["uid","phone","otp"],
-            values: [uid, phone,otp],
+            alias: ["?","?","?","?"],
+            column: ["uid","phone","otp","color"],
+            values: [uid, phone,otp,color],
             tableName: "app_user",
         };
 
@@ -273,3 +276,57 @@ export const actionToInsertNewUserLoginData = (phone,otp) => {
         });
     });
 }
+
+
+
+export const actionToGetCommunityAllPostDataApiCall = (body,userId) => {
+    return new Promise(function (resolve, reject) {
+        const { query: dataQuery, values: dataValues } = actionToGetCommunityAllPostDataQuery(body,userId);
+        const { query: countQuery, values: countValues } = actionToGetCommunityAllPostDataCountQuery(body,userId);
+
+        // Run both queries in parallel
+        let resultData = [];
+        let totalCount = 0;
+
+        pool.query(dataQuery, dataValues, (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            resultData = dataResults;
+
+            // Run count query only after data query completes
+            pool.query(countQuery, countValues, (error, countResults) => {
+                if (error) {
+                    return reject(error);
+                }
+                if (countResults?.length) {
+                    totalCount = countResults[0].total_count || 0;
+                }
+
+                // Send both data and count together
+                resolve({
+                    data: resultData,
+                    totalCount
+                });
+            });
+        });
+    });
+};
+
+
+
+export const actionToGetCommunityPostById = (postId) => {
+    return new Promise(function (resolve, reject) {
+        const { query: dataQuery } = actionToGetCommunityPostByIdQuery();
+        let resultData = {};
+        pool.query(dataQuery, [postId], (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            if(dataResults?.length){
+                resultData = dataResults;
+            }
+            resolve(resultData);
+        });
+    });
+};
