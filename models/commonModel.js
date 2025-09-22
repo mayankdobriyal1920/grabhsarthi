@@ -1,11 +1,18 @@
 import pool from "./connection.js";
 import {
     actionToGetCommunityAllPostDataCountQuery,
-    actionToGetCommunityAllPostDataQuery, actionToGetCommunityPostByIdQuery,
+    actionToGetCommunityAllPostDataQuery,
+    actionToGetCommunityPostByIdQuery,
+    actionToGetCommunityPostCommentDataByIdQuery,
     getUserByIdQuery,
     loginUserQuery,
 } from "../queries/commonQuries.js";
-import {_generateUniqueIdForBackend, insertCommonApiCall, updateCommonApiCall} from "./helpers/commonModelHelper.js";
+import {
+    _generateUniqueIdForBackend,
+    deleteCommonApiCall,
+    insertCommonApiCall,
+    updateCommonApiCall
+} from "./helpers/commonModelHelper.js";
 
 export const actionToVerifyLoginUserOtpApiCall = (phone,otp) => {
     return new Promise(function(resolve, reject) {
@@ -315,11 +322,11 @@ export const actionToGetCommunityAllPostDataApiCall = (body,userId) => {
 
 
 
-export const actionToGetCommunityPostById = (postId) => {
+export const actionToGetCommunityPostCommentDataByIdApiCall = (postId) => {
     return new Promise(function (resolve, reject) {
-        const { query: dataQuery } = actionToGetCommunityPostByIdQuery();
-        let resultData = {};
-        pool.query(dataQuery, [postId], (error, dataResults) => {
+        const query = actionToGetCommunityPostCommentDataByIdQuery();
+        let resultData = [];
+        pool.query(query, [postId], (error, dataResults) => {
             if (error) {
                 return reject(error);
             }
@@ -330,3 +337,76 @@ export const actionToGetCommunityPostById = (postId) => {
         });
     });
 };
+
+export const actionToGetCommunityPostById = (postId,userId) => {
+    return new Promise(function (resolve, reject) {
+        const query = actionToGetCommunityPostByIdQuery();
+        let resultData = {};
+        pool.query(query, [userId,postId], (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            if(dataResults?.length){
+                resultData = dataResults[0];
+            }
+            resolve(resultData);
+        });
+    });
+};
+
+
+export const actionToUpdateLikeDislikeData = async ({ postId, userId }) => {
+    let liked = false;
+
+    try {
+        // Try to insert (like)
+        await insertCommonApiCall({
+            alias: ["?", "?"],
+            column: ["post_id", "user_id"],
+            values: [postId, userId],
+            tableName: "community_post_like",
+        });
+        liked = true; // insert succeeded → now liked
+    } catch (err) {
+        // If duplicate key, toggle OFF by deleting
+        const code = err?.code || err?.errno; // mysql gives code='ER_DUP_ENTRY', errno=1062
+        if (code === "ER_DUP_ENTRY" || code === 1062) {
+            await deleteCommonApiCall({
+                condition: "post_id = ? AND user_id = ?",
+                tableName: "community_post_like",
+                values: [postId, userId],
+            });
+            liked = false; // after delete → not liked
+        } else {
+            // real error
+            throw err;
+        }
+    }
+
+    const q = (sql, params = []) =>
+        new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, rows) => (err ? reject(err) : resolve(rows)));
+        });
+    // fetch updated like count
+    const rows = await q(
+        "SELECT COUNT(id) AS total_count FROM community_post_like WHERE post_id = ?",
+        [postId]
+    );
+
+    const like_count = rows[0]?.total_count ?? 0;
+
+    return { liked, like_count };
+};
+
+
+export const actionToPostNewCommentInCommunityPostApiCall = async ({ post_id, user_id,message }) => {
+    // Try to insert (like)
+    const resData = await insertCommonApiCall({
+        alias: ["?", "?", "?"],
+        column: ["post_id", "user_id", "message"],
+        values: [post_id, user_id,message],
+        tableName: "community_post_comment",
+    })
+    return resData?.id ?? resData?.insertId ?? resData?.lastInsertId;
+};
+

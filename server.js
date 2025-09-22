@@ -12,6 +12,10 @@ import commonRouter from "./routers/commonRouter.js";
 import pool from "./models/connection.js";
 import session from 'express-session';
 import MySQLStore from 'express-mysql-session';
+import {
+    actionToPostNewCommentInCommunityPostApiCall,
+    actionToUpdateLikeDislikeData
+} from "./models/commonModel.js";
 
 const APP_PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
 const ANNOUNCED_HOST = "garbhsarthi.com";
@@ -105,9 +109,27 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
     userSocketIdsObject[socket.id] = socket;
-
     socket.on('message', (data) => {
-        io.emit('message', data);
+        switch (data?.type){
+            case 'LIKE_DISLIKE_COMMUNITY_POST': {
+                actionToUpdateLikeDislikeData(data?.data).then((postLikeCounts)=>{
+                    data.data.total_counts = postLikeCounts;
+                    io.emit('message', data);
+                })
+                break;
+            }
+            case 'INSERT_COMMENT_IN_COMMUNITY_POST': {
+                actionToPostNewCommentInCommunityPostApiCall(data?.data).then((commentId)=>{
+                    data.data.id = commentId;
+                    io.emit('message', data);
+                })
+                break;
+            }
+            default: {
+                io.emit('message', data);
+                break;
+            }
+        }
     });
 
     socket.on('disconnect', () => {

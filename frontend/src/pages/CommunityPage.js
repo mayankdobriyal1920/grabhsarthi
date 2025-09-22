@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { IonPage, IonContent } from "@ionic/react";
-import {actionToGetCommunityAllPostData, actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
+import {
+    actionToGetCommunityAllPostData,
+    actionToLikeDislikeCommunityPost,
+    actionToSetCommonActionSheetPopupData
+} from "../apiHelper/CommonAction";
 import AddCommunityPostModal from "../components/AddCommunityPostModal";
 import useStore from "../zustand/useStore";
 import {FacebookLoader} from "../components/FacebookLoader";
 import CommunityPageCardComponent from "../components/CommunityPageCardComponent";
-import moment from "moment-timezone";
 
 export default function CommunityPage() {
     const {communityPostIsInUploadingMode,communityAllPostData} = useStore();
@@ -30,6 +33,10 @@ export default function CommunityPage() {
         },
         [totalCount,communityPost, actionToGetCommunityAllPostData]
     );
+
+    const callFunctionToLikeDisLikePost = (postId)=>{
+        actionToLikeDislikeCommunityPost(postId);
+    }
 
     return (
         <IonPage className="community-page">
@@ -68,6 +75,7 @@ export default function CommunityPage() {
                                                 openPostPage={openPostPage}
                                                 post={post}
                                                 key={post.id}
+                                                callFunctionToLikeDisLikePost={callFunctionToLikeDisLikePost}
                                             />
                                         </div>
                                     );
@@ -77,6 +85,7 @@ export default function CommunityPage() {
                                         openPostPage={openPostPage}
                                         post={post}
                                         key={post.id}
+                                        callFunctionToLikeDisLikePost={callFunctionToLikeDisLikePost}
                                     />
                                 );
                             })}

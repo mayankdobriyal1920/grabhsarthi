@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import { Device } from "mediasoup-client";
 import {
     actionToGetIceServers,
@@ -36,7 +36,17 @@ export default function VideoRoom({ isTeacher = false, roomId = "main-classroom"
     useVideoCallGridLayout(containerRef);
 
     useEffect(() => {
-        socketRef.current = io(SOCKET_URL, {autoConnect: false});
+        socketRef.current = io(SOCKET_URL, {
+            path: "/api-socket",
+            withCredentials: true,
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 500,
+            reconnectionDelayMax: 5000,
+            timeout: 10000,       // connection timeout
+            forceNew: false,      // reuse connection where possible
+            autoConnect: true,    // connect immediately
+        });
 
         async function init() {
             try {

@@ -94,17 +94,14 @@ export default function AddCommunityPostModal({ isOpen, onClose }) {
         try {
             let finalFile = attachment;
             if (finalFile && isImage(finalFile)) finalFile = await compressImage(finalFile);
-            else if (finalFile && isVideo(finalFile)) finalFile = await compressVideo(finalFile);
             const object_type = finalFile ? (isImage(finalFile) ? "image" : "video") : "text";
             const formData = new FormData();
             formData.append("message", message.trim());
             formData.append("object_type", object_type);
             if (finalFile) formData.append("attachment", finalFile, finalFile.name); // field name MUST be 'attachment'
-            console.log("community_post form formData =>", { message: message.trim(), object_type, attachment: finalFile && { name: finalFile.name, type: finalFile.type, size: finalFile.size } });
-            console.log('test',formData);
             actionToPostNewCommunityPostData(formData);
             setSubmitting(false);
-            //closeAndReset();
+            closeAndReset();
         } catch (e) { console.error(e); present({ message: "Failed to upload post.", duration: 2000, color: "danger" }); setSubmitting(false); }
     };
 
@@ -122,7 +119,7 @@ export default function AddCommunityPostModal({ isOpen, onClose }) {
                     </div>
                     <IonButtons slot="end">
                         <button type={"button"} onClick={onSubmit} disabled={submitting || (!previewUrl && !message?.trim()?.length)} className="ncp-post">
-                            Post
+                            {submitting ? "Preparing…" : "Post"}
                         </button>
                     </IonButtons>
                 </IonToolbar>

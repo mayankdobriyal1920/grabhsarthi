@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import createSocketConnection from "../socket/socket";
+import {createSocketConnection, sendSocketMessage} from "../socket/socket";
 import useStore from "../zustand/useStore";
 import {_generateRandomPastelColor} from "./CommonHelper";
 const api = Axios.create({
@@ -28,25 +28,7 @@ export const actionToGetUserSessionData = () => {
 }
 
 export const actionToConnectSocketServer = () => {
-    const socket = createSocketConnection();
-    socket.on('connect', () => {
-        console.log('Connected to socket server:', socket.id);
-    });
-
-    socket.on('message', (data) => {
-        let websocketData = JSON.parse(data);
-        console.log('websocketData',websocketData)
-        switch (websocketData?.type) {
-            case 'INSERT_COMMUNITY_POST_DATA': {
-                actionToInsertCommunityPostDataLocally(websocketData?.data);
-                break;
-            }
-        }
-    });
-
-    socket.on('disconnect', () => {
-        console.log('Disconnected from socket server');
-    });
+    createSocketConnection();
 }
 
 export const actionToInsertCommunityPostDataLocally = (postData) => {
@@ -54,11 +36,50 @@ export const actionToInsertCommunityPostDataLocally = (postData) => {
     let prevStateData = [...communityAllPostData.communityPost];
     prevStateData.unshift(postData);
     setCommunityAllPostData({
-        communityPost: [...postData],
+        communityPost: [...prevStateData],
         offset: communityAllPostData.offset,
         totalCount: communityAllPostData.totalCount || 0,
     });
 }
+
+export const actionToUpdateCommunityPostLikesDataLocally = (likeResponseData) => {
+    const {setCommunityAllPostData,communityAllPostData} = useStore.getState();
+    let prevStateData = [...communityAllPostData.communityPost];
+    const { userAuthDetail } = useStore.getState();
+    const {userInfo} = userAuthDetail;
+
+    prevStateData?.forEach((postData,key)=>{
+        if(postData?.id === likeResponseData?.postId){
+
+            prevStateData[key].like_counts = likeResponseData?.total_counts?.like_count;
+            if(userInfo?.id === likeResponseData?.userId){
+                prevStateData[key].liked_by_you = likeResponseData?.total_counts?.liked;
+            }
+        }
+    })
+
+    setCommunityAllPostData({
+        communityPost: [...prevStateData],
+        offset: communityAllPostData.offset,
+        totalCount: communityAllPostData.totalCount || 0,
+    });
+}
+
+export const actionToInsertCommunityPostCommentDataLocally = (commentResponseData) => {
+    const {setCommunityPostCommentData,communityPostCommentData,communityAllPostData,commonActionSheetPopupData} = useStore.getState();
+    if(commonActionSheetPopupData.page === 'community-post' && commonActionSheetPopupData?.popupData?.id === commentResponseData?.post_id) {
+        let commentPostData = [...communityPostCommentData.postCommentData];
+        commentPostData.push(commentResponseData);
+        setCommunityPostCommentData([...commentPostData]);
+        let prevStateData = [...communityAllPostData.communityPost];
+        prevStateData?.forEach((postData,key)=>{
+            if(postData?.id === commentResponseData?.post_id){
+                prevStateData[key].comment_counts += 1;
+            }
+        })
+    }
+}
+
 
 export const actionToGenerateOtpForPhoneNumber = async (phoneNumber)=>{
     try {
@@ -124,7 +145,7 @@ export const actionToGetCommunityAllPostData = (isLoading = true,payload = {}) =
     payload.limit = 20;
 
     try {
-        api.post(`actionToGetCommunityAllPostDataApiCall`, {},{ withCredentials: true }).then((responseData) => {
+        api.post(`actionToGetCommunityAllPostDataApiCall`, payload,{ withCredentials: true }).then((responseData) => {
 
             let postData = responseData.data.data || [];
             postData = [...postData,...prevStateData]
@@ -140,24 +161,50 @@ export const actionToGetCommunityAllPostData = (isLoading = true,payload = {}) =
     }
 }
 
+export const actionToGetCommunityPostCommentDataById = (postId) => {
+    const {requestCommunityPostCommentData,setCommunityPostCommentData} = useStore.getState();
+    requestCommunityPostCommentData();
+
+    try {
+        api.post(`actionToGetCommunityPostCommentDataByIdApiCall`, {postId},{ withCredentials: true }).then((responseData) => {
+            setCommunityPostCommentData([...responseData.data]);
+        })
+    } catch (error) {
+        console.log('error',error)
+    }
+}
+
+
+export const actionToPostNewCommentInCommunityPost = (payload) => {
+    const { userAuthDetail } = useStore.getState();
+    const {userInfo} = userAuthDetail;
+    sendSocketMessage('INSERT_COMMENT_IN_COMMUNITY_POST', {
+        ...payload, user_id: userInfo?.id, role: userInfo?.role, color: userInfo?.color,user_name:userInfo?.profile?.full_name
+    });
+}
+
+export const actionToLikeDislikeCommunityPost = (postId) => {
+    const { userAuthDetail } = useStore.getState();
+    const {userInfo} = userAuthDetail;
+    sendSocketMessage('LIKE_DISLIKE_COMMUNITY_POST',{postId,userId:userInfo?.id});
+}
 export const actionToPostNewCommunityPostData = (formData) => {
-    console.log('formData',formData)
     const { setCommunityPostIsInUploadingMode } = useStore.getState();
-    setCommunityPostIsInUploadingMode({ status: true, process: 0 });
+    setCommunityPostIsInUploadingMode({ status: true, progress: 0 });
     try {
         api.post("actionToPostNewCommunityPostDataApiCall", formData, {
             headers: { "Content-Type": "multipart/form-data" },
             onUploadProgress: (evt) => {
                 if (!evt.total) return;
                 const pct = Math.min(99, Math.round((evt.loaded / evt.total) * 100));
-                setCommunityPostIsInUploadingMode({ status: true, process: pct });
+                setCommunityPostIsInUploadingMode({ status: true, progress: pct });
             },
         }).then(()=>{
-            setCommunityPostIsInUploadingMode({ status: false, process: 100 });
+            setCommunityPostIsInUploadingMode({ status: false, progress: 100 });
         })
     } catch (error) {
         console.error("Upload failed", error);
-        setCommunityPostIsInUploadingMode({ status: false, process: 0 });
+        setCommunityPostIsInUploadingMode({ status: false, progress: 0 });
         throw error;
     }
 };

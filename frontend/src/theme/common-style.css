@@ -2168,12 +2168,12 @@ ion-toolbar:last-of-type {
     gap: 4px;
 }
 .community-dashboard-wrap .card-footer .post_card_footer .like-icon{
-    color: #b80000;
+    color: var(--gs-pink);
     font-size: 20px;
 }
 .community-dashboard-wrap .card-footer .post_card_footer .comment-icon{
     color: var(--gs-text);
-    font-size: 19px;
+    font-size: 18px;
 }
 .community-dashboard-wrap .card-footer {
     display: flex;
@@ -3088,7 +3088,7 @@ ion-title{
 .new-community-post-modal .ncp-attach-meta .file-name { max-width: 38ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .new-community-post-modal .ncp-attach-btn {
     display: flex;
-    font-size: var(--font-size-2);
+    font-size: var(--font-size-3);
     align-items: center;
     gap: 8px;
     background: var(--ncp-surface-2);
@@ -3140,4 +3140,91 @@ ion-title{
 
 .heading_and_detail_button h2 {
     margin: 0!important;
+}
+
+
+/*////////////////////*/
+
+.community-card {
+    user-select: none; /* helps prevent accidental text selection on double tap */
+}
+
+.community-card .media-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.community-card .post-image,
+.community-card .post-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: cover;
+    background: #000;
+    border-radius: 12px;
+}
+
+/* Heart burst animation */
+.community-card .heart-burst {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    animation: heart-pop 700ms ease forwards;
+}
+.community-card .heart-burst ion-icon {
+    font-size: 90px;
+    color: var(--gs-pink);
+}
+@keyframes heart-pop {
+    0%   { transform: scale(0.4); opacity: 0; }
+    30%  { transform: scale(1.2); opacity: 1; }
+    60%  { transform: scale(1.0); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0; }
+}
+
+/* Mute button overlay */
+.community-card .video-wrapper .mute-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border: 0;
+    border-radius: 999px;
+    padding: 6px;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.community-card .video-wrapper .paused-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 11px;
+    padding: 4px 8px;
+    color: #fff;
+    background: rgba(0,0,0,0.45);
+    border-radius: 999px;
+}
+
+/* Like icon filled state (footer) */
+.community-card .like-icon.liked {
+    transform: scale(1.05);
+}
+
+
+.community-post-page .comments-section .no_comments_yet_section_container {
+    display: flex;
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
     IonTabs,
     IonRouterOutlet,
@@ -38,6 +38,7 @@ const AppEntryTabsPage = () => {
     const menuRef = React.useRef(null);
     const {userAuthDetail} = useStore();
     const {userInfo} = userAuthDetail;
+    const postedSingleRef = useRef(false);
     const { pathname } = useLocation();
 
     useEffect(() => {
@@ -45,8 +46,11 @@ const AppEntryTabsPage = () => {
     }, [pathname]);
 
     useEffect(() => {
-        actionToGetCommunityAllPostData();
-        actionToConnectSocketServer();
+        if(!postedSingleRef?.current) {
+            actionToGetCommunityAllPostData();
+            actionToConnectSocketServer();
+            postedSingleRef.current = true;
+        }
     }, []);
 
     return (
@@ -60,7 +64,7 @@ const AppEntryTabsPage = () => {
                         <IonRouterOutlet id="main-menu-content">
                             <Route exact path="/dashboard/home" component={
                                 userInfo?.role === 3 ? TTCUserDashboardPage : PregnantDashboardPage
-                               } />
+                            } />
                             <Route exact path="/dashboard/tracker" component={
                                 userInfo?.role === 3 ? OvulationTrackerPage : BabyTrackerPageForPregnantPage
                             } />

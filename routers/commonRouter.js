@@ -9,7 +9,7 @@ import {
     actionToSaveUserProfileDataApiCall,
     actionToUpdateUserProfileDataApiCall,
     actionToGetCommunityAllPostDataApiCall,
-    actionToGetCommunityPostById
+    actionToGetCommunityPostById, actionToGetCommunityPostCommentDataByIdApiCall
 } from "../models/commonModel.js";
 import {
     callFunctionToSendOtp,
@@ -201,6 +201,23 @@ commonRouter.post(
     })
 );
 
+commonRouter.post(
+    '/actionToGetCommunityPostCommentDataByIdApiCall',
+    expressAsyncHandler(async (req, res) => {
+        if (req?.session?.userSessionData?.id) {
+            actionToGetCommunityPostCommentDataByIdApiCall(req?.body?.postId,req?.session?.userSessionData?.id).then(responseData => {
+                res.status(200).send(responseData);
+            })
+        } else {
+            // If no session found, return unauthorized response
+            res.status(200).send({
+                success: false,
+                message: 'No active session found. User is not logged in.',
+            });
+        }
+    })
+);
+
 
 // Multer setup
 const storage = multer.diskStorage({
@@ -252,13 +269,13 @@ commonRouter.post(
         insertCommonApiCall(insertData).then((responseData)=>{
             // Try common names for the inserted id
             const postId = responseData?.id ?? responseData?.insertId ?? responseData?.lastInsertId;
-            actionToGetCommunityPostById(postId).then((postData) => {
+            actionToGetCommunityPostById(postId,req?.session?.userSessionData?.id).then((postData) => {
                 Object.keys(userSocketIdsObject).forEach((key) => {
                     if (userSocketIdsObject[key] && postData?.id) {
-                        userSocketIdsObject[key].emit('message', JSON.stringify({
+                        userSocketIdsObject[key].emit('message', {
                             data: postData, // Ensure userIdsArray exists
                             type: "INSERT_COMMUNITY_POST_DATA",
-                        }));
+                        });
                     }
                 });
             })

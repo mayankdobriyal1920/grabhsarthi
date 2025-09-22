@@ -46,6 +46,15 @@ const useStore = create((set) => ({
                                             },
                                         }),
 
+    communityPostCommentData: { loading: false, postCommentData: []},
+    requestCommunityPostCommentData: () => set({ communityPostCommentData: { loading: true, postCommentData:[]} }),
+    setCommunityPostCommentData: (data) => set({
+        communityPostCommentData: {
+            loading: false,
+            postCommentData: data
+        },
+    }),
+
 }));
 
 export default useStore;
