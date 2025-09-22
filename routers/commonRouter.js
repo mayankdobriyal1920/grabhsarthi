@@ -298,18 +298,35 @@ commonRouter.get("/actionToGetImageApiCall/:imageName", (req, res) => {
 });
 
 
-// Serve Videos
-commonRouter.get("/actionToGetVideoApiCall/:imageName", (req, res) => {
-    const { imageName } = req.params;
-    const filePath = path.join(uploadPath, imageName);
-    fs.access(filePath, fs.constants.F_OK, (err) => {
-        if (err) return res.status(404).json({ message: "File not found" });
-        const mimeType = mime.lookup(filePath);
-        if (!mimeType) return res.status(400).json({ message: "Unsupported file type" });
-        res.setHeader("Content-Type", mimeType);
-        if (!mimeType.startsWith("video/")) res.setHeader("Content-Disposition", `attachment; filename="${imageName}"`);
-        fs.createReadStream(filePath).pipe(res);
+commonRouter.get("/actionToGetVideoApiCall/:videoName", (req, res) => {
+    const { videoName } = req.params;
+    const filePath = path.join(uploadPath, videoName);
+    fs.stat(filePath, (err, stat) => {
+        if (err || !stat) return res.status(404).json({ message: "File not found" });
+
+        const range = req.headers.range;
+        const mimeType = mime.lookup(filePath) || 'video/mp4';
+        if (!range) {
+            res.setHeader("Content-Type", mimeType);
+            res.setHeader("Content-Length", stat.size);
+            return fs.createReadStream(filePath).pipe(res);
+        }
+
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
+        const chunkSize = (end - start) + 1;
+
+        res.writeHead(206, {
+            "Content-Range": `bytes ${start}-${end}/${stat.size}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": chunkSize,
+            "Content-Type": mimeType
+        });
+
+        fs.createReadStream(filePath, { start, end }).pipe(res);
     });
 });
+
 
 export default commonRouter;

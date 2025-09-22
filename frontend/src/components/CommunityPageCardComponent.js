@@ -6,7 +6,7 @@ import moment from "moment-timezone";
 const DOUBLE_TAP_MS = 280;
 const TAP_MOVE_TOLERANCE = 12;
 
-export default function CommunityPageCardComponent({post,openPostPage,callFunctionToLikeDisLikePost}) {
+export default function CommunityPageCardComponent({ post, openPostPage, callFunctionToLikeDisLikePost }) {
     const [showHeartBurst, setShowHeartBurst] = useState(false);
     const [isMuted, setIsMuted] = useState(true);
 
@@ -36,9 +36,10 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
     const handleSingleTap = useCallback(() => {
         const v = videoRef.current;
         if (!v) return;
-        const next = !v.muted;
-        v.muted = next;
-        setIsMuted(next);
+        // toggle mute
+        const nextMuted = !v.muted;
+        v.muted = nextMuted;
+        setIsMuted(nextMuted);
     }, []);
 
     const triggerLike = useCallback(() => {
@@ -52,7 +53,11 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
         // Ignore non-primary buttons (right click, etc.)
         if (e.button && e.button !== 0) return;
         if (e.currentTarget.setPointerCapture) {
-            e.currentTarget.setPointerCapture(e.pointerId);
+            try {
+                e.currentTarget.setPointerCapture(e.pointerId);
+            } catch (err) {
+                // ignore if pointer capture fails
+            }
         }
         downPos.current = { x: e.clientX, y: e.clientY };
     };
@@ -101,7 +106,7 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
         };
     }, []);
 
-    // ---- Video autoplay when on screen ----
+    // ---- Video autoplay when on screen & iOS inline fixes ----
     useEffect(() => {
         if (post.object_type !== "video") return;
 
@@ -109,73 +114,125 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
         const video = videoRef.current;
         if (!node || !video) return;
 
-        // Start muted to allow autoplay on mobile
-        video.muted = true;
-        setIsMuted(true);
+        // Ensure muted before trying to play (necessary for autoplay on mobile)
+        try {
+            video.muted = true;
+            setIsMuted(true);
+        } catch (err) {
+            // ignore
+        }
+
+        // Make the video behave inline on iOS:
+        // - DOM properties
+        try {
+            if ("playsInline" in video) video.playsInline = true;
+            // set attributes for older iOS webkit requirement
+            video.setAttribute("playsinline", "");
+            video.setAttribute("webkit-playsinline", "true");
+        } catch (err) {
+            // ignore
+        }
+
+        // Clean up any previous observer
+        if (observerRef.current) {
+            try {
+                observerRef.current.disconnect();
+            } catch (err) {
+                console.log('e')
+            }
+            observerRef.current = null;
+        }
 
         observerRef.current = new IntersectionObserver(
             (entries) => {
-                entries.forEach(async (entry) => {
+                entries.forEach((entry) => {
                     if (!video) return;
+                    // When more than half visible, try to play (muted)
                     if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-                        try {
-                            await video.play();
-                        } catch (e) {
-                            console.log('e')
+                        // Ensure muted, then try play
+                        if (!video.muted) {
+                            video.muted = true;
+                            setIsMuted(true);
+                        }
+                        const playPromise = video.play();
+                        if (playPromise && typeof playPromise.then === "function") {
+                            playPromise.catch((err) => {
+                                // Autoplay may fail — that's ok, user can tap to play
+                                // Keep a console message for debugging
+                                // console.debug("video.play() failed:", err);
+                            });
                         }
                     } else {
-                        video.pause();
+                        // pause when not visible
+                        try {
+                            video.pause();
+                        } catch (err) {
+                            console.log('e')
+                        }
                     }
                 });
             },
-            { threshold: [0, 0.5, 1] }
+            { threshold: [0, 0.5, 1], root: null, rootMargin: "0px" }
         );
 
         observerRef.current.observe(node);
 
         return () => {
-            if (observerRef.current) observerRef.current.disconnect();
+            if (observerRef.current) {
+                try {
+                    observerRef.current.disconnect();
+                } catch (err) {
+                    console.log('e')
+                }
+                observerRef.current = null;
+            }
         };
     }, [post.object_type]);
 
+    // Mute button handler — stop propagation so parent tap handlers don't fire
+    const onMuteButtonClick = (e) => {
+        e.stopPropagation?.();
+        e.nativeEvent?.stopImmediatePropagation?.();
+        const v = videoRef.current;
+        if (!v) return;
+        const nextMuted = !v.muted;
+        v.muted = nextMuted;
+        setIsMuted(nextMuted);
+    };
+
     return (
-        <div
-            ref={wrapperRef}
-            key={post.id}
-            className="card community-card">
+        <div ref={wrapperRef} key={post.id} className="card community-card">
             {/* User Info */}
             <div className="card-header">
-                <div
-                    style={{ color: "#ffffff", background: post.color }}
-                    className="user_avatar_circle_cont"
-                >
+                <div style={{ color: "#ffffff", background: post.color }} className="user_avatar_circle_cont">
                     {(post.user_name || "U").substring(0, 1)}
                 </div>
                 <div className="user-info user_info_name_status_time_container">
                     <h3 className="user-name">{post.user_name || "User"}</h3>
                     <div className="user_info_status_time">
-                        <span className={`status ${post.role === 2 ? "pregnant" : "ttc"}`}>
-                          {post.role === 2 ? "Pregnant" : "TTC"}
-                        </span>
+            <span className={`status ${post.role === 2 ? "pregnant" : "ttc"}`}>
+              {post.role === 2 ? "Pregnant" : "TTC"}
+            </span>
                         <span className="time">{moment(post?.created_at).fromNow()}</span>
                     </div>
                 </div>
             </div>
 
             {/* Post Message & Media */}
-            <div className="card-body"
+            <div
+                className="card-body"
                 // Use pointer events for both mouse + touch
-                 onPointerDown={onPointerDown}
-                 onPointerUp={onPointerUp}
-                 onPointerCancel={onPointerCancel}
+                onPointerDown={onPointerDown}
+                onPointerUp={onPointerUp}
+                onPointerCancel={onPointerCancel}
                 // Prevent native dblclick zoom/selection weirdness
-                 onDoubleClick={(e) => e.preventDefault()}
-                 style={{
-                     // helps mobile Safari: disables double-tap to zoom and reduces delays
-                     touchAction: "manipulation",
-                     WebkitUserSelect: "none",
-                     userSelect: "none",
-                 }}
+                onDoubleClick={(e) => e.preventDefault()}
+                style={{
+                    // helps mobile Safari: disables double-tap to zoom and reduces delays
+                    touchAction: "manipulation",
+                    WebkitUserSelect: "none",
+                    userSelect: "none",
+                }}
             >
                 <p>{post.message}</p>
 
@@ -194,6 +251,7 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
                 {/* VIDEO */}
                 {post.object_type === "video" && post.object_url && (
                     <div className="media-wrapper video-wrapper">
+                        {/* DEBUG VIDEO - add this temporarily */}
                         <video
                             ref={videoRef}
                             src={post.object_url}
@@ -201,6 +259,7 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
                             playsInline
                             loop
                             muted
+                            controls={false}
                             preload="metadata"
                         />
                         {showHeartBurst && (
@@ -213,6 +272,8 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
                             className="mute-btn"
                             aria-label={isMuted ? "Unmute video" : "Mute video"}
                             title={isMuted ? "Unmute" : "Mute"}
+                            onClick={onMuteButtonClick}
+                            onPointerDown={(e) => e.stopPropagation?.()}
                         >
                             {isMuted ? <IonIcon icon={volumeMute} /> : <IonIcon icon={volumeLow} />}
                         </button>
@@ -222,14 +283,11 @@ export default function CommunityPageCardComponent({post,openPostPage,callFuncti
 
             {/* Footer */}
             <div className="card-footer">
-                <div className="post_card_footer" onClick={()=>triggerLike()}>
-                    <IonIcon
-                        icon={post.liked_by_you ? heart : heartOutline}
-                        className={`like-icon ${post.liked_by_you ? "liked" : ""}`}
-                    />
+                <div className="post_card_footer" onClick={() => triggerLike()}>
+                    <IonIcon icon={post.liked_by_you ? heart : heartOutline} className={`like-icon ${post.liked_by_you ? "liked" : ""}`} />
                     <span>{post.like_counts}</span>
                 </div>
-                <div className="post_card_footer" onClick={()=>openPostPage(post?.id)}>
+                <div className="post_card_footer" onClick={() => openPostPage(post?.id)}>
                     <IonIcon icon={chatbubbleOutline} className="comment-icon" />
                     <span>{post.comment_counts}</span>
                 </div>

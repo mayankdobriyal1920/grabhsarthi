@@ -60,6 +60,12 @@ const CommunityPostPage = () => {
                                 <div className="comment-content">
                                     <FacebookLoader type={"facebookStyle"} item={1}/>
                                 </div>
+                                <div className="comment-content">
+                                    <FacebookLoader type={"facebookStyle"} item={1}/>
+                                </div>
+                                <div className="comment-content">
+                                    <FacebookLoader type={"facebookStyle"} item={1}/>
+                                </div>
                             </div>
                             :(postCommentData?.length) ?
                                 <>

@@ -151,7 +151,7 @@ export const actionToGetCommunityPostCommentDataByIdQuery = () => `
         app_user.role     AS role
     FROM community_post_comment
              JOIN community_post ON community_post.id = community_post_comment.post_id
-             JOIN app_user ON community_post.created_by = app_user.id
+             JOIN app_user ON community_post_comment.user_id = app_user.id
              JOIN profile  ON profile.id = app_user.active_profile_id
     WHERE community_post.id = ?
 `;

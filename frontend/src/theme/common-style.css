@@ -747,7 +747,7 @@ ion-tab-button ion-icon {
 }
 ion-tab-button{
     color: var(--gs-text);
-    font-size: var(--font-size-4)!important;
+    font-size: 12px!important;
 }
 .tab-selected {
     color: var(--gs-pink) !important;
@@ -3161,7 +3161,6 @@ ion-title{
     display: block;
     width: 100%;
     height: auto;
-    max-height: 70vh;
     object-fit: cover;
     background: #000;
     border-radius: 12px;

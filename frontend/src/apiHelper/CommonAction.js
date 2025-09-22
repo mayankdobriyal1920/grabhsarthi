@@ -71,13 +71,13 @@ export const actionToInsertCommunityPostCommentDataLocally = (commentResponseDat
         let commentPostData = [...communityPostCommentData.postCommentData];
         commentPostData.push(commentResponseData);
         setCommunityPostCommentData([...commentPostData]);
-        let prevStateData = [...communityAllPostData.communityPost];
-        prevStateData?.forEach((postData,key)=>{
-            if(postData?.id === commentResponseData?.post_id){
-                prevStateData[key].comment_counts += 1;
-            }
-        })
     }
+    let prevStateData = [...communityAllPostData.communityPost];
+    prevStateData?.forEach((postData,key)=>{
+        if(postData?.id === commentResponseData?.post_id){
+            prevStateData[key].comment_counts += 1;
+        }
+    })
 }
 
 
@@ -213,9 +213,11 @@ export const actionToLogoutUserSession = (setUserLogoutLoading) => {
     setUserLogoutLoading(false);
     const {setUserAuthDetail} = useStore.getState();
     try {
-        api.post(`actionToLogoutUserSessionApiCall`, {}).then(() => {
+        api.post(`actionToLogoutUserSessionApiCall`, {},{ withCredentials: true }).then(() => {
             setUserLogoutLoading(false);
             setUserAuthDetail({});
+            actionToGetUserSessionData();
+            window.location.reload();
         })
     } catch (error) {
         console.log('error',error)
