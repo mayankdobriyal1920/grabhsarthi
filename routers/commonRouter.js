@@ -9,7 +9,9 @@ import {
     actionToSaveUserProfileDataApiCall,
     actionToUpdateUserProfileDataApiCall,
     actionToGetCommunityAllPostDataApiCall,
-    actionToGetCommunityPostById, actionToGetCommunityPostCommentDataByIdApiCall
+    actionToGetCommunityPostById,
+    actionToGetCommunityPostCommentDataByIdApiCall,
+    actionToGetAppVideoLibraryDataByCategoryApiCall, actionToGetAllSubscriptionPlanDataApiCall
 } from "../models/commonModel.js";
 import {
     callFunctionToSendOtp,
@@ -206,6 +208,32 @@ commonRouter.post(
     expressAsyncHandler(async (req, res) => {
         if (req?.session?.userSessionData?.id) {
             actionToGetCommunityPostCommentDataByIdApiCall(req?.body?.postId,req?.session?.userSessionData?.id).then(responseData => {
+                res.status(200).send(responseData);
+            })
+        } else {
+            // If no session found, return unauthorized response
+            res.status(200).send({
+                success: false,
+                message: 'No active session found. User is not logged in.',
+            });
+        }
+    })
+);
+
+commonRouter.post(
+    '/actionToGetAllSubscriptionPlanDataApiCall',
+    expressAsyncHandler(async (req, res) => {
+        actionToGetAllSubscriptionPlanDataApiCall().then(responseData => {
+            res.status(200).send(responseData);
+        })
+    })
+);
+
+commonRouter.post(
+    '/actionToGetAppVideoLibraryDataByCategoryApiCall',
+    expressAsyncHandler(async (req, res) => {
+        if (req?.session?.userSessionData?.id) {
+            actionToGetAppVideoLibraryDataByCategoryApiCall(req?.body?.category,req?.session?.userSessionData?.role,req?.session?.userSessionData?.profile?.last_period_date).then(responseData => {
                 res.status(200).send(responseData);
             })
         } else {

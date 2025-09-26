@@ -16,15 +16,6 @@ const ClassesPage = () => {
         <IonPage>
             <IonContent fullscreen className="classes-page main-content-page">
                 <div className="dash-wrap classes-page-dashboard">
-                    <div className="classes-header">
-                        <h1>{tab === "video" ? "Video Library" : "Live Classes"}</h1>
-                        <p className="page-subtitle">
-                            {tab === "video"
-                                ? "Access our curated collection of prenatal wellness videos"
-                                : "Join live sessions with our expert instructors"}
-                        </p>
-                    </div>
-
                     <IonSegment
                         value={tab}
                         onIonChange={(e) => setTab(e.detail.value)}
@@ -37,8 +28,9 @@ const ClassesPage = () => {
                             <IonLabel>Live Classes</IonLabel>
                         </IonSegmentButton>
                     </IonSegment>
-
-                    {tab === "video" ? <VideoLibrary /> : <LiveClasses />}
+                    <div className="classes-page-dashboard-inner">
+                      {tab === "video" ? <VideoLibrary /> : <LiveClasses />}
+                    </div>
                 </div>
             </IonContent>
         </IonPage>

@@ -55,6 +55,24 @@ const useStore = create((set) => ({
         },
     }),
 
+    appVideoLibraryDataByCategory: { loading: false, videoLibraryData: []},
+    requestAppVideoLibraryDataByCategory: () => set({ appVideoLibraryDataByCategory: { loading: true, videoLibraryData:[]} }),
+    setAppVideoLibraryDataByCategory: (data) => set({
+        appVideoLibraryDataByCategory: {
+            loading: false,
+            videoLibraryData: data
+        },
+    }),
+
+    allSubscriptionPlanData: { loading: false, subscriptionPlanData: []},
+    requestAllSubscriptionPlanData: () => set({ allSubscriptionPlanData: { loading: true, subscriptionPlanData:[]} }),
+    setAllSubscriptionPlanData: (data) => set({
+        allSubscriptionPlanData: {
+            loading: false,
+            subscriptionPlanData: data
+        },
+    }),
+
 }));
 
 export default useStore;

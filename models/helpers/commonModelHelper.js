@@ -154,3 +154,21 @@ export function _generateUniqueIdForBackend(length = 8) {
 
     return result;
 }
+
+
+export function _getUserProfileTrimester(lastPeriodDate) {
+    if (!lastPeriodDate) return null;
+
+    const lmp = new Date(lastPeriodDate);
+    if (isNaN(lmp.getTime())) return null; // invalid date
+
+    const today = new Date();
+    const diffTime = today - lmp;
+    const weeksPregnant = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+
+    if (weeksPregnant >= 0 && weeksPregnant <= 12) return 1;
+    if (weeksPregnant >= 13 && weeksPregnant <= 27) return 2;
+    if (weeksPregnant >= 28) return 3;
+
+    return null; // if date is in future or invalid
+}

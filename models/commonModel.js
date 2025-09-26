@@ -1,5 +1,6 @@
 import pool from "./connection.js";
 import {
+    actionToGetAppVideoLibraryDataByCategoryQuery,
     actionToGetCommunityAllPostDataCountQuery,
     actionToGetCommunityAllPostDataQuery,
     actionToGetCommunityPostByIdQuery,
@@ -8,7 +9,7 @@ import {
     loginUserQuery,
 } from "../queries/commonQuries.js";
 import {
-    _generateUniqueIdForBackend,
+    _generateUniqueIdForBackend, _getUserProfileTrimester,
     deleteCommonApiCall,
     insertCommonApiCall,
     updateCommonApiCall
@@ -327,6 +328,39 @@ export const actionToGetCommunityPostCommentDataByIdApiCall = (postId) => {
         const query = actionToGetCommunityPostCommentDataByIdQuery();
         let resultData = [];
         pool.query(query, [postId], (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            if(dataResults?.length){
+                resultData = dataResults;
+            }
+            resolve(resultData);
+        });
+    });
+};
+
+export const actionToGetAllSubscriptionPlanDataApiCall = () => {
+    return new Promise(function (resolve, reject) {
+        const query = `SELECT * FROM subscription_plans`;
+        let resultData = [];
+        pool.query(query, [], (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            if(dataResults?.length){
+                resultData = dataResults;
+            }
+            resolve(resultData);
+        });
+    });
+};
+
+
+export const actionToGetAppVideoLibraryDataByCategoryApiCall = (category,role,lastPeriodDate) => {
+    return new Promise(function (resolve, reject) {
+        const {query,values} = actionToGetAppVideoLibraryDataByCategoryQuery(category,role,_getUserProfileTrimester(lastPeriodDate));
+        let resultData = [];
+        pool.query(query, values, (error, dataResults) => {
             if (error) {
                 return reject(error);
             }

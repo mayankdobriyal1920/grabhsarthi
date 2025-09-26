@@ -155,3 +155,45 @@ export const actionToGetCommunityPostCommentDataByIdQuery = () => `
              JOIN profile  ON profile.id = app_user.active_profile_id
     WHERE community_post.id = ?
 `;
+
+
+export const actionToGetAppVideoLibraryDataByCategoryQuery = (category, role, trimester) => {
+    let values = [];
+    let conditionList = [];
+
+    // ✅ Category filter
+    if (category) {
+        conditionList.push(`category = ?`);
+        values.push(category);
+    }
+
+    // ✅ Role filter
+    if (role) {
+        conditionList.push(`role = ?`);
+        values.push(role);
+    }
+
+    // ✅ Trimester filter
+    if (trimester && role === 2) {
+        conditionList.push(`(trimester IS NULL OR trimester = ?)`);
+        // null = applicable for all, or match exact trimester
+        values.push(trimester);
+    }
+
+    const condition = conditionList.length > 0 ? conditionList.join(' AND ') : '1'; // always true fallback
+
+    const query = `
+        SELECT 
+            id,
+            title,
+            description,
+            thumbnail,
+            category,
+            role,
+            trimester
+        FROM video_library
+        WHERE ${condition}
+    `;
+
+    return { query, values };
+};

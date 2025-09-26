@@ -71,6 +71,37 @@ import fruitIcon34 from '../theme/img/babyFruit/fruitIcon34.png';
 import fruitIcon35 from '../theme/img/babyFruit/fruitIcon35.png';
 import fruitIcon36 from '../theme/img/babyFruit/fruitIcon36.png';
 import fruitIcon37 from '../theme/img/babyFruit/fruitIcon37.png';
+import yogaVid1 from "../theme/img/yogaVidImg/yoga_vid_img_1.png";
+import yogaVid2 from "../theme/img/yogaVidImg/yoga_vid_img_2.png";
+import yogaVid3 from "../theme/img/yogaVidImg/yoga_vid_img_3.png";
+import yogaVid4 from "../theme/img/yogaVidImg/yoga_vid_img_4.png";
+import yogaVid5 from "../theme/img/yogaVidImg/yoga_vid_img_5.png";
+import yogaVid6 from "../theme/img/yogaVidImg/yoga_vid_img_6.png";
+
+import yogaTask1 from "../theme/img/yogaTasks/cat-cow-pose.gif";
+import yogaTask2 from "../theme/img/yogaTasks/butterfly-pose.gif";
+import yogaTask3 from "../theme/img/yogaTasks/bridge-pose.gif";
+import yogaTask4 from "../theme/img/yogaTasks/cobra-pose.gif";
+import yogaTask5 from "../theme/img/yogaTasks/child-pose.gif";
+import yogaTask6 from "../theme/img/yogaTasks/Legs_Up_the_Wall.gif";
+import yogaTask7 from "../theme/img/yogaTasks/forward-bending-pose.gif";
+import yogaTask8 from "../theme/img/yogaTasks/Supta-Bhadrasana-women-health.jpg";
+import yogaTask9 from "../theme/img/yogaTasks/reclined-twisted-pose.gif";
+import yogaTask10 from "../theme/img/yogaTasks/mountain-pose.gif";
+import yogaTask11 from "../theme/img/yogaTasks/easy-pose.gif";
+import yogaTask12 from "../theme/img/yogaTasks/hero-pose.gif";
+import yogaTask13 from "../theme/img/yogaTasks/seated-side-pose.png";
+import yogaTask14 from "../theme/img/yogaTasks/side-laying-pose.png";
+import yogaTask15 from "../theme/img/yogaTasks/hero-pose.gif";
+import yogaTask16 from "../theme/img/yogaTasks/goddess-page.gif";
+import yogaTask17 from "../theme/img/yogaTasks/triangle-pose.gif";
+import yogaTask18 from "../theme/img/yogaTasks/child-pose.gif";
+import yogaTask19 from "../theme/img/yogaTasks/seeted-side-bend.gif";
+import yogaTask20 from "../theme/img/yogaTasks/tree-pose.gif";
+import yogaTask21 from "../theme/img/yogaTasks/box-squats.gif";
+import yogaTask22 from "../theme/img/yogaTasks/child's_pose_wide.gif";
+import yogaTask23 from "../theme/img/yogaTasks/palvic-tits.gif";
+import yogaTask24 from "../theme/img/yogaTasks/wall-butterfly.png";
 
 export const _babyWeeklyGrowthContentSvg = [
     {},
@@ -1173,4 +1204,199 @@ export function _getGestationalWeeksFromLMP(lmpString, { maxWeeks = 40 } = {}) {
     const daysIntoWeek = diffDays % 7;
 
     return { weekNumber, daysIntoWeek, totalDays: diffDays };
+}
+
+
+export const _videosCategoryTTC = [
+    {
+        id: 1,
+        title: "Yoga & Fitness",
+        category: "Yoga & Fitness",
+        thumbnail:yogaVid1,
+    },
+    {
+        id: 2,
+        title: "Nutrition & Lifestyle",
+        category: "Nutrition & Lifestyle",
+        thumbnail:yogaVid2,
+    },
+    {
+        id: 3,
+        title: "Mind-Body Wellness",
+        category: "Mind-Body Wellness",
+        thumbnail:yogaVid5,
+    },
+    {
+        id: 3,
+        title: "Male Partner Wellness",
+        category: "Male Partner Wellness",
+        thumbnail:yogaVid6,
+    },
+];
+
+export const _videosCategoryPregnant = [
+    {
+        id: 1,
+        title: "Yoga & Fitness",
+        category: "Yoga & Fitness",
+        thumbnail:yogaVid1,
+    },
+    {
+        id: 2,
+        title: "Nutrition & Lifestyle",
+        category: "Nutrition & Lifestyle",
+        thumbnail:yogaVid2,
+    },
+    {
+        id: 3,
+        title: "Garbh Sanskaar",
+        category: "Garbh Sanskaar",
+        thumbnail:yogaVid3,
+    },
+    {
+        id: 4,
+        title: "Problem Solving",
+        category: "Problem Solving",
+        thumbnail:yogaVid4,
+    },
+];
+
+export const _dailyTaskYogaStore = {
+    ttc: {
+        comboA: [
+            {
+                id: "ttc1",
+                title: "Cat-Cow Pose",
+                duration: 2,
+                gif: yogaTask1,
+            },
+            {
+                id: "ttc2",
+                title: "Butterfly Pose",
+                duration: 3,
+                gif: yogaTask2,
+            },
+            {
+                id: "ttc3",
+                title: "Bridge Pose",
+                duration: 2,
+                gif: yogaTask3,
+            },
+            {
+                id: "ttc4",
+                title: "Cobra Pose",
+                duration: 2,
+                gif: yogaTask4,
+            },
+            {
+                id: "ttc5",
+                title: "Child’s Pose",
+                duration: 3,
+                gif: yogaTask5,
+            },
+        ],
+        comboB: [
+            {
+                id: "ttc6",
+                title: "Legs Up the Wall",
+                duration: 3,
+                gif: yogaTask6,
+            },
+            {
+                id: "ttc7",
+                title: "Seated Forward Bend",
+                duration: 2,
+                gif: yogaTask7,
+            },
+            {
+                id: "ttc8",
+                title: "Supine Bound Angle",
+                duration: 3,
+                gif: yogaTask8,
+            },
+            {
+                id: "ttc9",
+                title: "Reclined Twist",
+                duration: 2,
+                gif: yogaTask9,
+            },
+            {
+                id: "ttc10",
+                title: "Mountain Pose",
+                duration: 2,
+                gif: yogaTask10,
+            },
+        ],
+    },
+
+    pregnant: {
+        trimester1: {
+            comboA: [
+                { id: "p1_1", title: "Cat-Cow Pose", duration: 2, gif: yogaTask1 },
+                { id: "p1_2", title: "Mountain Pose", duration: 2, gif: yogaTask10 },
+                { id: "p1_3", title: "Bound Angle Pose (Gentle)", duration: 3, gif: yogaTask8 },
+                { id: "p1_4", title: "Child’s Pose (Wide Knees)", duration: 3, gif: yogaTask5 },
+                { id: "p1_5", title: "Easy Pose (Meditation)", duration: 3, gif: yogaTask11 },
+            ],
+            comboB: [
+                { id: "p1_6", title: "Hero Pose (Gentle)", duration: 2, gif: yogaTask12 },
+                { id: "p1_7", title: "Seated Side Stretch (Light)", duration: 2, gif: yogaTask13 },
+                { id: "p1_8", title: "Supported Breathing in Easy Pose", duration: 2, gif: yogaTask11 },
+                { id: "p1_9", title: "Cat-Cow Pose", duration: 2, gif: yogaTask1 },
+                { id: "p1_10", title: "Relaxation (Side-Lying)", duration: 2, gif: yogaTask14 },
+            ],
+        },
+
+        trimester2: {
+            comboA: [
+                { id: "p2_1", title: "Bound Angle Pose (Gentle)", duration: 2, gif: yogaTask8 },
+                { id: "p2_2", title: "Warrior II (Mild, with Support)", duration: 2, gif: yogaTask15 },
+                { id: "p2_3", title: "Cat-Cow Pose", duration: 2, gif: yogaTask1 },
+                { id: "p2_4", title: "Side-Lying Savasana", duration: 2, gif: yogaTask14 },
+                { id: "p2_5", title: "Goddess Pose (Gentle)", duration: 2, gif: yogaTask16 },
+            ],
+            comboB: [
+                { id: "p2_6", title: "Triangle Pose (Wall/Chair Support)", duration: 2, gif: yogaTask17 },
+                { id: "p2_7", title: "Child’s Pose (Wide Knees)", duration: 3, gif: yogaTask5 },
+                { id: "p2_8", title: "Easy Pose (Meditation)", duration: 2, gif: yogaTask11 },
+                { id: "p2_9", title: "Seated Side Bend (Gentle)", duration: 2, gif: yogaTask19 },
+                { id: "p2_10", title: "Tree Pose (Balance Support)", duration: 2, gif: yogaTask20 },
+            ],
+        },
+
+        trimester3: {
+            comboA: [
+                { id: "p3_1", title: "Supported Squat (With Props)", duration: 2, gif: yogaTask21 },
+                { id: "p3_2", title: "Wide-Legged Child’s Pose (Supported)", duration: 2, gif: yogaTask22 },
+                { id: "p3_3", title: "Pelvic Tilts (Gentle)", duration: 2, gif: yogaTask23 },
+                { id: "p3_4", title: "Side-Lying Rest", duration: 2, gif: yogaTask14 },
+                { id: "p3_5", title: "Easy Pose (Meditation)", duration: 2, gif: yogaTask11 },
+            ],
+            comboB: [
+                { id: "p3_6", title: "Wall Supported Butterfly", duration: 2, gif: yogaTask24 },
+                { id: "p3_7", title: "Cat-Cow Pose", duration: 2, gif: yogaTask1 },
+                { id: "p3_8", title: "Goddess Pose (Gentle)", duration: 2, gif: yogaTask16 },
+                { id: "p3_9", title: "Child’s Pose (Wide Knees)", duration: 3, gif: yogaTask5 },
+                { id: "p3_10", title: "Relaxation in Easy Pose", duration: 2, gif: yogaTask11 },
+            ],
+        },
+    }
+};
+
+
+export function _getUserProfileTrimesterFrontend(lastPeriodDate) {
+    if (!lastPeriodDate) return null;
+
+    const lmp = new Date(lastPeriodDate);
+    if (isNaN(lmp.getTime())) return null; // invalid date
+
+    const today = new Date();
+    const diffTime = today - lmp;
+    const weeksPregnant = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+
+    if (weeksPregnant >= 0 && weeksPregnant <= 12) return 1;
+    if (weeksPregnant >= 13 && weeksPregnant <= 27) return 2;
+    if (weeksPregnant >= 28) return 3;
+
+    return null; // if date is in future or invalid
 }

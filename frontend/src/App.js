@@ -36,6 +36,7 @@ import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
 import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
 import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
 import CommunityPostPage from "./pages/CommunityPostPage";
+import VideoLibraryCategoryVideosComponent from "./components/VideoLiberaryCategoryVideosComponent";
 
 setupIonicReact();
 
@@ -117,6 +118,7 @@ const App = () => {
                 <DailyTaskMantraComponent/>
                 <DailyTaskHydrationComponent/>
                 <DailyTaskMoodComponent/>
+                <VideoLibraryCategoryVideosComponent/>
             </IonApp>
         );
     }

@@ -19,10 +19,10 @@ import useStore from "../zustand/useStore";
 const menuItems = [
     { label: 'Home', pathName:'/dashboard/home' },
     { label: 'About Us', pathName:'/dashboard/about-us' },
-    { label: 'Become a Member', pathName: '/dashboard/membership' },
+    { label: 'Subscription', pathName: '/dashboard/subscription' },
     { label: 'Contact Us', pathName:'/dashboard/contact-us' },
 ];
-export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,setCurrentPath}){
+export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,hideHeader,setCurrentPath}){
     const [menuOpen, setMenuOpen] = useState(false);
     const [userLogoutLoading, setUserLogoutLoading] = useState(false);
     const history = useHistory();
@@ -170,7 +170,7 @@ export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,se
                     </div>
                 </IonContent>
             </IonMenu>
-            <IonHeader className={`with_login-header main_app_header`}>
+            <IonHeader className={`with_login-header main_app_header ${hideHeader ? 'hide_element' : ''}`}>
                 <IonToolbar className="with_login-toolbar">
                     <IonButtons slot="start">
                         <IonButton

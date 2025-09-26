@@ -32,6 +32,7 @@ import BabyTrackerPageForPregnantPage from "./BabyTrackerPageForPregnantPage";
 import ClassesPage from "./ClassesPage";
 import AppSettingPage from "./AppSettingPage";
 import {actionToConnectSocketServer, actionToGetCommunityAllPostData} from "../apiHelper/CommonAction";
+import SubscriptionPage from "./SubscriptionPage";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -40,6 +41,8 @@ const AppEntryTabsPage = () => {
     const {userInfo} = userAuthDetail;
     const postedSingleRef = useRef(false);
     const { pathname } = useLocation();
+    const lastScrollTop = useRef(0);
+    const [hideHeader, setHideHeader] = useState(false);
 
     useEffect(() => {
         setCurrentPath(pathname);
@@ -53,13 +56,30 @@ const AppEntryTabsPage = () => {
         }
     }, []);
 
+    useEffect(() => {
+        setHideHeader(false)
+    }, [pathname]);
+
+    const handleScroll = (event) => {
+        const scrollTop = event.detail.scrollTop ?? 0;
+        const newScrollTop = scrollTop < 0 ? 0 : scrollTop;
+
+        if (newScrollTop > lastScrollTop.current) {
+            setHideHeader(true);
+        } else if (newScrollTop !== undefined && lastScrollTop.current !== undefined && newScrollTop < lastScrollTop.current) {
+            setHideHeader(false);
+        }
+
+        lastScrollTop.current = newScrollTop;
+    }
+
     return (
         <IonTabs>
             <IonRouterOutlet>
                 <Route path="/dashboard/" render={() => (
                     <IonPage>
                         {/* Common header always visible */}
-                        <HeaderAfterLoginComponent menuRef={menuRef} currentPath={currentPath} setCurrentPath={setCurrentPath} pageId={"main-menu-content"} />
+                        <HeaderAfterLoginComponent menuRef={menuRef} currentPath={currentPath} hideHeader={hideHeader} setCurrentPath={setCurrentPath} pageId={"main-menu-content"} />
                         {/* Nested outlet for tab pages */}
                         <IonRouterOutlet id="main-menu-content">
                             <Route exact path="/dashboard/home" component={
@@ -69,8 +89,11 @@ const AppEntryTabsPage = () => {
                                 userInfo?.role === 3 ? OvulationTrackerPage : BabyTrackerPageForPregnantPage
                             } />
                             <Route exact path="/dashboard/classes" component={ClassesPage} />
-                            <Route exact path="/dashboard/community" component={CommunityPage} />
+                            <Route exact path="/dashboard/community" render={()=>(
+                                <CommunityPage handleScroll={handleScroll}/>
+                            )} />
                             <Route exact path="/dashboard/settings" component={AppSettingPage} />
+                            <Route exact path="/dashboard/subscription" component={SubscriptionPage} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
                     </IonPage>

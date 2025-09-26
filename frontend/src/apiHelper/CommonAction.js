@@ -174,6 +174,32 @@ export const actionToGetCommunityPostCommentDataById = (postId) => {
     }
 }
 
+export const actionToGetAllSubscriptionPlanData = () => {
+    const {requestAllSubscriptionPlanData,setAllSubscriptionPlanData} = useStore.getState();
+    requestAllSubscriptionPlanData();
+
+    try {
+        api.post(`actionToGetAllSubscriptionPlanDataApiCall`).then((responseData) => {
+            setAllSubscriptionPlanData([...responseData.data]);
+        })
+    } catch (error) {
+        console.log('error',error)
+    }
+}
+
+export const actionToGetAppVideoLibraryDataByCategory = (category) => {
+    const {requestAppVideoLibraryDataByCategory,setAppVideoLibraryDataByCategory} = useStore.getState();
+    requestAppVideoLibraryDataByCategory();
+
+    try {
+        api.post(`actionToGetAppVideoLibraryDataByCategoryApiCall`, {category},{ withCredentials: true }).then((responseData) => {
+            setAppVideoLibraryDataByCategory([...responseData.data]);
+        })
+    } catch (error) {
+        console.log('error',error)
+    }
+}
+
 
 export const actionToPostNewCommentInCommunityPost = (payload) => {
     const { userAuthDetail } = useStore.getState();

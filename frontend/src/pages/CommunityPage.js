@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import { IonPage, IonContent } from "@ionic/react";
 import {
     actionToGetCommunityAllPostData,
@@ -10,14 +10,18 @@ import useStore from "../zustand/useStore";
 import {FacebookLoader} from "../components/FacebookLoader";
 import CommunityPageCardComponent from "../components/CommunityPageCardComponent";
 
-export default function CommunityPage() {
+export default function CommunityPage({handleScroll}) {
     const {communityPostIsInUploadingMode,communityAllPostData} = useStore();
     const {loading,communityPost,totalCount} = communityAllPostData;
     const observerRef = React.useRef(null);
+    const [isMuted, setIsMuted] = useState(false);
+
     const openPostPage = (id) => {
         actionToSetCommonActionSheetPopupData("community-post", { id });
     };
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+    const toggleMuted = useCallback(() => setIsMuted((m) => !m), [isMuted,setIsMuted]);
 
     const lastJobElementRef = React.useCallback(
         (node) => {
@@ -40,7 +44,7 @@ export default function CommunityPage() {
 
     return (
         <IonPage className="community-page">
-            <IonContent fullscreen className="main-content-page community-dashboard main-content-page">
+            <IonContent fullscreen scrollEvents={true} onIonScroll={handleScroll} className="main-content-page community-dashboard main-content-page">
                 <div className="dash-wrap community-dashboard-wrap">
                     {(loading) ?
                         <>
@@ -73,8 +77,10 @@ export default function CommunityPage() {
                                         <div ref={lastJobElementRef} key={post.id}>
                                             <CommunityPageCardComponent
                                                 openPostPage={openPostPage}
-                                                post={post}
+                                                post={post}a
                                                 key={post.id}
+                                                isMuted={isMuted}
+                                                toggleMuted={toggleMuted}
                                                 callFunctionToLikeDisLikePost={callFunctionToLikeDisLikePost}
                                             />
                                         </div>
@@ -85,6 +91,8 @@ export default function CommunityPage() {
                                         openPostPage={openPostPage}
                                         post={post}
                                         key={post.id}
+                                        isMuted={isMuted}
+                                        toggleMuted={toggleMuted}
                                         callFunctionToLikeDisLikePost={callFunctionToLikeDisLikePost}
                                     />
                                 );

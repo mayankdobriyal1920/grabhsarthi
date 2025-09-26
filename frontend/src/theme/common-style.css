@@ -2151,12 +2151,6 @@ ion-toolbar:last-of-type {
     font-size: var(--font-size-4);
 }
 
-.community-dashboard-wrap .post-image {
-    width: 100%;
-    border-radius: 12px;
-    margin-top: 10px;
-}
-
 .community-dashboard-wrap .card-footer .post_card_footer span{
     font-size: 16px;
     color: #767676;
@@ -2468,6 +2462,8 @@ ion-title{
 
 .classes-page-dashboard {
     background: #ffffff;
+}
+.classes-page-dashboard .classes-page-dashboard-inner{
     padding: 0 14px 24px 16px;
 }
 
@@ -2492,9 +2488,8 @@ ion-title{
 
 /* Segment Tabs */
 .classes-page-dashboard .classes-segment {
-    margin: 0 auto 28px auto;
+    margin: 0 auto 26px auto;
     --background: #ffffff;
-    border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
@@ -3149,11 +3144,19 @@ ion-title{
     user-select: none; /* helps prevent accidental text selection on double tap */
 }
 
+.community-card .media-wrapper.video-wrapper {
+    min-height: calc(100vh - 285px)!important;
+}
+
+.community-card .media-wrapper.image-wrapper {
+    min-height: calc(100vh - 300px)!important;
+}
+
 .community-card .media-wrapper {
     position: relative;
     width: 100%;
     overflow: hidden;
-    border-radius: 12px;
+    display: flex;
 }
 
 .community-card .post-image,
@@ -3161,9 +3164,16 @@ ion-title{
     display: block;
     width: 100%;
     height: auto;
-    object-fit: cover;
-    background: #000;
-    border-radius: 12px;
+    margin: auto;
+    object-fit: contain;
+    background-color: #ffffff;
+}
+
+
+.community-card .post-video{
+    object-fit: contain;
+    overflow-clip-margin: content-box;
+    overflow: clip;
 }
 
 /* Heart burst animation */
@@ -3226,4 +3236,189 @@ ion-title{
     display: flex;
     font-size: var(--font-size-3);
     color: var(--gs-text);
+}
+
+.video-library-category .video-category-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.video-library-category .video-cat-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Thumbnail */
+.video-library-category .video-cat-thumbnail {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.video-library-category .video-cat-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.video-library-category .video-cat-card:hover .video-cat-thumbnail img {
+    transform: scale(1.05);
+}
+
+/* Info Section */
+.video-library-category .video-cat-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+}
+
+.video-library-category .info-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.video-library-category .video-title {
+    font-size: var(--font-size-3);
+    font-weight: 600;
+    color: var(--gs-text);
+    margin: 0 0 6px;
+    line-height: 1.4;
+}
+
+/* Status Badge */
+.video-library-category .status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #fff;
+    width: fit-content;
+}
+
+.video-library-category .status-badge.pregnant {
+    background: var(--gs-pink); /* soft red */
+}
+
+.video-library-category .status-badge.ttc {
+    background: var(--gs-heading); /* teal */
+}
+
+/* Right Icon */
+.video-library-category .info-right {
+    display: flex;
+    align-items: center;
+}
+
+.video-library-category .forward-icon {
+    font-size: 23px;
+    color: var(--gs-text);
+}
+
+.classes-page-dashboard-inner.video-cat-container{
+    margin-top: 10px;
+}
+
+.video-card.loader_section {
+    padding: 15px;
+}
+
+.subscription-page-inner{
+
+}
+
+.subscription-page-inner .subscription_page_header_container {
+    text-align: center;
+    padding: 20px;
+}
+
+.subscription_page_header_container h1 {
+    margin: 0px;
+    font-size: var(--font-size-1);
+    font-weight: 600;
+    color: var(--gs-heading);
+    line-height: 42px;
+}
+
+.subscription_page_header_container p {
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
+    margin: 0px;
+    padding: 0px;
+}
+
+.subscription-page-inner .plans_container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.subscription-page-inner .plan_card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.subscription-page-inner .plan_title {
+    margin: 0;
+    font-size: var(--font-size-1);
+    font-weight: 600;
+    color: var(--gs-heading);
+}
+
+.subscription-page-inner .plan_price {
+    font-size: var(--font-size-0);
+    color: var(--gs-pink);
+    margin: 10px 0;
+}
+
+.subscription-page-inner .plan_desc {
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
+}
+
+.subscription-page-inner .features_list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.subscription-page-inner .features_list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.subscription-page-inner .subscribe_button {
+    background: var(--gs-pink);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+}
+
+@media (min-width: 768px) {
+    .subscription-page-inner .plans_container {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }

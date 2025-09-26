@@ -15,9 +15,8 @@ import {
 import {FacebookLoader} from "../components/FacebookLoader";
 
 const CommunityPostPage = () => {
-    const {communityPostCommentData} = useStore();
+    const {communityPostCommentData,commonActionSheetPopupData} = useStore();
     const {loading,postCommentData} = communityPostCommentData;
-    const {commonActionSheetPopupData} = useStore();
     const {page,popupData} = commonActionSheetPopupData;
     const [newComment, setNewComment] = useState("");
 
