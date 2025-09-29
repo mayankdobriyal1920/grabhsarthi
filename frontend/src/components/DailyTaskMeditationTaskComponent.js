@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {IonContent, IonIcon, IonModal} from "@ionic/react";
-import {close, fitnessOutline, ribbonOutline, timerOutline} from "ionicons/icons";
+import {close, fitnessOutline, timerOutline} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";
 import useStore from "../zustand/useStore";
@@ -10,43 +10,40 @@ export default function DailyTaskMeditationTaskComponent() {
     const {commonActionSheetPopupData, dailyTasksToday} = useStore();
     const {page} = commonActionSheetPopupData;
 
-    const handleGoHomePage = () => actionToSetCommonActionSheetPopupData("");
+    const audioRef = useRef(null);
+    const progressRef = useRef(null);
 
     const radius = 76;
     const circumference = 2 * Math.PI * radius;
-    const totalSeconds = 300; // ~5 mins (changed from 120 to match UI label)
+    const totalSeconds = 300;
 
-    const progressRef = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
-    const [elapsed, setElapsed] = useState(0); // in seconds
+    const [elapsed, setElapsed] = useState(0);
 
-    // ⏪ Resume from saved progress if present
-    useEffect(() => {
-        if (page === "daily-task-meditation") {
-            const saved = dailyTasksToday?.data?.["MEDITATION"];
-            const prevElapsed = Number(saved?.details?.elapsed_seconds || 0);
-            const prevCompleted = Number(saved?.progress_percent || 0) >= 100;
-            setElapsed(Math.min(prevElapsed, totalSeconds));
-            setIsRunning(!prevCompleted && prevElapsed > 0); // auto-continue if partially done
+    const handleGoHomePage = () => {
+        // 🔇 stop & reset audio on close
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
         }
-    }, [page, dailyTasksToday]);
+        actionToSetCommonActionSheetPopupData("");
+    };
 
-    // ▶️ Timer
+    // Timer loop
     useEffect(() => {
         if (!isRunning || page !== "daily-task-meditation") return;
-        const interval = setInterval(() => {
+        const id = setInterval(() => {
             setElapsed((prev) => {
                 const next = prev + 1;
                 if (next >= totalSeconds) {
-                    clearInterval(interval);
-                    // Auto-complete when timer finishes
+                    clearInterval(id);
                     handleMarkDone(next).finally(() => setIsRunning(false));
                     return totalSeconds;
                 }
                 return next;
             });
         }, 1000);
-        return () => clearInterval(interval);
+        return () => clearInterval(id);
     }, [isRunning, page]);
 
     const percent = Math.min(100, Math.round((elapsed / totalSeconds) * 100));
@@ -55,7 +52,6 @@ export default function DailyTaskMeditationTaskComponent() {
     const minutes = Math.floor(remaining / 60);
     const seconds = remaining % 60;
 
-    // 💾 Persist helper (called on Pause and Done)
     const persistProgress = async (pp, el) => {
         try {
             await actionToUpsertDailyTaskProgress({
@@ -73,31 +69,76 @@ export default function DailyTaskMeditationTaskComponent() {
     };
 
     const handleStartPause = async () => {
-        // If pausing, save current progress
-        if (isRunning) {
-            await persistProgress(percent, elapsed);
+        if (percent >= 100) {
+            // 🔁 RESTART FLOW
+            // optional: persist reset to 0%
+            // await persistProgress(0, 0);
+
+            // reset timer & audio, then start
+            setElapsed(0);
+            if (audioRef.current) {
+                audioRef.current.currentTime = 0;
+                try { await audioRef.current.play(); } catch {console.log('')}
+            }
+            setIsRunning(true);
+            return;
         }
-        setIsRunning((s) => !s);
+
+        if (isRunning) {
+            // ⏸️ Pause: save + pause audio
+            await persistProgress(percent, elapsed);
+            if (audioRef.current) audioRef.current.pause();
+            setIsRunning(false);
+        } else {
+            // ▶️ Start: play audio
+            if (audioRef.current) {
+                try { await audioRef.current.play(); } catch {console.log('')}
+            }
+            setIsRunning(true);
+        }
     };
 
     const handleMarkDone = async (forcedElapsed = null) => {
         const el = forcedElapsed ?? elapsed;
         await persistProgress(100, Math.max(el, totalSeconds));
+        // stop & reset audio
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
         handleGoHomePage();
     };
 
+    // Native status bar styling
     useEffect(() => {
         if (Capacitor.isNativePlatform() && page === "daily-task-meditation") {
-            StatusBar.setBackgroundColor({color: "#966dff"}).then(() => {
-                StatusBar.setStyle({style: Style.Dark});
+            StatusBar.setBackgroundColor({ color: "#966dff" }).then(() => {
+                StatusBar.setStyle({ style: Style.Dark });
             });
             return () => {
-                StatusBar.setBackgroundColor({color: "#ffffff"}).then(() => {
-                    StatusBar.setStyle({style: Style.Light});
+                StatusBar.setBackgroundColor({ color: "#ffffff" }).then(() => {
+                    StatusBar.setStyle({ style: Style.Light });
                 });
             };
         }
     }, [page]);
+
+
+    useEffect(() => {
+        if (page === "daily-task-meditation") {
+            const saved = dailyTasksToday?.data?.["MEDITATION"];
+            const prevElapsed = Number(saved?.details?.elapsed_seconds || 0);
+            const prevCompleted = Number(saved?.progress_percent || 0) >= 100;
+
+            setElapsed(prevCompleted ? 0 : Math.min(prevElapsed, totalSeconds));
+            setIsRunning(false);
+        } else {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+        }
+    }, [page, dailyTasksToday]);
 
     return (
         <IonModal isOpen={page === "daily-task-meditation"}>
@@ -131,7 +172,7 @@ export default function DailyTaskMeditationTaskComponent() {
                                     cy="80"
                                     r={radius}
                                     ref={progressRef}
-                                    style={{strokeDasharray: circumference, strokeDashoffset: offset}}
+                                    style={{ strokeDasharray: circumference, strokeDashoffset: offset }}
                                 ></circle>
                             </svg>
                             <span>{`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}</span>
@@ -139,8 +180,7 @@ export default function DailyTaskMeditationTaskComponent() {
 
                         <div className="meditation_message_text">Inhale deep... hold... exhale slowly</div>
 
-                        <div className="meditation_ohm_svg_center">
-                            {/* (svg unchanged) */}
+                        <div className={`meditation_ohm_svg_center ${isRunning ? 'running' : ''}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 238 227" preserveAspectRatio="xMidYMid meet">
                                 <g transform="translate(0,227) scale(0.1,-0.1)" fill="var(--gs-meditation-task-color)" stroke="none">
                                     <path d="M1487 2082 c-31 -32 -57 -62 -57 -68 0 -5 27 -36 60 -69 l60 -60 66 66 65 66 -62 61 c-35 34 -66 62 -69 62 -3 0 -31 -26 -63 -58z"/>
@@ -159,11 +199,19 @@ export default function DailyTaskMeditationTaskComponent() {
                             </div>
                         </div>
 
-                        <div className="dont_text_t_session_progress" style={{marginTop: 12}}>
+                        <div className="dont_text_t_session_progress" style={{ marginTop: 12 }}>
                             Progress: {percent}%
                         </div>
                     </div>
                 </div>
+
+                {/* 🔈 Hidden audio: plays on Start, pauses on Pause/close */}
+                <audio
+                    ref={audioRef}
+                    src={"https://garbhsarthi.com/api/common/actionToGetAudioStreamApiCall/medition-sound.mp3"}
+                    preload="auto"
+                    style={{ display: "none" }}
+                />
             </IonContent>
         </IonModal>
     );

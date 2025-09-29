@@ -15,7 +15,11 @@ export default function CommunityPageCardComponent({
                                                        callFunctionToLikeDisLikePost,
                                                    }) {
     const [showHeartBurst, setShowHeartBurst] = useState(false);
-    const [videoVisible, setVideoVisible] = useState(false); // <-- whether to reveal/play the video
+
+    // video visibility/render gates
+    const [renderVideo, setRenderVideo] = useState(false); // mount <video> only when visible
+    const [videoVisible, setVideoVisible] = useState(false); // is this card visible enough to try play
+    const [ready, setReady] = useState(false); // becomes true after first frame is available (or playing)
 
     const wrapperRef = useRef(null);
     const videoRef = useRef(null);
@@ -54,7 +58,7 @@ export default function CommunityPageCardComponent({
         if (e.currentTarget.setPointerCapture) {
             try {
                 e.currentTarget.setPointerCapture(e.pointerId);
-            } catch (err) {console.log('')}
+            } catch {console.log('')}
         }
         downPos.current = { x: e.clientX, y: e.clientY };
     };
@@ -101,63 +105,79 @@ export default function CommunityPageCardComponent({
         };
     }, []);
 
-    // --- Video observer for autoplay + single play enforcement ---
+    // --- IntersectionObserver: decide when to render & play the video ---
     useEffect(() => {
         if (post.object_type !== "video") return;
         const node = wrapperRef.current;
-        const video = videoRef.current;
-        if (!node || !video) return;
-
-        if ("playsInline" in video) video.playsInline = true;
-        video.setAttribute("playsinline", "");
-        video.setAttribute("webkit-playsinline", "true");
+        if (!node) return;
 
         if (observerRef.current) observerRef.current.disconnect();
 
         observerRef.current = new IntersectionObserver(
             (entries) => {
-                entries.forEach((entry) => {
-                    if (!video) return;
-                    const isVisible = entry.isIntersecting && entry.intersectionRatio > 0.5;
+                const entry = entries[0];
+                const isVisible = entry.isIntersecting && entry.intersectionRatio > 0.5;
 
-                    if (isVisible) {
-                        // Pause any other playing video before starting this one
-                        if (activeVideoRef && activeVideoRef !== video) {
-                            try {
-                                activeVideoRef.pause();
-                            } catch {console.log('')}
-                        }
-
-                        const playPromise = video.play();
-                        if (playPromise && typeof playPromise.then === "function") {
-                            playPromise.catch((err) => {
-                                console.warn("Autoplay blocked:", err);
-                            });
-                        }
-                        setTimeout(()=>{
-                            activeVideoRef = video;
-                            setVideoVisible(true);
-                        })
-                    } else {
-                        if (video === activeVideoRef) {
-                            activeVideoRef = null;
-                        }
-                        try {
-                            video.pause();
-                        } catch {console.log('')}
-                        setVideoVisible(false);
-                    }
-                });
+                if (isVisible) {
+                    setRenderVideo(true); // mount the <video> element
+                    setVideoVisible(true);
+                } else {
+                    const v = videoRef.current;
+                    if (v && v === activeVideoRef) activeVideoRef = null;
+                    try {
+                        v?.pause();
+                    } catch {console.log('')}
+                    setVideoVisible(false);
+                    // ⚠️ Do NOT set ready(false) here; it prevents video from showing on next entry
+                    // setReady(false);
+                }
             },
             { threshold: [0.5], root: null }
         );
 
         observerRef.current.observe(node);
-
-        return () => {
-            if (observerRef.current) observerRef.current.disconnect();
-        };
+        return () => observerRef.current?.disconnect();
     }, [post.object_type, post.object_url]);
+
+    // --- When the <video> is mounted & visible, request autoplay immediately ---
+    useEffect(() => {
+        const v = videoRef.current;
+        if (post.object_type !== "video") return;
+        if (!renderVideo || !videoVisible || !v) return;
+
+        // Ensure inline muted autoplay flags (critical for Android)
+        v.setAttribute("playsinline", "");
+        v.setAttribute("webkit-playsinline", "true");
+        v.muted = isMuted;
+        v.autoplay = true;
+
+        const tryPlay = async () => {
+            // Pause any other playing video before starting this one
+            if (activeVideoRef && activeVideoRef !== v) {
+                try {
+                    activeVideoRef.pause();
+                } catch {console.log('')}
+            }
+            try {
+                await v.play();
+                activeVideoRef = v;
+                // Poster remains until onCanPlay/onLoadedData/onPlaying marks ready=true
+            } catch (err) {
+                // Autoplay might be blocked — keep poster visible; user tap will trigger play
+            }
+        };
+
+        tryPlay();
+    }, [renderVideo, videoVisible, isMuted, post.object_type]);
+
+    // Mark as ready when the first frame is actually available or playback started.
+    const onCanPlay = () => setReady(true);
+    const onLoadedData = () => setReady(true);
+    const onLoadedMetadata = () => {
+        const v = videoRef.current;
+        if (v && v.readyState >= 2) setReady(true);
+    };
+    const onPlaying = () => setReady(true);
 
     const onMuteButtonClick = (e) => {
         e.stopPropagation?.();
@@ -211,15 +231,15 @@ export default function CommunityPageCardComponent({
 
                 {/* VIDEO with poster overlay */}
                 {post.object_type === "video" && post.object_url && (
-                    <div className={`media-wrapper video-wrapper`} style={{ position: "relative" }}>
-                        {/* Poster/thumbnail sits above the video until videoVisible === true */}
+                    <div className="media-wrapper video-wrapper" style={{ position: "relative" }}>
+                        {/* Poster stays above the video until it's ready */}
                         {post.poster_url && (
                             <img
                                 src={post.poster_url}
                                 alt="poster"
                                 className="video-poster"
                                 style={{
-                                    display: videoVisible ? "none" : "block",
+                                    display: !ready ? "block" : "none",
                                     width: "100%",
                                     height: "100%",
                                     objectFit: "cover",
@@ -232,31 +252,39 @@ export default function CommunityPageCardComponent({
                             />
                         )}
 
-                        <video
-                            ref={videoRef}
-                            src={post.object_url}
-                            className="post-video"
-                            playsInline
-                            loop
-                            muted={isMuted}
-                            controls={false}
-                            preload="none"
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                // keep the video element present but visually hidden while poster shows
-                                opacity: videoVisible ? 1 : 0,
-                                transition: "opacity 200ms ease",
-                                borderRadius: 6,
-                            }}
-                        />
+                        {/* Mount the video element only when visible */}
+                        {renderVideo && (
+                            <video
+                                ref={videoRef}
+                                src={post.object_url}
+                                className="post-video"
+                                playsInline
+                                loop
+                                muted={isMuted}
+                                autoPlay
+                                controls={false}
+                                preload="metadata"
+                                onCanPlay={onCanPlay}
+                                onLoadedData={onLoadedData}
+                                onLoadedMetadata={onLoadedMetadata}
+                                onPlaying={onPlaying}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    opacity: ready ? 1 : 0, // fade-in when the first frame is ready OR playing
+                                    transition: "opacity 180ms ease",
+                                    borderRadius: 6,
+                                }}
+                            />
+                        )}
 
                         {showHeartBurst && (
                             <div className="heart-burst">
                                 <IonIcon icon={heart} />
                             </div>
                         )}
+
                         <button
                             type="button"
                             className="mute-btn"
@@ -282,6 +310,19 @@ export default function CommunityPageCardComponent({
                     <span>{post.comment_counts}</span>
                 </div>
             </div>
+
+            {/* Inline styles: hide Android big play & any early controls flash */}
+            <style>{`
+        /* Hide the initial big start playback button on Android/WebKit */
+        .post-video::-webkit-media-controls-start-playback-button {
+          display: none !important;
+          -webkit-appearance: none;
+        }
+        /* Some devices briefly show the controls enclosure; hide it */
+        .post-video::-webkit-media-controls-enclosure {
+          display: none !important;
+        }
+      `}</style>
         </div>
     );
 }

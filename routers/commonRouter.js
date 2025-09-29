@@ -1,6 +1,8 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import mime from 'mime-types';
+import { pipeline } from "stream";
+import { promisify } from "util";
 import {
     actionToVerifyLoginUserOtpApiCall,
     actionToGetCurrentUserProfileDataApiCall,
@@ -34,9 +36,10 @@ import Razorpay from 'razorpay';
 import crypto from "crypto";
 import moment from "moment-timezone";
 
-
+const fsp = fs.promises;
 const uploadPath = "/var/www/html/garbhsarthi/public/uploads/community";
 const audioUploadPath = "/var/www/html/garbhsarthi/public/uploads/audio";
+const yogaTaskUploadPath = "/var/www/html/garbhsarthi/public/uploads/yogatasksvids";
 const commonRouter = express.Router();
 
 const razorpayInstance = new Razorpay({
@@ -422,65 +425,122 @@ commonRouter.get("/actionToGetImageApiCall/:imageName", (req, res) => {
     });
 });
 
-
-commonRouter.get("/actionToGetVideoApiCall/:videoName", (req, res) => {
-    const { videoName } = req.params;
-    const filePath = path.join(uploadPath, videoName);
-    fs.stat(filePath, (err, stat) => {
-        if (err || !stat) return res.status(404).json({ message: "File not found" });
-
-        const range = req.headers.range;
-        const mimeType = mime.lookup(filePath) || 'video/mp4';
-        if (!range) {
-            res.setHeader("Content-Type", mimeType);
-            res.setHeader("Content-Length", stat.size);
-            return fs.createReadStream(filePath).pipe(res);
-        }
-
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
-        const chunkSize = (end - start) + 1;
-
-        res.writeHead(206, {
-            "Content-Range": `bytes ${start}-${end}/${stat.size}`,
-            "Accept-Ranges": "bytes",
-            "Content-Length": chunkSize,
-            "Content-Type": mimeType
-        });
-
-        fs.createReadStream(filePath, { start, end }).pipe(res);
+commonRouter.get("/actionToGetYogaTasksGifAndImageApiCall/:imageName", (req, res) => {
+    const { imageName } = req.params;
+    const filePath = path.join(yogaTaskUploadPath, imageName);
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) return res.status(404).json({ message: "File not found" });
+        const mimeType = mime.lookup(filePath);
+        if (!mimeType) return res.status(400).json({ message: "Unsupported file type" });
+        res.setHeader("Content-Type", mimeType);
+        if (!mimeType.startsWith("image/")) res.setHeader("Content-Disposition", `attachment; filename="${imageName}"`);
+        fs.createReadStream(filePath).pipe(res);
     });
 });
 
-commonRouter.get("/actionToGetAudioStreamApiCall/:audioName", (req, res) => {
-    const { audioName } = req.params;
-    const filePath = path.join(audioUploadPath, audioName);
-    fs.stat(filePath, (err, stat) => {
-        if (err || !stat) return res.status(404).json({ message: "File not found" });
+const pump = promisify(pipeline);
+const DEFAULT_CHUNK = 1 << 20; // 1 MB
+const ONE_YEAR = 31536000;     // strong cache (tweak if files change)
 
-        const range = req.headers.range;
-        const mimeType = mime.lookup(filePath) || 'video/mp4';
-        if (!range) {
-            res.setHeader("Content-Type", mimeType);
-            res.setHeader("Content-Length", stat.size);
-            return fs.createReadStream(filePath).pipe(res);
-        }
+// ---- shared file streamer ----
+async function streamFile({ req, res, baseDir, filename, fallbackType = "application/octet-stream" }) {
+    const filePath = path.join(baseDir, filename);
 
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
-        const chunkSize = (end - start) + 1;
+    const stat = await fsp.stat(filePath).catch(() => null);
+    if (!stat?.isFile()) {
+        return res.status(404).json({ message: "File not found" });
+    }
 
-        res.writeHead(206, {
-            "Content-Range": `bytes ${start}-${end}/${stat.size}`,
-            "Accept-Ranges": "bytes",
-            "Content-Length": chunkSize,
-            "Content-Type": mimeType
-        });
+    const size = stat.size;
+    const mimeType = mime.contentType(path.extname(filePath)) || fallbackType;
 
-        fs.createReadStream(filePath, { start, end }).pipe(res);
+    // cache headers
+    const lastModified = stat.mtime.toUTCString();
+    const etag = `"${size}-${stat.mtime.getTime()}"`;
+    res.setHeader("Accept-Ranges", "bytes");
+    res.setHeader("Cache-Control", `public, max-age=${ONE_YEAR}, immutable`);
+    res.setHeader("ETag", etag);
+    res.setHeader("Last-Modified", lastModified);
+
+    // conditional GET
+    if (req.headers["if-none-match"] === etag) return res.status(304).end();
+    if (req.headers["if-modified-since"] === lastModified) return res.status(304).end();
+
+    const range = req.headers.range;
+
+    // HEAD support (fast probe)
+    if (req.method === "HEAD" && !range) {
+        res.writeHead(200, { "Content-Type": mimeType, "Content-Length": size });
+        return res.end();
+    }
+
+    // No range → send whole file
+    if (!range) {
+        res.writeHead(200, { "Content-Type": mimeType, "Content-Length": size });
+        const stream = fs.createReadStream(filePath, { highWaterMark: DEFAULT_CHUNK });
+        try { await pump(stream, res); } catch { res.destroy(); }
+        return;
+    }
+
+    // bytes=start-end
+    const m = /^bytes=(\d*)-(\d*)$/.exec(range);
+    if (!m) return res.status(416).set("Content-Range", `bytes */${size}`).end();
+
+    let start = m[1] ? parseInt(m[1], 10) : 0;
+    let end   = m[2] ? parseInt(m[2], 10) : Math.min(start + DEFAULT_CHUNK - 1, size - 1);
+
+    // clamp/validate
+    if (Number.isNaN(start) || Number.isNaN(end) || start < 0 || end < start || start >= size) {
+        return res.status(416).set("Content-Range", `bytes */${size}`).end();
+    }
+    if (end >= size) end = size - 1;
+
+    const chunkSize = end - start + 1;
+
+    res.writeHead(206, {
+        "Content-Range": `bytes ${start}-${end}/${size}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunkSize,
+        "Content-Type": mimeType,
     });
+
+    const stream = fs.createReadStream(filePath, {
+        start,
+        end,
+        highWaterMark: DEFAULT_CHUNK,
+    });
+
+    try { await pump(stream, res); } catch { res.destroy(); }
+}
+
+// ---------------- routes (both) ----------------
+
+commonRouter.get("/actionToGetVideoApiCall/:videoName", async (req, res) => {
+    try {
+        await streamFile({
+            req, res,
+            baseDir: uploadPath,
+            filename: req.params.videoName,
+            fallbackType: "video/mp4",
+        });
+    } catch (e) {
+        console.error("video stream error:", e);
+        res.status(500).json({ message: "Internal error" });
+    }
+});
+
+commonRouter.get("/actionToGetAudioStreamApiCall/:audioName", async (req, res) => {
+    try {
+        await streamFile({
+            req, res,
+            baseDir: audioUploadPath,
+            filename: req.params.audioName,
+            fallbackType: "audio/mpeg", // better default for audio
+        });
+    } catch (e) {
+        console.error("audio stream error:", e);
+        res.status(500).json({ message: "Internal error" });
+    }
 });
 
 

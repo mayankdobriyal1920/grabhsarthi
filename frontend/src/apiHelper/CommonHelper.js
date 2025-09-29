@@ -71,6 +71,7 @@ import fruitIcon34 from '../theme/img/babyFruit/fruitIcon34.png';
 import fruitIcon35 from '../theme/img/babyFruit/fruitIcon35.png';
 import fruitIcon36 from '../theme/img/babyFruit/fruitIcon36.png';
 import fruitIcon37 from '../theme/img/babyFruit/fruitIcon37.png';
+
 import yogaVid1 from "../theme/img/yogaVidImg/yoga_vid_img_1.png";
 import yogaVid2 from "../theme/img/yogaVidImg/yoga_vid_img_2.png";
 import yogaVid3 from "../theme/img/yogaVidImg/yoga_vid_img_3.png";
@@ -78,30 +79,31 @@ import yogaVid4 from "../theme/img/yogaVidImg/yoga_vid_img_4.png";
 import yogaVid5 from "../theme/img/yogaVidImg/yoga_vid_img_5.png";
 import yogaVid6 from "../theme/img/yogaVidImg/yoga_vid_img_6.png";
 
-import yogaTask1 from "../theme/img/yogaTasks/cat-cow-pose.gif";
-import yogaTask2 from "../theme/img/yogaTasks/butterfly-pose.gif";
-import yogaTask3 from "../theme/img/yogaTasks/bridge-pose.gif";
-import yogaTask4 from "../theme/img/yogaTasks/cobra-pose.gif";
-import yogaTask5 from "../theme/img/yogaTasks/child-pose.gif";
-import yogaTask6 from "../theme/img/yogaTasks/Legs_Up_the_Wall.gif";
-import yogaTask7 from "../theme/img/yogaTasks/forward-bending-pose.gif";
-import yogaTask8 from "../theme/img/yogaTasks/Supta-Bhadrasana-women-health.jpg";
-import yogaTask9 from "../theme/img/yogaTasks/reclined-twisted-pose.gif";
-import yogaTask10 from "../theme/img/yogaTasks/mountain-pose.gif";
-import yogaTask11 from "../theme/img/yogaTasks/easy-pose.gif";
-import yogaTask12 from "../theme/img/yogaTasks/hero-pose.gif";
-import yogaTask13 from "../theme/img/yogaTasks/seated-side-pose.png";
-import yogaTask14 from "../theme/img/yogaTasks/side-laying-pose.png";
-import yogaTask15 from "../theme/img/yogaTasks/hero-pose.gif";
-import yogaTask16 from "../theme/img/yogaTasks/goddess-page.gif";
-import yogaTask17 from "../theme/img/yogaTasks/triangle-pose.gif";
-import yogaTask18 from "../theme/img/yogaTasks/child-pose.gif";
-import yogaTask19 from "../theme/img/yogaTasks/seeted-side-bend.gif";
-import yogaTask20 from "../theme/img/yogaTasks/tree-pose.gif";
-import yogaTask21 from "../theme/img/yogaTasks/box-squats.gif";
-import yogaTask22 from "../theme/img/yogaTasks/child's_pose_wide.gif";
-import yogaTask23 from "../theme/img/yogaTasks/palvic-tits.gif";
-import yogaTask24 from "../theme/img/yogaTasks/wall-butterfly.png";
+const yogaTask1  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/cat-cow-pose.gif";
+const yogaTask2  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/butterfly-pose.gif";
+const yogaTask3  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/bridge-pose.gif";
+const yogaTask4  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/cobra-pose.gif";
+const yogaTask5  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/child-pose.gif";
+const yogaTask6  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/Legs_Up_the_Wall.gif";
+const yogaTask7  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/forward-bending-pose.gif";
+const yogaTask8  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/Supta-Bhadrasana-women-health.jpg";
+const yogaTask9  = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/reclined-twisted-pose.gif";
+const yogaTask10 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/mountain-pose.gif";
+const yogaTask11 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/easy-pose.gif";
+const yogaTask12 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/hero-pose.gif";
+const yogaTask13 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/seated-side-pose.png";
+const yogaTask14 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/side-laying-pose.png";
+const yogaTask15 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/hero-pose.gif";
+const yogaTask16 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/goddess-page.gif";
+const yogaTask17 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/triangle-pose.gif";
+const yogaTask18 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/child-pose.gif";
+const yogaTask19 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/seeted-side-bend.gif";
+const yogaTask20 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/tree-pose.gif";
+const yogaTask21 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/box-squats.gif";
+const yogaTask22 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/child's_pose_wide.gif";
+const yogaTask23 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/palvic-tits.gif";
+const yogaTask24 = "https://garbhsarthi.com/api/common/actionToGetYogaTasksGifAndImageApiCall/wall-butterfly.png";
+
 
 export const _babyWeeklyGrowthContentSvg = [
     {},
@@ -1357,7 +1359,7 @@ export const _dailyTaskYogaStore = {
             ],
             comboB: [
                 { id: "p2_6", title: "Triangle Pose (Wall/Chair Support)", duration: 2, gif: yogaTask17 },
-                { id: "p2_7", title: "Child’s Pose (Wide Knees)", duration: 3, gif: yogaTask5 },
+                { id: "p2_7", title: "Child’s Pose (Wide Knees)", duration: 3, gif: yogaTask18 },
                 { id: "p2_8", title: "Easy Pose (Meditation)", duration: 2, gif: yogaTask11 },
                 { id: "p2_9", title: "Seated Side Bend (Gentle)", duration: 2, gif: yogaTask19 },
                 { id: "p2_10", title: "Tree Pose (Balance Support)", duration: 2, gif: yogaTask20 },
@@ -1400,3 +1402,29 @@ export function _getUserProfileTrimesterFrontend(lastPeriodDate) {
 
     return null; // if date is in future or invalid
 }
+
+
+// mantraList.js
+export const _dailyTasksMantraData = [
+    {
+        text: "ॐ नमः शिवाय",
+        meaning: "A universal mantra for peace, protection, and inner strength."
+    },
+    {
+        text: "ॐ श्री गणेशाय नमः",
+        meaning: "For removing obstacles and invoking wisdom."
+    },
+    {
+        text: "ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्।",
+        meaning: "The Maha Mrityunjaya mantra for healing and longevity."
+    },
+    {
+        text: "ॐ सरस्वत्यै नमः",
+        meaning: "To seek blessings of Goddess Saraswati for knowledge and clarity."
+    },
+    {
+        text: "ॐ श्री हनुमते नमः",
+        meaning: "For courage, devotion, and strength."
+    }
+];
+

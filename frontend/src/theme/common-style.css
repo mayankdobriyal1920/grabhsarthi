@@ -1443,14 +1443,9 @@ ion-toolbar:last-of-type {
     border:1px solid var(--gs-meditation-task-color);
     color: var(--gs-meditation-task-color);
 }
-.session_start_stop_skin_button .button_in_time_y_task{
+.session_start_stop_skin_button .button_in_time_y_task {
     margin: auto;
-    padding:20px 0;
-    width: 200px;
-}
-.session_start_stop_skin_button .button_in_time_y_task_skip_task{
-    margin: auto;
-    padding:20px 0;
+    padding: 20px 0;
     width: 200px;
 }
 .session_start_stop_skin_button{
@@ -1510,6 +1505,8 @@ ion-toolbar:last-of-type {
 .meditation_ohm_svg_center{
     display: flex;
     padding: 20px;
+}
+.meditation_ohm_svg_center.running{
     animation: breathe 8s infinite ease-in-out;
 }
 .meditation_ohm_svg_center svg{
@@ -1677,13 +1674,6 @@ ion-toolbar:last-of-type {
     margin: 10px auto 20px auto;
     box-shadow: var(--gs-shadow);
 }
-.save_samvaad_button.add_glass_hydration_button {
-    margin: 0px auto;
-    display: flex;
-    text-align: center;
-    padding: 15px 33px;
-    background: var(--gs-hydration-task-color);
-}
 
 .mood_main_container .header_for_task_section.mood{
     background: var(--gs-mood-task-color);
@@ -1718,6 +1708,23 @@ ion-toolbar:last-of-type {
     border: 2px solid var(--gs-mood-task-color);
     background: #e6f5f4;
     box-shadow: 0 0 12px rgba(0,0,0,0.06);
+}
+
+.save_samvaad_button.add_glass_hydration_button {
+    margin: 0px auto;
+    display: flex;
+    text-align: center;
+    padding: 20px 0px;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    background: var(--gs-hydration-task-color);
+}
+
+.session_start_stop_skin_button .button_in_time_y_task_skip_task{
+    margin: auto;
+    padding:20px 0;
+    width: 100%;
 }
 
 .mood_main_container .mood_icon {

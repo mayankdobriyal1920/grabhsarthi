@@ -45,11 +45,15 @@ import DailyTaskMantraComponent from "../components/DailyTaskMantraComponent";
 import DailyTaskHydrationComponent from "../components/DailyTaskHydrationComponent";
 import DailyTaskMoodComponent from "../components/DailyTaskMoodComponent";
 import VideoLibraryCategoryVideosComponent from "../components/VideoLiberaryCategoryVideosComponent";
+import DailyTaskAffirmationComponent from "../components/DailyTaskAffirmationComponent";
+import {Capacitor} from "@capacitor/core";
+import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
+import {StatusBar, Style} from "@capacitor/status-bar";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
     const menuRef = React.useRef(null);
-    const {userAuthDetail} = useStore();
+    const {userAuthDetail,commonActionSheetPopupData} = useStore();
     const {userInfo} = userAuthDetail;
     const postedSingleRef = useRef(false);
     const { pathname } = useLocation();
@@ -87,6 +91,18 @@ const AppEntryTabsPage = () => {
         lastScrollTop.current = newScrollTop;
     }
 
+    useEffect(() => {
+       if(!commonActionSheetPopupData?.page){
+           actionToGetDailyTasksByUserId();
+           if(Capacitor.isNativePlatform()){
+               NavigationBar.setColor({ color: '#ffffff' , darkButtons:true});
+               StatusBar.setBackgroundColor({ color: '#ffffff' }).then(()=>{
+                   StatusBar.setStyle({ style:Style.Light });
+               });
+           }
+       }
+    }, [commonActionSheetPopupData]);
+
     return (
         <IonTabs>
             <IonRouterOutlet>
@@ -110,14 +126,33 @@ const AppEntryTabsPage = () => {
                             <Route exact path="/dashboard/subscription" component={SubscriptionPage} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
-                        <CommunityPostPage/>
-                        <DailyTaskYogTaskComponent/>
-                        <DailyTaskMeditationTaskComponent/>
-                        <DailyTaskSamvaadComponent/>
-                        <DailyTaskMantraComponent/>
-                        <DailyTaskHydrationComponent/>
-                        <DailyTaskMoodComponent/>
-                        <VideoLibraryCategoryVideosComponent/>
+                        {commonActionSheetPopupData?.page === "community-post" && (
+                            <CommunityPostPage/>
+                        )}
+                        {commonActionSheetPopupData?.page === "daily-task-yoga" && (
+                            <DailyTaskYogTaskComponent/>
+                        )}
+                        {commonActionSheetPopupData?.page === "daily-task-meditation" && (
+                            <DailyTaskMeditationTaskComponent/>
+                        )}
+                        {commonActionSheetPopupData?.page === "daily-task-samvaad" && (
+                            <DailyTaskSamvaadComponent/>
+                        )}
+                        {commonActionSheetPopupData?.page === "daily-task-mantra" && (
+                            <DailyTaskMantraComponent/>
+                        )}
+                        {commonActionSheetPopupData?.page === "daily-task-hydration" && (
+                            <DailyTaskHydrationComponent/>
+                        )}
+                        {commonActionSheetPopupData?.page === "daily-task-mood" && (
+                            <DailyTaskMoodComponent/>
+                        )}
+                        {commonActionSheetPopupData?.page === "daily-task-affirmation" && (
+                            <DailyTaskAffirmationComponent/>
+                        )}
+                        {commonActionSheetPopupData?.page === "video-page" && (
+                            <VideoLibraryCategoryVideosComponent/>
+                        )}
                     </IonPage>
                 )} />
             </IonRouterOutlet>

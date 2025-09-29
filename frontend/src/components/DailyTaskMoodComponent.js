@@ -1,25 +1,25 @@
-import React, {useEffect, useState} from "react";
-import {IonPage, IonContent, IonIcon, IonModal} from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import { IonContent, IonIcon, IonModal } from "@ionic/react";
 import {
     happyOutline,
     sadOutline,
     heartOutline,
     sparklesOutline,
-    ribbonOutline,
     close,
 } from "ionicons/icons";
-import {Capacitor} from "@capacitor/core";
-import {StatusBar, Style} from "@capacitor/status-bar";
+import { Capacitor } from "@capacitor/core";
+import { StatusBar, Style } from "@capacitor/status-bar";
 import useStore from "../zustand/useStore";
-import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
+import {
+    actionToSetCommonActionSheetPopupData,
+    actionToUpsertDailyTaskProgress,
+} from "../apiHelper/CommonAction";
 
 export default function DailyTaskMoodComponent() {
-    const {commonActionSheetPopupData} = useStore();
-    const {page} = commonActionSheetPopupData;
+    const { commonActionSheetPopupData, dailyTasksToday } = useStore();
+    const { page } = commonActionSheetPopupData;
 
-    const handleGoHomePage = () =>{
-        actionToSetCommonActionSheetPopupData('');
-    }
+    const handleGoHomePage = () => actionToSetCommonActionSheetPopupData("");
 
     const moods = [
         { id: "happy", label: "Happy", icon: happyOutline },
@@ -31,32 +31,70 @@ export default function DailyTaskMoodComponent() {
     ];
 
     const [selectedMood, setSelectedMood] = useState(null);
+    const [note, setNote] = useState("");
+    const [saving, setSaving] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
-    const handleSave = () => {
-        if (selectedMood) {
+    // Prefill from today's saved mood (if any)
+    useEffect(() => {
+        if (page === "daily-task-mood") {
+            const saved = dailyTasksToday?.data?.["MOOD"];
+            const prevMood = saved?.details?.mood ?? null;
+            const prevNote =
+                typeof saved?.details?.note === "string" ? saved.details.note : "";
+            setSelectedMood(prevMood);
+            setNote(prevNote);
+            setSaving(false);
+            setShowSuccess(false);
+        } else {
+            setSelectedMood(null);
+            setNote("");
+            setSaving(false);
+            setShowSuccess(false);
+        }
+    }, [page, dailyTasksToday]);
+
+    // Native status bar styling
+    useEffect(() => {
+        if (Capacitor.isNativePlatform() && page === "daily-task-mood") {
+            StatusBar.setBackgroundColor({ color: "#FFC107" }).then(() => {
+                StatusBar.setStyle({ style: Style.Dark });
+            });
+            return () => {
+                StatusBar.setBackgroundColor({ color: "#ffffff" }).then(() => {
+                    StatusBar.setStyle({ style: Style.Light });
+                });
+            };
+        }
+    }, [page]);
+
+    const handleSave = async () => {
+        if (!selectedMood || saving) return;
+        try {
+            setSaving(true);
+            await actionToUpsertDailyTaskProgress({
+                task: "MOOD",
+                progressPercent: 100, // marking done = 100%
+                details: {
+                    mood: selectedMood,
+                    note: note?.trim() || "",
+                    completed_at: new Date().toISOString(),
+                },
+            });
             setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 2500);
+            // brief success flash then close
+            setTimeout(() => {
+                setShowSuccess(false);
+                handleGoHomePage();
+            }, 800);
+        } catch (e) {
+            console.error("Mood save failed", e);
+            setSaving(false);
         }
     };
 
-    useEffect(()=>{
-        if(Capacitor.isNativePlatform() && page === 'daily-task-mood'){
-            StatusBar.setBackgroundColor({ color: '#FFC107' }).then(()=>{
-                StatusBar.setStyle({ style:Style.Dark });
-            });
-
-            return ()=>{
-                StatusBar.setBackgroundColor({ color: '#ffffff' }).then(()=>{
-                    StatusBar.setStyle({ style:Style.Light });
-                });
-            }
-        }
-    },[page])
-
-
     return (
-        <IonModal isOpen={page === 'daily-task-mood'}>
+        <IonModal isOpen={page === "daily-task-mood"}>
             <IonContent
                 fullscreen
                 className="mood_main_container pregnant-dashboard task_section_container_wrap"
@@ -64,7 +102,10 @@ export default function DailyTaskMoodComponent() {
                 {/* HEADER */}
                 <div className="header_for_task_section mood">
                     <h1>Your Mood</h1>
-                    <div onClick={handleGoHomePage} className="session-info-end-session duration count_sec">
+                    <div
+                        onClick={handleGoHomePage}
+                        className="session-info-end-session duration count_sec"
+                    >
                         <IonIcon icon={close} />
                         <span>End Session</span>
                     </div>
@@ -75,9 +116,7 @@ export default function DailyTaskMoodComponent() {
                     {moods.map((mood) => (
                         <div
                             key={mood.id}
-                            className={`mood_card ${
-                                selectedMood === mood.id ? "selected" : ""
-                            }`}
+                            className={`mood_card ${selectedMood === mood.id ? "selected" : ""}`}
                             onClick={() => setSelectedMood(mood.id)}
                         >
                             <IonIcon icon={mood.icon} className="mood_icon" />
@@ -85,13 +124,18 @@ export default function DailyTaskMoodComponent() {
                         </div>
                     ))}
                 </div>
-                <div className={"mood_tracker_bottom_cont"}>
+
+                <div className="mood_tracker_bottom_cont">
                     {/* OPTIONAL TEXT INPUT */}
                     <div className="mood_text_input">
-                         <textarea cols={1}
-                                   className={"samvaad_text_input_area"}
-                                   placeholder={"Write your feelings (optional)"}
-                         />
+            <textarea
+                cols={1}
+                className={"samvaad_text_input_area"}
+                placeholder={"Write your feelings (optional)"}
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                maxLength={400}
+            />
                     </div>
 
                     {/* SAVE BUTTON */}
@@ -99,24 +143,18 @@ export default function DailyTaskMoodComponent() {
                         className="save_mood_button"
                         type="button"
                         onClick={handleSave}
-                        disabled={!selectedMood}
+                        disabled={!selectedMood || saving}
                     >
-                        Mark Done
+                        {saving ? "Saving..." : "Mark Done"}
                     </button>
 
                     {/* SUCCESS STATE */}
-                    <div className="success_state samvaad_bottom_text">
-                        <IonIcon icon={heartOutline} className="success_icon" />
-                        <p>
-                            Beautiful! Acknowledging your emotions helps your journey 💖
-                        </p>
-                    </div>
-
-                    {/* STREAK TRACKER */}
-                    <div className="samvaad_bottom_streek_section mood">
-                        <IonIcon icon={ribbonOutline} className="streak-icon" />
-                        <span className="streak-text">Day 4 of 7 Mood Streak</span>
-                    </div>
+                    {showSuccess && (
+                        <div className="success_state samvaad_bottom_text">
+                            <IonIcon icon={heartOutline} className="success_icon" />
+                            <p>Beautiful! Acknowledging your emotions helps your journey 💖</p>
+                        </div>
+                    )}
                 </div>
             </IonContent>
         </IonModal>

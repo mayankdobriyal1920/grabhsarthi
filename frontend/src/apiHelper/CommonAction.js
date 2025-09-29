@@ -143,9 +143,9 @@ export const actionToGetCommunityAllPostData = (isLoading = true,payload = {}) =
         prevStateData = [];
         requestCommunityAllPostData();
     }else{
-        payload.offset = communityAllPostData.offset + 20;
+        payload.offset = communityAllPostData.offset + 5;
     }
-    payload.limit = 20;
+    payload.limit = 5;
 
     try {
         api.post(`actionToGetCommunityAllPostDataApiCall`, payload,{ withCredentials: true }).then((responseData) => {
@@ -205,9 +205,7 @@ export const actionToGetAppVideoLibraryDataByCategory = (category) => {
 
 
 export const actionToUpsertDailyTaskProgress = async (payload) => {
-    api.post(`actionToUpsertDailyTaskProgressApiCall`, payload,{ withCredentials: true }).then(() => {
-        actionToGetDailyTasksByUserId();
-    })
+    api.post(`actionToUpsertDailyTaskProgressApiCall`, payload,{ withCredentials: true });
 };
 
 export const actionToGetDailyTasksByUserId = () => {
