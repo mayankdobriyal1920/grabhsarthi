@@ -4,10 +4,12 @@ import { _videosCategoryPregnant, _videosCategoryTTC } from "../apiHelper/Common
 import { IonIcon } from "@ionic/react";
 import { chevronForward } from "ionicons/icons";
 import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
+import {useHistory} from "react-router-dom";
 
 const VideoLibrary = () => {
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail;
+    const history = useHistory();
 
     const [videosCategory, setVideosCategory] = useState([]);
 
@@ -23,8 +25,17 @@ const VideoLibrary = () => {
         actionToSetCommonActionSheetPopupData('video-page',video);
     }
 
+    const goToSubscriptionPage = ()=>{
+        history.replace('/dashboard/subscription');
+    }
+
     return (
         <div className="video-library-category">
+            {(!userInfo?.active_subscription?.id) && (
+                <div onClick={()=>goToSubscriptionPage()} className={"plan_warning_header"}>
+                    Click here to purchase subscription to access video library
+                </div>
+            )}
             <div className="video-category-list">
                 {videosCategory.map((video) => (
                     <div key={video.id} onClick={()=>openVideoCatPage(video)} className="video-cat-card">

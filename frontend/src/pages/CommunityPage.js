@@ -44,6 +44,9 @@ export default function CommunityPage({handleScroll}) {
 
     return (
         <IonPage className="community-page">
+            {(communityPostIsInUploadingMode?.status) && (
+                <div className={"progress_header_loader_in_c_p"} style={{width:`${communityPostIsInUploadingMode?.progress}%`}}/>
+            )}
             <IonContent fullscreen scrollEvents={true} onIonScroll={handleScroll} className="main-content-page community-dashboard main-content-page">
                 <div className="dash-wrap community-dashboard-wrap">
                     {(loading) ?

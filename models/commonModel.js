@@ -4,11 +4,12 @@ import {
     actionToGetCommunityAllPostDataCountQuery,
     actionToGetCommunityAllPostDataQuery,
     actionToGetCommunityPostByIdQuery,
-    actionToGetCommunityPostCommentDataByIdQuery,
+    actionToGetCommunityPostCommentDataByIdQuery, actionToGetDailyTasksByUserIdQuery,
     getUserByIdQuery,
     loginUserQuery,
 } from "../queries/commonQuries.js";
 import {
+    _buildDailyTaskPayloads,
     _generateUniqueIdForBackend, _getUserProfileTrimester,
     deleteCommonApiCall,
     insertCommonApiCall,
@@ -65,6 +66,32 @@ export const actionToGetCurrentUserProfileDataApiCall = (userId) => {
             resolve(userData);
         });
     });
+}
+
+export const actionToUpsertDailyTaskProgressApiCall = async (userId,payload) => {
+    try {
+        // merge userId into payload so builder has everything
+        const { insertData, updateData } = _buildDailyTaskPayloads({ ...payload, userId });
+
+        // Try UPDATE first
+        const updRes = await updateCommonApiCall(updateData);
+        const updated = !!(updRes && (updRes.affectedRows > 0 || updRes.status === 1 || updRes.updated === true));
+        if (updated) {
+            return { status: 1, mode: "update" };
+        }
+
+        // Fallback: INSERT
+        const insRes = await insertCommonApiCall(insertData);
+        const inserted = !!(insRes && (insRes.insertId || insRes.status === 1 || insRes.created === true));
+        if (inserted) {
+            return { status: 1, mode: "insert" };
+        }
+
+        return { status: 0, error: "No rows updated or inserted" };
+    } catch (err) {
+        console.error("actionToUpsertDailyTaskProgressApiCall error:", err);
+        return { status: 0, error: err?.message || "Unknown error" };
+    }
 }
 
 export const actionToGetUserProfileDataByUserAndRole = (userId,role) => {
@@ -339,9 +366,25 @@ export const actionToGetCommunityPostCommentDataByIdApiCall = (postId) => {
     });
 };
 
+export const actionToGetDailyTasksByUserIdApiCall = (userId,role) => {
+    return new Promise(function (resolve, reject) {
+        const query = actionToGetDailyTasksByUserIdQuery(role);
+        let resultData = [];
+        pool.query(query, [userId], (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            if(dataResults?.length){
+                resultData = dataResults;
+            }
+            resolve(resultData);
+        });
+    });
+};
+
 export const actionToGetAllSubscriptionPlanDataApiCall = () => {
     return new Promise(function (resolve, reject) {
-        const query = `SELECT * FROM subscription_plans`;
+        const query = `SELECT * FROM subscription_plans ORDER BY created_at ASC`;
         let resultData = [];
         pool.query(query, [], (error, dataResults) => {
             if (error) {
@@ -349,6 +392,93 @@ export const actionToGetAllSubscriptionPlanDataApiCall = () => {
             }
             if(dataResults?.length){
                 resultData = dataResults;
+            }
+            resolve(resultData);
+        });
+    });
+};
+
+export const actionToSaveSelectedLiveClassDataDataApiCall = (selected_live_class_id,profile_id) => {
+    const updateUser = {
+        column: "selected_live_class_id = ?",
+        value: [selected_live_class_id,profile_id],
+        whereCondition: "id = ?",
+        returnColumnName: "id",
+        tableName: "profile",
+    };
+    return updateCommonApiCall(updateUser);
+}
+export const actionToGetAllScheduledLiveClassApiCall = (role,lastPeriodDate) => {
+    return new Promise(function (resolve, reject) {
+        const trimester = _getUserProfileTrimester(lastPeriodDate);
+        // Apply type filtering based on role
+        const typeCondition = (role === 2)
+            ? `type IN ('Prenatal', 'Garbh') AND (trimester = ${trimester} OR trimester IS NULL)`
+            : `type IN ('Postnatal', 'TTC')`;
+
+        const query = `
+            SELECT id, title, start_time, instructor_name,trimester,type,description
+            FROM live_classes
+            WHERE ${typeCondition}
+            ORDER BY created_at ASC
+        `;
+
+        pool.query(query, (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(dataResults || []);
+        });
+    });
+};
+
+export const actionToGetSelectedScheduledLiveClassApiCall = (selected_live_class_id) => {
+    return new Promise(function (resolve, reject) {
+        const query = `SELECT * FROM live_classes WHERE id = ?`;
+        pool.query(query,[selected_live_class_id], (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(dataResults || []);
+        });
+    });
+};
+
+export const actionToGetAllScheduledLiveClassWithoutSubscriptionApiCall = (role) => {
+    return new Promise(function (resolve, reject) {
+
+        // Apply type filtering based on role
+        const typeCondition = (role === 2)
+            ? `type IN ('Prenatal', 'Garbh')`
+            : `type IN ('Postnatal', 'TTC')`;
+
+        const query = `
+            SELECT id, title, start_time, end_time, instructor_name, action_type, status, type
+            FROM live_classes
+            WHERE ${typeCondition}
+            ORDER BY created_at ASC
+        `;
+
+        pool.query(query, (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(dataResults || []);
+        });
+    });
+};
+
+
+export const actionToGetAllSubscriptionPlanDataByPlanIdApiCall = (planId) => {
+    return new Promise(function (resolve, reject) {
+        const query = `SELECT * FROM subscription_plans WHERE id = ?`;
+        let resultData = [];
+        pool.query(query, [planId], (error, dataResults) => {
+            if (error) {
+                return reject(error);
+            }
+            if(dataResults?.length){
+                resultData = dataResults[0];
             }
             resolve(resultData);
         });

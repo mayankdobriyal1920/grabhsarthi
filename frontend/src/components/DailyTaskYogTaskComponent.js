@@ -4,11 +4,12 @@ import { close, fitnessOutline, timerOutline } from "ionicons/icons";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import useStore from "../zustand/useStore";
-import { actionToSetCommonActionSheetPopupData } from "../apiHelper/CommonAction";
+import {actionToSetCommonActionSheetPopupData, actionToUpsertDailyTaskProgress} from "../apiHelper/CommonAction";
 import { _dailyTaskYogaStore, _getUserProfileTrimesterFrontend } from "../apiHelper/CommonHelper";
 
 export default function DailyTaskYogTaskComponent() {
     const { commonActionSheetPopupData, userAuthDetail } = useStore();
+    const {dailyTasksToday} = useStore();
     const { userInfo } = userAuthDetail;
     const { page } = commonActionSheetPopupData;
 
@@ -68,15 +69,43 @@ export default function DailyTaskYogTaskComponent() {
         return () => clearInterval(interval);
     }, [isRunning, currentIndex, todayYoga]);
 
-    const handleNextPose = () => {
+    const handleNextPose = async () => {
         if (currentIndex < todayYoga.length - 1) {
             setCurrentIndex(currentIndex + 1);
             setElapsed(0);
             setIsRunning(false);
+
+            try {
+                await actionToUpsertDailyTaskProgress({
+                    task: 'YOGA',
+                    progressPercent: (20 * (currentIndex + 1)),
+                    details: {
+                        index:currentIndex + 1,
+                        combo: currentIndex + 1,
+                        total_minutes: 0,
+                        completed_at: new Date().toISOString(),
+                    },
+                });
+            } catch (e) {
+                console.error('Failed to persist yoga progress', e);
+            }
+
         } else {
-            // ✅ Session Complete
-            alert("🎉 Session Completed!");
-            // Here you can call API to save progress in DB
+            try {
+                const totalMinutes = todayYoga.reduce((acc, p) => acc + (Number(p.duration) || 0), 0);
+                await actionToUpsertDailyTaskProgress({
+                    task: 'YOGA',
+                    progressPercent: 100,
+                    details: {
+                        index:todayYoga.length - 1,
+                        combo: todayYoga.length,
+                        total_minutes: totalMinutes,
+                        completed_at: new Date().toISOString(),
+                    },
+                });
+            } catch (e) {
+                console.error('Failed to persist yoga progress', e);
+            }
             actionToSetCommonActionSheetPopupData("");
         }
     };
@@ -99,12 +128,11 @@ export default function DailyTaskYogTaskComponent() {
     const offset = circumference - (elapsed / totalSeconds) * circumference;
     const minutes = Math.floor((totalSeconds - elapsed) / 60);
     const seconds = (totalSeconds - elapsed) % 60;
-
     const sessionProgress = ((currentIndex + 1) / todayYoga.length) * 100;
 
     // ✅ Native Statusbar
     useEffect(() => {
-        if (Capacitor.isNativePlatform()) {
+        if (Capacitor.isNativePlatform() && page === "daily-task-yoga") {
             StatusBar.setBackgroundColor({ color: "#ea9518" }).then(() => {
                 StatusBar.setStyle({ style: Style.Dark });
             });
@@ -114,7 +142,14 @@ export default function DailyTaskYogTaskComponent() {
                 });
             };
         }
-    }, []);
+    }, [page]);
+
+
+    useEffect(()=>{
+        if(page === "daily-task-yoga" && dailyTasksToday?.data?.['YOGA']){
+            setCurrentIndex(dailyTasksToday?.data?.['YOGA']?.details?.index | 0);
+        }
+    },[dailyTasksToday,page])
 
     return (
         <IonModal isOpen={page === "daily-task-yoga"}>
@@ -170,7 +205,7 @@ export default function DailyTaskYogTaskComponent() {
                                 <span>{`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}</span>
                             </div>
                             <div className={"button_in_time_y_task_skip_task"} onClick={handleSkipPose}>
-                                Skip
+                                Next
                             </div>
                         </div>
 

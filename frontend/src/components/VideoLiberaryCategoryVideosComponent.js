@@ -7,11 +7,15 @@ import {
     actionToSetCommonActionSheetPopupData
 } from "../apiHelper/CommonAction";
 import {FacebookLoader} from "./FacebookLoader";
+import {useHistory} from "react-router-dom";
 
 const VideoLibraryCategoryVideosComponent = () => {
-    const {commonActionSheetPopupData,appVideoLibraryDataByCategory} = useStore();
+    const {commonActionSheetPopupData,appVideoLibraryDataByCategory,userAuthDetail} = useStore();
+    const {userInfo} = userAuthDetail;
     const {loading,videoLibraryData} = appVideoLibraryDataByCategory;
     const {page,popupData} = commonActionSheetPopupData;
+    const history = useHistory();
+
     const goBack = () => {
         actionToSetCommonActionSheetPopupData('');
     };
@@ -21,6 +25,11 @@ const VideoLibraryCategoryVideosComponent = () => {
             actionToGetAppVideoLibraryDataByCategory(popupData?.category);
         }
     }, [page,popupData]);
+
+    const goToSubscriptionPage = ()=>{
+        goBack();
+        history.replace('/dashboard/subscription');
+    }
 
     return (
         <IonModal isOpen={page === 'video-page'} className="community-post-page">
@@ -35,6 +44,11 @@ const VideoLibraryCategoryVideosComponent = () => {
                         {popupData?.category}
                     </div>
                 </IonToolbar>
+                {(!userInfo?.active_subscription?.id) && (
+                    <div onClick={()=>goToSubscriptionPage()} className={"plan_warning_header"}>
+                       Click here to purchase subscription to access video library
+                    </div>
+                )}
             </IonHeader>
             <IonContent fullscreen className={"dash-wrap classes-page-dashboard"}>
                 <div className="classes-page-dashboard-inner video-cat-container">

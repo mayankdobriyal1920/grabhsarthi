@@ -41,7 +41,7 @@ export default function DailyTaskMoodComponent() {
     };
 
     useEffect(()=>{
-        if(Capacitor.isNativePlatform()){
+        if(Capacitor.isNativePlatform() && page === 'daily-task-mood'){
             StatusBar.setBackgroundColor({ color: '#FFC107' }).then(()=>{
                 StatusBar.setStyle({ style:Style.Dark });
             });
@@ -52,7 +52,7 @@ export default function DailyTaskMoodComponent() {
                 });
             }
         }
-    },[])
+    },[page])
 
 
     return (

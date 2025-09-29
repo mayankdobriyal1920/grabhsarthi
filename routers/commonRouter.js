@@ -11,7 +11,15 @@ import {
     actionToGetCommunityAllPostDataApiCall,
     actionToGetCommunityPostById,
     actionToGetCommunityPostCommentDataByIdApiCall,
-    actionToGetAppVideoLibraryDataByCategoryApiCall, actionToGetAllSubscriptionPlanDataApiCall
+    actionToGetAppVideoLibraryDataByCategoryApiCall,
+    actionToGetAllSubscriptionPlanDataApiCall,
+    actionToGetAllSubscriptionPlanDataByPlanIdApiCall,
+    actionToGetAllScheduledLiveClassApiCall,
+    actionToGetAllScheduledLiveClassWithoutSubscriptionApiCall,
+    actionToSaveSelectedLiveClassDataDataApiCall,
+    actionToGetSelectedScheduledLiveClassApiCall,
+    actionToGetDailyTasksByUserIdApiCall,
+    actionToUpsertDailyTaskProgressApiCall
 } from "../models/commonModel.js";
 import {
     callFunctionToSendOtp,
@@ -22,20 +30,32 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import {userSocketIdsObject} from "../server.js";
+import Razorpay from 'razorpay';
+import crypto from "crypto";
+import moment from "moment-timezone";
+
 
 const uploadPath = "/var/www/html/garbhsarthi/public/uploads/community";
+const audioUploadPath = "/var/www/html/garbhsarthi/public/uploads/audio";
 const commonRouter = express.Router();
+
+const razorpayInstance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
 
 commonRouter.post(
     '/actionToGetCurrentUserSessionDataApiCall',
     expressAsyncHandler(async (req, res) => {
         if (req?.session?.userSessionData?.id) {
             actionToGetCurrentUserProfileDataApiCall(req?.session?.userSessionData?.id).then(responseData => {
-                res.status(200).send({
-                    success: true,
-                    userData:responseData,
-                    message: 'Session data retrieved successfully',
-                });
+                createNewSessionWithUserDataAndRole(req, responseData).then(() => {
+                    res.status(200).send({
+                        success: true,
+                        userData:responseData,
+                        message: 'Session data retrieved successfully',
+                    });
+                })
             })
         } else {
             // If no session found, return unauthorized response
@@ -53,6 +73,24 @@ commonRouter.post(
         // Check if the session exists and the user is logged in
         if (req?.session?.userSessionData?.id) {
             actionToGetCurrentUserProfileDataApiCall(req?.session?.userSessionData?.id).then(responseData => {
+                res.status(200).send(responseData);
+            })
+        } else {
+            // If no session found, return unauthorized response
+            res.status(200).send({
+                success: false,
+                message: 'No active session found. User is not logged in.',
+            });
+        }
+    })
+);
+
+commonRouter.post(
+    '/actionToUpsertDailyTaskProgressApiCall',
+    expressAsyncHandler(async (req, res) => {
+        // Check if the session exists and the user is logged in
+        if (req?.session?.userSessionData?.id) {
+            actionToUpsertDailyTaskProgressApiCall(req?.session?.userSessionData?.id,req?.body).then(responseData => {
                 res.status(200).send(responseData);
             })
         } else {
@@ -204,6 +242,23 @@ commonRouter.post(
 );
 
 commonRouter.post(
+    '/actionToGetDailyTasksByUserIdApiCall',
+    expressAsyncHandler(async (req, res) => {
+        if (req?.session?.userSessionData?.id) {
+            actionToGetDailyTasksByUserIdApiCall(req?.session?.userSessionData?.id,req?.session?.userSessionData?.role).then(responseData => {
+                res.status(200).send(responseData);
+            })
+        } else {
+            // If no session found, return unauthorized response
+            res.status(200).send({
+                success: false,
+                message: 'No active session found. User is not logged in.',
+            });
+        }
+    })
+);
+
+commonRouter.post(
     '/actionToGetCommunityPostCommentDataByIdApiCall',
     expressAsyncHandler(async (req, res) => {
         if (req?.session?.userSessionData?.id) {
@@ -226,6 +281,38 @@ commonRouter.post(
         actionToGetAllSubscriptionPlanDataApiCall().then(responseData => {
             res.status(200).send(responseData);
         })
+    })
+);
+
+commonRouter.post(
+    '/actionToGetAllScheduledLiveClassApiCall',
+    expressAsyncHandler(async (req, res) => {
+        if(req?.session?.userSessionData?.active_subscription?.plan_type === 'PREMIUM'){
+            if(req?.session?.userSessionData?.profile?.selected_live_class_id){
+                actionToGetSelectedScheduledLiveClassApiCall(req?.session?.userSessionData?.profile?.selected_live_class_id).then(responseData => {
+                    res.status(200).send(responseData);
+                })
+            }else{
+                actionToGetAllScheduledLiveClassApiCall(req?.session?.userSessionData?.role,req?.session?.userSessionData?.profile?.last_period_date).then(responseData => {
+                    res.status(200).send(responseData);
+                })
+            }
+        }else{
+            res.status(200).send([]);
+        }
+    })
+);
+
+commonRouter.post(
+    '/actionToSaveSelectedLiveClassDataDataApiCall',
+    expressAsyncHandler(async (req, res) => {
+        if(req?.session?.userSessionData?.active_subscription?.plan_type === 'PREMIUM'){
+            actionToSaveSelectedLiveClassDataDataApiCall(req?.body?.selected_live_class_id,req?.session?.userSessionData?.profile?.id).then(responseData => {
+                res.status(200).send(responseData);
+            })
+        }else{
+            res.status(200).send({success:0});
+        }
     })
 );
 
@@ -265,14 +352,14 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage, fileFilter, limits: { fileSize: 50 * 1024 * 1024 } }); // 50MB
-const uploadFields = upload.fields([{ name: "attachment", maxCount: 1 }]);
+const uploadFields = upload.fields([{ name: "attachment", maxCount: 1 },{ name: "thumbnail", maxCount: 1 }]);
 commonRouter.post(
     "/actionToPostNewCommunityPostDataApiCall",
     uploadFields,
     expressAsyncHandler(async (req, res) => {
         const { object_type, message } = req.body;
         const attachmentFile = req.files?.attachment?.[0];
-
+        const thumbnailFile = req.files?.thumbnail?.[0];c
 
         const object_url = attachmentFile
             ? object_type === "image"
@@ -282,35 +369,45 @@ commonRouter.post(
                     : ""
             : "";
 
+        const poster_url = thumbnailFile
+            ? `https://garbhsarthi.com/api/common/actionToGetImageApiCall/${thumbnailFile.filename}`
+            : "";
 
         if (!object_type || (!object_url && !message)) {
             return res.status(400).json({ message: "All required fields are not provided." });
         }
 
-
         const insertData = {
-            column: ["created_by", "object_type", "object_url", "message"],
-            alias: ["?", "?", "?", "?"],
-            values: [req?.session?.userSessionData?.id, object_type, object_url || "", message || ""],
+            column: ["created_by", "object_type", "object_url", "poster_url", "message"],
+            alias: ["?", "?", "?", "?", "?"],
+            values: [
+                req?.session?.userSessionData?.id,
+                object_type,
+                object_url || "",
+                poster_url || "",
+                message || ""
+            ],
             tableName: "community_post",
         };
-        insertCommonApiCall(insertData).then((responseData)=>{
-            // Try common names for the inserted id
+
+        insertCommonApiCall(insertData).then((responseData) => {
             const postId = responseData?.id ?? responseData?.insertId ?? responseData?.lastInsertId;
-            actionToGetCommunityPostById(postId,req?.session?.userSessionData?.id).then((postData) => {
+            actionToGetCommunityPostById(postId, req?.session?.userSessionData?.id).then((postData) => {
                 Object.keys(userSocketIdsObject).forEach((key) => {
                     if (userSocketIdsObject[key] && postData?.id) {
-                        userSocketIdsObject[key].emit('message', {
-                            data: postData, // Ensure userIdsArray exists
+                        userSocketIdsObject[key].emit("message", {
+                            data: postData,
                             type: "INSERT_COMMUNITY_POST_DATA",
                         });
                     }
                 });
-            })
-        })
+            });
+        });
+
         res.json({ message: "Post uploaded successfully" });
     })
 );
+
 // Serve Images
 commonRouter.get("/actionToGetImageApiCall/:imageName", (req, res) => {
     const { imageName } = req.params;
@@ -355,6 +452,157 @@ commonRouter.get("/actionToGetVideoApiCall/:videoName", (req, res) => {
         fs.createReadStream(filePath, { start, end }).pipe(res);
     });
 });
+
+commonRouter.get("/actionToGetAudioStreamApiCall/:audioName", (req, res) => {
+    const { audioName } = req.params;
+    const filePath = path.join(audioUploadPath, audioName);
+    fs.stat(filePath, (err, stat) => {
+        if (err || !stat) return res.status(404).json({ message: "File not found" });
+
+        const range = req.headers.range;
+        const mimeType = mime.lookup(filePath) || 'video/mp4';
+        if (!range) {
+            res.setHeader("Content-Type", mimeType);
+            res.setHeader("Content-Length", stat.size);
+            return fs.createReadStream(filePath).pipe(res);
+        }
+
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
+        const chunkSize = (end - start) + 1;
+
+        res.writeHead(206, {
+            "Content-Range": `bytes ${start}-${end}/${stat.size}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": chunkSize,
+            "Content-Type": mimeType
+        });
+
+        fs.createReadStream(filePath, { start, end }).pipe(res);
+    });
+});
+
+
+commonRouter.post(
+    "/actionToCreateSubscriptionOrderApiCall",
+    expressAsyncHandler(async (req, res) => {
+        try {
+            const { subscription_plan_id } = req.body;
+            const memberId = req?.session?.userSessionData?.id;
+
+            if (!memberId) {
+                return res.status(401).json({ success: false, message: "User not logged in" });
+            }
+
+            // ✅ Get Plan Data
+            const subscriptionPlanData = await actionToGetAllSubscriptionPlanDataByPlanIdApiCall(subscription_plan_id);
+
+            if (!subscriptionPlanData?.id) {
+                return res.status(404).json({ success: false, message: "Subscription plan not found" });
+            }
+
+            let totalAmount = subscriptionPlanData.price;
+
+            // ✅ Create Razorpay Order
+            const order = await razorpayInstance.orders.create({
+                amount: totalAmount * 100, // in paise
+                currency: "INR",
+                receipt: `membership_${Date.now()}`,
+            });
+
+            const end_date = moment().add(subscriptionPlanData?.duration_days,'days').format();
+            const formattedEndDate = new Date(end_date).toISOString().split("T")[0];
+
+            // ✅ Insert into Database
+            await insertCommonApiCall({
+                tableName: "user_subscriptions",
+                column: [
+                    "user_id",
+                    "plan_id",
+                    "total_amount",
+                    "razorpay_order_id",
+                    "end_date",
+                    "payment_status",
+                ],
+                values: [memberId, subscription_plan_id, totalAmount, order.id, formattedEndDate, "Pending"],
+                alias: Array(6).fill("?"), // ❗ should be 6 instead of 8
+            });
+
+            // ✅ Return Order Details to Frontend
+            return res.json({
+                success: true,
+                order,
+            });
+
+        } catch (err) {
+            console.error("Error creating membership order:", err);
+            return res.status(500).json({ success: false, message: "Error creating membership order" });
+        }
+    })
+);
+
+commonRouter.post(
+    '/actionToVerifySubscriptionOrderPaymentApiCall',
+    expressAsyncHandler(async (req, res) => {
+        try {
+            const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+            const memberId = req?.session?.userSessionData?.id;
+
+            if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+                return res.status(400).json({ success: false, message: "Missing required fields" });
+            }
+
+            // ✅ Generate signature
+            const generated_signature = crypto
+                .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+                .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+                .digest('hex');
+
+            const isValid = generated_signature === razorpay_signature;
+
+            // ✅ Update in DB
+            await updateCommonApiCall({
+                tableName: 'user_subscriptions',
+                column: [
+                    'razorpay_payment_id=?',
+                    'razorpay_signature=?',
+                    'payment_status=?',
+                    'updated_at=?',
+                    'is_active=?',
+                ].filter(Boolean),  // Remove null if failed
+                value: [
+                    razorpay_payment_id,
+                    razorpay_signature,
+                    isValid ? 'success' : 'failed',
+                    new Date(),
+                    1,
+                    razorpay_order_id
+                ].filter(Boolean),
+                whereCondition: `razorpay_order_id = ?`
+            });
+
+            let dataToSend = {
+                column: `is_active = ?`,
+                value: [0, memberId,razorpay_order_id],
+                whereCondition: `user_id = ? AND razorpay_order_id != ?`,
+                returnColumnName: "id",
+                tableName: "user_subscriptions",
+            };
+
+            await updateCommonApiCall(dataToSend);
+
+            if (isValid) {
+                return res.json({ success: true, message: '✅ Payment verified successfully' });
+            } else {
+                return res.status(400).json({ success: false, message: '❌ Payment verification failed' });
+            }
+        } catch (err) {
+            console.error('Error verifying payment:', err);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    })
+);
 
 
 export default commonRouter;

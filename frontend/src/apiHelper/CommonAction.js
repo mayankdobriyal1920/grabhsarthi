@@ -7,10 +7,13 @@ const api = Axios.create({
     withCredentials:true
 })
 
-export const actionToGetUserSessionData = () => {
+
+export const actionToGetUserSessionData = (isLoading = false) => {
     const {startUserAuthDetail,setUserAuthDetail,startUserSession,setUserSession} = useStore.getState();
-    startUserSession();
-    startUserAuthDetail();
+    if(isLoading) {
+        startUserSession();
+        startUserAuthDetail();
+    }
     try {
         api.post(`actionToGetCurrentUserSessionDataApiCall`, {},{ withCredentials: true }).then(responseData => {
             if(responseData?.data?.success){
@@ -201,6 +204,72 @@ export const actionToGetAppVideoLibraryDataByCategory = (category) => {
 }
 
 
+export const actionToUpsertDailyTaskProgress = async (payload) => {
+    api.post(`actionToUpsertDailyTaskProgressApiCall`, payload,{ withCredentials: true }).then(() => {
+        actionToGetDailyTasksByUserId();
+    })
+};
+
+export const actionToGetDailyTasksByUserId = () => {
+    const { requestDailyTasksToday, setDailyTasksToday, setDailyTasksTodayError } = useStore.getState();
+    requestDailyTasksToday();
+
+    try {
+        api
+            .post('actionToGetDailyTasksByUserIdApiCall', {}, { withCredentials: true })
+            .then((response) => {
+                const rows = Array.isArray(response?.data) ? response.data : [];
+
+                // ✅ Build object keyed by task
+                const tasksObj = rows.reduce((acc, r) => {
+                    acc[r.task] = r; // keep full row under the task key
+                    return acc;
+                }, {});
+
+                // ✅ Compute overall percent from rows
+                const total = rows.reduce((acc, r) => acc + (Number(r.progress_percent) || 0), 0);
+                const overallPercent = rows.length ? Math.round(total / rows.length) : 0;
+
+                const date = rows[0]?.task_date ?? null;
+
+                setDailyTasksToday({ data: tasksObj, overallPercent, date });
+            });
+    } catch (error) {
+        console.error('actionToGetDailyTasksByUserId error:', error);
+        setDailyTasksTodayError(error?.message);
+    }
+};
+
+
+export const actionToGetAllScheduledLiveClass = () => {
+    const {requestAllScheduledLiveClassData,setAllScheduledLiveClassData} = useStore.getState();
+    requestAllScheduledLiveClassData();
+
+    try {
+        api.post(`actionToGetAllScheduledLiveClassApiCall`,{},{ withCredentials: true }).then((responseData) => {
+            setAllScheduledLiveClassData([...responseData.data]);
+        })
+    } catch (error) {
+        console.log('error',error)
+    }
+}
+
+export const actionToSaveSelectedLiveClassDataData = (liveClassId) => {
+    const {requestAllScheduledLiveClassData} = useStore.getState();
+    requestAllScheduledLiveClassData();
+    try {
+        api.post(`actionToSaveSelectedLiveClassDataDataApiCall`,{selected_live_class_id:liveClassId},{ withCredentials: true }).then((responseData) => {
+            actionToGetUserSessionData(false);
+            setTimeout(()=>{
+                actionToGetAllScheduledLiveClass();
+            },3000)
+        })
+    } catch (error) {
+        console.log('error',error)
+    }
+}
+
+
 export const actionToPostNewCommentInCommunityPost = (payload) => {
     const { userAuthDetail } = useStore.getState();
     const {userInfo} = userAuthDetail;
@@ -242,10 +311,31 @@ export const actionToLogoutUserSession = (setUserLogoutLoading) => {
         api.post(`actionToLogoutUserSessionApiCall`, {},{ withCredentials: true }).then(() => {
             setUserLogoutLoading(false);
             setUserAuthDetail({});
-            actionToGetUserSessionData();
+            actionToGetUserSessionData(true);
             window.location.reload();
         })
     } catch (error) {
         console.log('error',error)
     }
 }
+
+
+export const actionToCreateSubscriptionOrder = async (payload) => {
+    return await api.post(
+        `actionToCreateSubscriptionOrderApiCall`,
+        payload,
+        { withCredentials: true }
+    );
+};
+
+export const actionToVerifySubscriptionOrderPayment = async (razorpayData) => {
+    return await api.post(
+        `actionToVerifySubscriptionOrderPaymentApiCall`,
+        {
+            razorpay_order_id: razorpayData.razorpay_order_id,
+            razorpay_payment_id: razorpayData.razorpay_payment_id,
+            razorpay_signature: razorpayData.razorpay_signature
+        },
+        { withCredentials: true }
+    );
+};

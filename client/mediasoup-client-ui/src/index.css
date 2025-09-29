@@ -807,12 +807,16 @@ body {
 
 /* Controls bar */
 .controls-bar {
+  background: #000000b3;
   display: flex;
-  justify-content: center;
   gap: 16px;
-  padding: 14px;
+  justify-content: center;
   margin-top: 10px;
-  background: rgba(0,0,0,0.7);
+  padding: 14px;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  left: 0px;
 }
 
 .control-btn {
@@ -1079,6 +1083,7 @@ body {
 
 .main-video-container {
   width: 100%;
+  margin-bottom: 75px;
   display: grid;
   gap: 10px;
   justify-content: center;   /* center leftover space horizontally */

@@ -73,6 +73,51 @@ const useStore = create((set) => ({
         },
     }),
 
+    allScheduledLiveClassData: { loading: false, scheduledLiveClassData: []},
+    requestAllScheduledLiveClassData: () => set({ allScheduledLiveClassData: { loading: true, scheduledLiveClassData:[]} }),
+    setAllScheduledLiveClassData: (data) => set({
+        allScheduledLiveClassData: {
+            loading: false,
+            scheduledLiveClassData: data
+        },
+    }),
+
+
+    dailyTasksToday: {
+        loading: false,
+        data: [],
+        overallPercent: 0,
+        date: null,
+        error: null,
+    },
+
+    // setters only (no computation here)
+    requestDailyTasksToday: () =>
+        set({
+            dailyTasksToday: {
+                loading: true,
+                data: [],
+                overallPercent: 0,
+                date: null,
+                error: null,
+            },
+        }),
+
+    setDailyTasksToday: ({ data, overallPercent, date }) =>
+        set({
+            dailyTasksToday: {
+                loading: false,
+                data,
+                overallPercent,
+                date,
+                error: null,
+            },
+        }),
+
+    setDailyTasksTodayError: (message) =>
+        set((s) => ({
+            dailyTasksToday: { ...s.dailyTasksToday, loading: false, error: message || 'Failed to load daily tasks' },
+        }))
 }));
 
 export default useStore;

@@ -29,14 +29,6 @@ import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
 import {actionToGetUserSessionData} from "./apiHelper/CommonAction";
 import useStore from "./zustand/useStore";
-import DailyTaskYogTaskComponent from "./components/DailyTaskYogTaskComponent";
-import DailyTaskMeditationTaskComponent from "./components/DailyTaskMeditationTaskComponent";
-import DailyTaskSamvaadComponent from "./components/DailyTaskSamvaadComponent";
-import DailyTaskMantraComponent from "./components/DailyTaskMantraComponent";
-import DailyTaskHydrationComponent from "./components/DailyTaskHydrationComponent";
-import DailyTaskMoodComponent from "./components/DailyTaskMoodComponent";
-import CommunityPostPage from "./pages/CommunityPostPage";
-import VideoLibraryCategoryVideosComponent from "./components/VideoLiberaryCategoryVideosComponent";
 
 setupIonicReact();
 
@@ -67,7 +59,7 @@ const App = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
 
     useEffect(() => {
-        actionToGetUserSessionData();
+        actionToGetUserSessionData(true);
     }, []);
 
     useEffect(()=>{
@@ -100,25 +92,18 @@ const App = () => {
     }else{
         return (
             <IonApp>
-                {(!userSession?.loading) ?
+                {(!userSession?.loading) &&
                     <React.Fragment>
                         <IonReactRouter>
                             <IonRouterOutlet>
                                 {userInfo?.id ? <AppEnterMainPage userRole={userInfo?.role}/> : <PublicRoutes/>}
                             </IonRouterOutlet>
                         </IonReactRouter>
-                    </React.Fragment>:''
+                    </React.Fragment>
                 }
-
-                <IonLoading className={"loading_loader_spinner_container"} isOpen={userSession?.loading} message={"Loading..."}/>
-                <CommunityPostPage/>
-                <DailyTaskYogTaskComponent/>
-                <DailyTaskMeditationTaskComponent/>
-                <DailyTaskSamvaadComponent/>
-                <DailyTaskMantraComponent/>
-                <DailyTaskHydrationComponent/>
-                <DailyTaskMoodComponent/>
-                <VideoLibraryCategoryVideosComponent/>
+                {!(userInfo?.id) &&
+                  <IonLoading className={"loading_loader_spinner_container"} isOpen={userSession?.loading} message={"Loading..."}/>
+                }
             </IonApp>
         );
     }

@@ -1298,7 +1298,8 @@ ion-toolbar:last-of-type {
 }
 
 .start_stop_end_button_container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 30% auto 30%;
     gap: 10px;
     margin: auto;
     position: relative;
@@ -1310,7 +1311,7 @@ ion-toolbar:last-of-type {
 
 .button_in_time_y_task {
     background: var(--gs-yoga-task-color);
-    padding: 10px 25px;
+    padding: 10px;
     border-radius: 8px;
     font-size: var(--font-size-3);
     color: #ffffff;
@@ -2653,13 +2654,13 @@ ion-title{
     padding: 16px;
     margin-bottom: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border: 1px solid #f0f0f0;
+    border: 2px solid #f0f0f0;
 }
 
 .classes-page-dashboard .live-classes .class-img {
     display: flex;
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: auto;
     margin: auto;
     border-radius: 10px;
     overflow: hidden;
@@ -3380,14 +3381,39 @@ ion-title{
     color: var(--gs-heading);
 }
 
+.subscription-page-inner .plan_duration {
+    font-size: var(--font-size-4);
+    color: var(--gs-text);
+}
 .subscription-page-inner .plan_price {
-    font-size: var(--font-size-0);
+    font-size: var(--font-size-1);
     color: var(--gs-pink);
     margin: 10px 0;
 }
 
+.plan_warning_header {
+    color: var(--gs-pink, #ff2e72);
+    font-size: var(--font-size-4);
+    padding: 10px 15px;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    cursor: pointer;
+    align-items: center;
+    animation: shake 1s ease-in-out infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+    75% { transform: translateX(-2px); }
+}
+
+
 .subscription-page-inner .plan_desc {
-    font-size: var(--font-size-3);
+    font-size: var(--font-size-4);
     color: var(--gs-text);
 }
 
@@ -3401,17 +3427,54 @@ ion-title{
 .subscription-page-inner .features_list li {
     display: flex;
     align-items: center;
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
     gap: 8px;
     margin: 8px 0;
 }
 
+.subscription-page-inner .features_list li ion-icon{
+  font-size: var(--font-size-2);
+  color: #909090;
+}
+
+.subscription-page-inner .features_list li ion-icon.success_pl{
+    color: var(--gs-heading);
+}
+.plan_warning_header.for_live_classes_page {
+    font-size: 18px;
+    line-height: 30px;
+    height: 200px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    flex-direction: column;
+}
+button.subscription_page_button_live_class {
+    padding: 13px 37px;
+    border-radius: 7px;
+    color: #ffffff;
+    background: var(--gs-pink);
+    font-size: var(--font-size-3);
+    width: 100%;
+    margin-top: 15px;
+}
+.progress_header_loader_in_c_p {
+    position: fixed;
+    height: 4px;
+    background: var(--gs-heading);
+    z-index: 9999;
+    bottom: 0px;
+    left: 0px;
+}
 .subscription-page-inner .subscribe_button {
     background: var(--gs-pink);
     color: #fff;
     border: none;
     border-radius: 10px;
     padding: 12px 20px;
-    font-size: 1rem;
+    font-size: var(--font-size-3);
     cursor: pointer;
     width: 100%;
     transition: 0.3s;
@@ -3421,4 +3484,45 @@ ion-title{
     .subscription-page-inner .plans_container {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+a[disabled], button[disabled], html input[disabled] {
+    cursor: default;
+    opacity: .5;
+}
+
+.classes-page-dashboard .live-classes .class-card.active{
+    border: 2px solid var(--gs-pink);
+}
+
+.classes-page-dashboard .live-classes .class-time-desc{
+    font-size: var(--font-size-3);
+    color: var(--gs-text);
+}
+
+.classes-page-dashboard .live-classes .class-time-desc-active-days{
+    font-size: var(--font-size-3);
+    color: var(--gs-heading);
+}
+
+.classes-page-dashboard .live-classes .class-card.select_class_li {
+    flex-direction: column;
+}
+
+.classes-page-dashboard .live-classes .class-card.select_class_li .class-card-inner {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    border-bottom: 1px solid #00000014;
+    padding-bottom: 15px;
+}
+
+
+.classes-page-dashboard .live-classes .class-card.select_class_li .class_live_description {
+    font-size: var(--font-size-4);
+    color: var(--gs-text);
+    line-height: 24px;
+    margin-top: 1px;
+    margin-bottom: 10px;
+    text-align: justify;
 }

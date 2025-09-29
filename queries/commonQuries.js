@@ -9,21 +9,42 @@ export const loginUserQuery = () => {
             u.created_at,
             u.color,
             JSON_OBJECT(
-                    'id', p.id,
-                    'user_id', p.user_id,
-                    'role', p.role,
-                    'full_name', p.full_name,
-                    'due_date', p.due_date,
-                    'father_name', p.father_name,
-                    'first_pregnancy', p.first_pregnancy,
-                    'last_period_date', p.last_period_date,
-                    'cycle_length', p.cycle_length,
-                    'period_length', p.period_length,
-                    'created_at', p.created_at
-            ) as profile
+                'id', p.id,
+                'user_id', p.user_id,
+                'role', p.role,
+                'full_name', p.full_name,
+                'due_date', p.due_date,
+                'father_name', p.father_name,
+                'selected_live_class_id', p.selected_live_class_id,
+                'first_pregnancy', p.first_pregnancy,
+                'last_period_date', p.last_period_date,
+                'cycle_length', p.cycle_length,
+                'period_length', p.period_length,
+                'created_at', p.created_at
+            ) AS profile,
+            (SELECT JSON_OBJECT(
+                               'id', s.id,
+                               'plan_id', s.plan_id,
+                               'plan_type', sp.plan_type,
+                               'plan_name', sp.plan_name,
+                               'total_amount', s.total_amount,
+                               'payment_status', s.payment_status,
+                               'start_date', s.start_date,
+                               'end_date', s.end_date,
+                               'features', CAST(sp.features AS JSON)
+                       )
+                FROM user_subscriptions s
+                JOIN subscription_plans sp ON sp.id = s.plan_id
+                WHERE s.user_id = u.id
+                  AND s.payment_status = 'success'
+                  AND s.end_date >= CURDATE()
+                  AND s.is_active = 1
+                ORDER BY s.end_date DESC
+                LIMIT 1
+            ) AS active_subscription
         FROM app_user u
-                 LEFT JOIN profile p ON p.id = u.active_profile_id
-        WHERE u.phone = ? AND u.otp = ?;
+        LEFT JOIN profile p ON p.id = u.active_profile_id
+        WHERE u.phone = ? AND u.otp = ?
     `;
 };
 
@@ -44,16 +65,39 @@ export const getUserByIdQuery = () => {
                     'full_name', p.full_name,
                     'due_date', p.due_date,
                     'father_name', p.father_name,
+                    'selected_live_class_id', p.selected_live_class_id,
                     'first_pregnancy', p.first_pregnancy,
                     'last_period_date', p.last_period_date,
                     'cycle_length', p.cycle_length,
                     'period_length', p.period_length,
                     'created_at', p.created_at
-            ) as profile
+            ) AS profile,
+            (
+                SELECT JSON_OBJECT(
+                               'id', s.id,
+                               'plan_id', s.plan_id,
+                               'plan_type', sp.plan_type,
+                               'plan_name', sp.plan_name,
+                               'total_amount', s.total_amount,
+                               'payment_status', s.payment_status,
+                               'start_date', s.start_date,
+                               'end_date', s.end_date,
+                               'features', CAST(sp.features AS JSON)
+                       )
+                FROM user_subscriptions s
+                         JOIN subscription_plans sp ON sp.id = s.plan_id
+                WHERE s.user_id = u.id
+                  AND s.payment_status = 'success'
+                  AND s.end_date >= CURDATE()
+                  AND s.is_active = 1
+                ORDER BY s.end_date DESC
+                 LIMIT 1
+            ) AS active_subscription
         FROM app_user u
-                 LEFT JOIN profile p ON p.id = u.active_profile_id
+            LEFT JOIN profile p ON p.id = u.active_profile_id
         WHERE u.id = ?
     `;
+
 };
 
 export const actionToGetCommunityAllPostDataQuery = (payload, userId) => {
@@ -183,7 +227,7 @@ export const actionToGetAppVideoLibraryDataByCategoryQuery = (category, role, tr
     const condition = conditionList.length > 0 ? conditionList.join(' AND ') : '1'; // always true fallback
 
     const query = `
-        SELECT 
+        SELECT
             id,
             title,
             description,
@@ -197,3 +241,42 @@ export const actionToGetAppVideoLibraryDataByCategoryQuery = (category, role, tr
 
     return { query, values };
 };
+// Returns { query, values } to use with your DB driver
+export const actionToGetDailyTasksByUserIdQuery = (role) => {
+    // Task list by role
+    const tasksPregnant = ["YOGA","MEDITATION","SAMVAAD","MANTRA","HYDRATION","MOOD"]; // role = 2
+    const tasksTTC      = ["YOGA","MEDITATION","AFFIRMATION","MANTRA","HYDRATION","MOOD"]; // role != 2
+
+    const tasks = role === 2 ? tasksPregnant : tasksTTC;
+
+    const tasksCte = `
+    WITH tasks AS (
+      SELECT '${tasks[0]}' task UNION ALL
+      SELECT '${tasks[1]}' UNION ALL
+      SELECT '${tasks[2]}' UNION ALL
+      SELECT '${tasks[3]}' UNION ALL
+      SELECT '${tasks[4]}' UNION ALL
+      SELECT '${tasks[5]}'
+    )
+  `;
+
+    return  `
+    ${tasksCte}
+    SELECT
+      t.task,
+      COALESCE(dtp.progress_percent, 0) AS progress_percent,
+      dtp.details,
+      dtp.created_at,
+      dtp.updated_at,
+      dtp.id
+    FROM tasks t
+    LEFT JOIN daily_task_progress dtp
+      ON dtp.user_id = ?
+     AND dtp.task_date = CURDATE()
+     AND dtp.task = t.task
+    ORDER BY FIELD(t.task, ${tasks.map(t => `'${t}'`).join(", ")});
+  `;
+
+};
+
+

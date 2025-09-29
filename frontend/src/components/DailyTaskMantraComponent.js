@@ -40,7 +40,7 @@ export default function DailyTaskMantraComponent() {
     const seconds = (totalSeconds - elapsed) % 60;
 
     useEffect(()=>{
-        if(Capacitor.isNativePlatform()){
+        if(Capacitor.isNativePlatform() && page === 'daily-task-mantra'){
             StatusBar.setBackgroundColor({ color: '#f491f2' }).then(()=>{
                 StatusBar.setStyle({ style:Style.Dark });
             });
@@ -51,7 +51,7 @@ export default function DailyTaskMantraComponent() {
                 });
             }
         }
-    },[])
+    },[page])
 
     return (
         <IonModal isOpen={page === 'daily-task-mantra'}>

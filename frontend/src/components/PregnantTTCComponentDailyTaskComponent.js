@@ -1,7 +1,9 @@
 import React from "react";
 import {actionToSetCommonActionSheetPopupData} from "../apiHelper/CommonAction";
+import useStore from "../zustand/useStore";
 
 export default function PregnantTTCComponentDailyTaskComponent({type}) {
+    const {dailyTasksToday} = useStore();
     const goToPage = (page)=>{
         actionToSetCommonActionSheetPopupData(page);
     }
@@ -20,10 +22,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                             </g>
                         </svg>
                         <div className={"progress_bar_div_with_percentage"}>
-                            {/*<div className={"percentage_bar_main"}>*/}
-                            {/*    <div style={{width: '40%'}} className={"fill_bar"}></div>*/}
-                            {/*</div>*/}
-                            <div className={"percentage_bar_text"}>40%</div>
+                            <div className={"percentage_bar_text"}>{dailyTasksToday?.data['YOGA']?.progress_percent | 0}%</div>
                         </div>
                     </div>
                     <span>Yoga</span>
@@ -43,10 +42,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                             </g>
                         </svg>
                         <div className={"progress_bar_div_with_percentage"}>
-                            {/*<div className={"percentage_bar_main"}>*/}
-                            {/*    <div style={{width: '20%'}} className={"fill_bar"}></div>*/}
-                            {/*</div>*/}
-                            <div className={"percentage_bar_text"}>20%</div>
+                            <div className={"percentage_bar_text"}>{dailyTasksToday?.data['MEDITATION']?.progress_percent | 0}%</div>
                         </div>
                     </div>
                     <span>Meditation</span>
@@ -61,10 +57,11 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                                   fill="#ff9380"/>
                         </svg>
                         <div className={"progress_bar_div_with_percentage"}>
-                            {/*<div className={"percentage_bar_main"}>*/}
-                            {/*    <div style={{width: '70%'}} className={"fill_bar"}></div>*/}
-                            {/*</div>*/}
-                            <div className={"percentage_bar_text"}>70%</div>
+                            {(type === 'pregnant') ?
+                                <div className={"percentage_bar_text"}>{dailyTasksToday?.data['SAMVAAD']?.progress_percent | 0}%</div>
+                                :
+                                <div className={"percentage_bar_text"}>{dailyTasksToday?.data['AFFIRMATION']?.progress_percent | 0}%</div>
+                            }
                         </div>
                     </div>
                     {(type === 'pregnant') ?
@@ -83,10 +80,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                                 fill="#f491f2"/>
                         </svg>
                         <div className={"progress_bar_div_with_percentage"}>
-                            {/*<div className={"percentage_bar_main"}>*/}
-                            {/*    <div style={{width: '10%'}} className={"fill_bar"}></div>*/}
-                            {/*</div>*/}
-                            <div className={"percentage_bar_text"}>10%</div>
+                            <div className={"percentage_bar_text"}>{dailyTasksToday?.data['MANTRA']?.progress_percent | 0}%</div>
                         </div>
                     </div>
                     <span>Mantra</span>
@@ -100,10 +94,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                                 d="M25.378 19.75c1.507 6.027-3.162 11.25-9.375 11.25s-10.9-5.149-9.375-11.25c0.937-3.75 5.625-9.375 9.375-18.75 3.75 9.374 8.438 15 9.375 18.75z"/>
                         </svg>
                         <div className={"progress_bar_div_with_percentage"}>
-                            {/*<div className={"percentage_bar_main"}>*/}
-                            {/*    <div style={{width: '30%'}} className={"fill_bar"}></div>*/}
-                            {/*</div>*/}
-                            <div className={"percentage_bar_text"}>30%</div>
+                            <div className={"percentage_bar_text"}>{dailyTasksToday?.data['HYDRATION']?.progress_percent | 0}%</div>
                         </div>
                     </div>
                     <span>Hydration</span>
@@ -118,10 +109,7 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
                                   fill="#FFC107"/>
                         </svg>
                         <div className={"progress_bar_div_with_percentage"}>
-                            {/*<div className={"percentage_bar_main"}>*/}
-                            {/*    <div style={{width: '80%'}} className={"fill_bar"}></div>*/}
-                            {/*</div>*/}
-                            <div className={"percentage_bar_text"}>80%</div>
+                            <div className={"percentage_bar_text"}>{dailyTasksToday?.data['MOOD']?.progress_percent | 0}%</div>
                         </div>
                     </div>
                     <span>Mood</span>
@@ -130,10 +118,10 @@ export default function PregnantTTCComponentDailyTaskComponent({type}) {
             <div className="progress-row">
                 <div className="progress-row-ttl">
                     <span className="dont_text_t_session_progress">Progress</span>
-                    <span className="dont_text_t">Overall 40%</span>
+                    <span className="dont_text_t">Overall {dailyTasksToday?.overallPercent | 0}%</span>
                 </div>
                 <div className="track">
-                    <div className="fill" style={{width: `${0.10 * 100}%`}}/>
+                    <div className="fill" style={{width: `${dailyTasksToday?.overallPercent | 0}%`}}/>
                 </div>
             </div>
         </div>

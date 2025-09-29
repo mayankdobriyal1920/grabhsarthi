@@ -1,18 +1,25 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { IonIcon } from "@ionic/react";
-import {chatbubbleOutline, heartOutline, heart, volumeMute, volumeHigh} from "ionicons/icons";
+import { chatbubbleOutline, heartOutline, heart, volumeMute, volumeHigh } from "ionicons/icons";
 import moment from "moment-timezone";
 
 const DOUBLE_TAP_MS = 280;
 const TAP_MOVE_TOLERANCE = 12;
+let activeVideoRef = null;
 
-export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, openPostPage, callFunctionToLikeDisLikePost }) {
+export default function CommunityPageCardComponent({
+                                                       post,
+                                                       isMuted,
+                                                       toggleMuted,
+                                                       openPostPage,
+                                                       callFunctionToLikeDisLikePost,
+                                                   }) {
     const [showHeartBurst, setShowHeartBurst] = useState(false);
+    const [videoVisible, setVideoVisible] = useState(false); // <-- whether to reveal/play the video
 
     const wrapperRef = useRef(null);
     const videoRef = useRef(null);
     const observerRef = useRef(null);
-    const hadFirstPlay = useRef(false);
     const singleTapTimer = useRef(null);
     const firstTapTime = useRef(0);
     const firstTapPos = useRef(null);
@@ -33,7 +40,7 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
 
     const handleSingleTap = useCallback(() => {
         toggleMuted();
-    }, []);
+    }, [toggleMuted]);
 
     const triggerLike = useCallback(() => {
         setShowHeartBurst(true);
@@ -41,16 +48,13 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
         window.setTimeout(() => setShowHeartBurst(false), 700);
     }, [post.id, callFunctionToLikeDisLikePost]);
 
-    // --- Pointer handlers (mouse + touch unified) ---
+    // Pointer handlers (mouse + touch unified)
     const onPointerDown = (e) => {
-        // Ignore non-primary buttons (right click, etc.)
         if (e.button && e.button !== 0) return;
         if (e.currentTarget.setPointerCapture) {
             try {
                 e.currentTarget.setPointerCapture(e.pointerId);
-            } catch (err) {
-                // ignore if pointer capture fails
-            }
+            } catch (err) {console.log('')}
         }
         downPos.current = { x: e.clientX, y: e.clientY };
     };
@@ -65,7 +69,6 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
 
         const now = performance.now();
 
-        // Check double-tap: within time + radius of first tap
         if (
             firstTapTime.current > 0 &&
             now - firstTapTime.current <= DOUBLE_TAP_MS &&
@@ -79,7 +82,6 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
             return;
         }
 
-        // Schedule single tap; will be canceled if second tap arrives in time
         firstTapTime.current = now;
         firstTapPos.current = { x: e.clientX, y: e.clientY };
         clearSingle();
@@ -99,87 +101,64 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
         };
     }, []);
 
-    // ---- Video autoplay when on screen & iOS inline fixes ----
-    useEffect(() => {
-        return () => {
-            clearSingle();
-        };
-    }, []);
-
-    // ---- Video autoplay when on screen & iOS inline fixes + placeholder handling ----
+    // --- Video observer for autoplay + single play enforcement ---
     useEffect(() => {
         if (post.object_type !== "video") return;
-
         const node = wrapperRef.current;
         const video = videoRef.current;
         if (!node || !video) return;
 
-        // Inline playback hints for iOS
-        try {
-            if ("playsInline" in video) video.playsInline = true;
-            video.setAttribute("playsinline", "");
-            video.setAttribute("webkit-playsinline", "true");
-        } catch (err) {
-            console.error("Setting playsInline attributes failed:", err);
-        }
+        if ("playsInline" in video) video.playsInline = true;
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "true");
 
-        // Reset placeholder state if source changes
-        hadFirstPlay.current = false;
-
-        // Clean up any previous observer
-        if (observerRef.current) {
-            try {
-                observerRef.current.disconnect();
-            } catch (err) {
-                console.error("IntersectionObserver disconnect failed:", err);
-            }
-            observerRef.current = null;
-        }
+        if (observerRef.current) observerRef.current.disconnect();
 
         observerRef.current = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (!video) return;
-                    if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-                        // Ensure mute matches global before trying to play
+                    const isVisible = entry.isIntersecting && entry.intersectionRatio > 0.5;
+
+                    if (isVisible) {
+                        // Pause any other playing video before starting this one
+                        if (activeVideoRef && activeVideoRef !== video) {
+                            try {
+                                activeVideoRef.pause();
+                            } catch {console.log('')}
+                        }
+
                         const playPromise = video.play();
                         if (playPromise && typeof playPromise.then === "function") {
                             playPromise.catch((err) => {
-                                // Autoplay may fail if unmuted; keep placeholder and wait for user gesture
-                                console.error("video.play() failed in IO callback:", err);
+                                console.warn("Autoplay blocked:", err);
                             });
                         }
+                        setTimeout(()=>{
+                            activeVideoRef = video;
+                            setVideoVisible(true);
+                        })
                     } else {
+                        if (video === activeVideoRef) {
+                            activeVideoRef = null;
+                        }
                         try {
                             video.pause();
-                        } catch (err) {
-                            console.error("video.pause() failed:", err);
-                        }
+                        } catch {console.log('')}
+                        setVideoVisible(false);
                     }
                 });
             },
-            { threshold: [0, 0.5, 1], root: null, rootMargin: "0px" }
+            { threshold: [0.5], root: null }
         );
 
-        try {
-            observerRef.current.observe(node);
-        } catch (err) {
-            console.error("IntersectionObserver.observe failed:", err);
-        }
+        observerRef.current.observe(node);
 
         return () => {
-            if (observerRef.current) {
-                try {
-                    observerRef.current.disconnect();
-                } catch (err) {
-                    console.error("IntersectionObserver disconnect on cleanup failed:", err);
-                }
-                observerRef.current = null;
-            }
+            if (observerRef.current) observerRef.current.disconnect();
         };
     }, [post.object_type, post.object_url]);
 
-    // Mute button handler — stop propagation so parent tap handlers don't fire
     const onMuteButtonClick = (e) => {
         e.stopPropagation?.();
         toggleMuted();
@@ -195,9 +174,9 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
                 <div className="user-info user_info_name_status_time_container">
                     <h3 className="user-name">{post.user_name || "User"}</h3>
                     <div className="user_info_status_time">
-                        <span className={`status ${post.role === 2 ? "pregnant" : "ttc"}`}>
-                          {post.role === 2 ? "Pregnant" : "TTC"}
-                        </span>
+            <span className={`status ${post.role === 2 ? "pregnant" : "ttc"}`}>
+              {post.role === 2 ? "Pregnant" : "TTC"}
+            </span>
                         <span className="time">{moment(post?.created_at).fromNow()}</span>
                     </div>
                 </div>
@@ -206,18 +185,16 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
             {/* Post Message & Media */}
             <div
                 className="card-body"
-                // Use pointer events for both mouse + touch
                 onPointerDown={onPointerDown}
                 onPointerUp={onPointerUp}
                 onPointerCancel={onPointerCancel}
-                // Prevent native dblclick zoom/selection weirdness
                 onDoubleClick={(e) => e.preventDefault()}
                 style={{
-                    // helps mobile Safari: disables double-tap to zoom and reduces delays
                     touchAction: "manipulation",
                     WebkitUserSelect: "none",
                     userSelect: "none",
-                }}>
+                }}
+            >
                 <p>{post.message}</p>
 
                 {/* IMAGE */}
@@ -232,10 +209,29 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
                     </div>
                 )}
 
-                {/* VIDEO */}
+                {/* VIDEO with poster overlay */}
                 {post.object_type === "video" && post.object_url && (
-                    <div className={`media-wrapper video-wrapper`}>
-                        {/* DEBUG VIDEO - add this temporarily */}
+                    <div className={`media-wrapper video-wrapper`} style={{ position: "relative" }}>
+                        {/* Poster/thumbnail sits above the video until videoVisible === true */}
+                        {post.poster_url && (
+                            <img
+                                src={post.poster_url}
+                                alt="poster"
+                                className="video-poster"
+                                style={{
+                                    display: videoVisible ? "none" : "block",
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    borderRadius: 6,
+                                    position: "absolute",
+                                    left: 0,
+                                    top: 0,
+                                }}
+                                draggable={false}
+                            />
+                        )}
+
                         <video
                             ref={videoRef}
                             src={post.object_url}
@@ -244,8 +240,18 @@ export default function CommunityPageCardComponent({ post,isMuted,toggleMuted, o
                             loop
                             muted={isMuted}
                             controls={false}
-                            preload="metadata"
+                            preload="none"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                // keep the video element present but visually hidden while poster shows
+                                opacity: videoVisible ? 1 : 0,
+                                transition: "opacity 200ms ease",
+                                borderRadius: 6,
+                            }}
                         />
+
                         {showHeartBurst && (
                             <div className="heart-burst">
                                 <IonIcon icon={heart} />

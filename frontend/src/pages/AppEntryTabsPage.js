@@ -31,8 +31,20 @@ import CommunityPage from "./CommunityPage";
 import BabyTrackerPageForPregnantPage from "./BabyTrackerPageForPregnantPage";
 import ClassesPage from "./ClassesPage";
 import AppSettingPage from "./AppSettingPage";
-import {actionToConnectSocketServer, actionToGetCommunityAllPostData} from "../apiHelper/CommonAction";
+import {
+    actionToConnectSocketServer,
+    actionToGetAllScheduledLiveClass,
+    actionToGetCommunityAllPostData, actionToGetDailyTasksByUserId
+} from "../apiHelper/CommonAction";
 import SubscriptionPage from "./SubscriptionPage";
+import CommunityPostPage from "./CommunityPostPage";
+import DailyTaskYogTaskComponent from "../components/DailyTaskYogTaskComponent";
+import DailyTaskMeditationTaskComponent from "../components/DailyTaskMeditationTaskComponent";
+import DailyTaskSamvaadComponent from "../components/DailyTaskSamvaadComponent";
+import DailyTaskMantraComponent from "../components/DailyTaskMantraComponent";
+import DailyTaskHydrationComponent from "../components/DailyTaskHydrationComponent";
+import DailyTaskMoodComponent from "../components/DailyTaskMoodComponent";
+import VideoLibraryCategoryVideosComponent from "../components/VideoLiberaryCategoryVideosComponent";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -51,6 +63,8 @@ const AppEntryTabsPage = () => {
     useEffect(() => {
         if(!postedSingleRef?.current) {
             actionToGetCommunityAllPostData();
+            actionToGetAllScheduledLiveClass();
+            actionToGetDailyTasksByUserId();
             actionToConnectSocketServer();
             postedSingleRef.current = true;
         }
@@ -96,6 +110,14 @@ const AppEntryTabsPage = () => {
                             <Route exact path="/dashboard/subscription" component={SubscriptionPage} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
+                        <CommunityPostPage/>
+                        <DailyTaskYogTaskComponent/>
+                        <DailyTaskMeditationTaskComponent/>
+                        <DailyTaskSamvaadComponent/>
+                        <DailyTaskMantraComponent/>
+                        <DailyTaskHydrationComponent/>
+                        <DailyTaskMoodComponent/>
+                        <VideoLibraryCategoryVideosComponent/>
                     </IonPage>
                 )} />
             </IonRouterOutlet>
@@ -156,8 +178,6 @@ const AppEntryTabsPage = () => {
                     <IonIcon icon={currentPath === '/dashboard/settings' ? settings : settingsOutline} />
                     <IonLabel>Settings</IonLabel>
                 </IonTabButton>
-
-
             </IonTabBar>
         </IonTabs>
     );

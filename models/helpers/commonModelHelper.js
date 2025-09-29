@@ -172,3 +172,30 @@ export function _getUserProfileTrimester(lastPeriodDate) {
 
     return null; // if date is in future or invalid
 }
+
+const toSqlDate = (d = new Date()) => {
+    const tz = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+    return tz.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+};
+
+// details can be an object; we’ll stringify for JSON column
+export const _buildDailyTaskPayloads = ({ userId, task, progressPercent, details = {}, taskDate = toSqlDate() }) => {
+    const detailsStr = JSON.stringify(details ?? {});
+
+    const insertData = {
+        alias: ["?","?","?","?","?"],
+        column: ["user_id","task_date","task","progress_percent","details"],
+        values: [userId, taskDate, task, progressPercent, detailsStr],
+        tableName: "daily_task_progress",
+    };
+
+    const updateData = {
+        column: "progress_percent = ?, details = ?, updated_at = NOW()",
+        value: [progressPercent, detailsStr, userId, taskDate, task], // + where params at the end
+        whereCondition: "user_id = ? AND task_date = ? AND task = ?",
+        returnColumnName: "id",
+        tableName: "daily_task_progress",
+    };
+
+    return { insertData, updateData };
+};

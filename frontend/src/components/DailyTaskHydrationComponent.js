@@ -16,7 +16,7 @@ export default function DailyTaskHydrationComponent() {
     }
 
     useEffect(()=>{
-        if(Capacitor.isNativePlatform()){
+        if(Capacitor.isNativePlatform() && page === 'daily-task-hydration'){
             StatusBar.setBackgroundColor({ color: '#8cc7d5' }).then(()=>{
                 StatusBar.setStyle({ style:Style.Dark });
             });
@@ -27,7 +27,7 @@ export default function DailyTaskHydrationComponent() {
                 });
             }
         }
-    },[])
+    },[page])
 
 
     return (

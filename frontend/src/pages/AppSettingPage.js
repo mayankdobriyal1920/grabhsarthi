@@ -106,7 +106,7 @@ const AppSettingPage = () => {
         setLoadingApiCall(true);
         actionToUpdateUserProfileData(payload)
             .then(() => {
-                actionToGetUserSessionData();
+                actionToGetUserSessionData(true);
             }).finally(() => setLoadingApiCall(false));
     };
 

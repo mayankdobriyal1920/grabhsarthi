@@ -17,7 +17,7 @@ export default function DailyTaskSamvaadComponent() {
     }
 
     useEffect(()=>{
-        if(Capacitor.isNativePlatform()){
+        if(Capacitor.isNativePlatform() && page === 'daily-task-samvaad'){
             StatusBar.setBackgroundColor({ color: '#ff9380' }).then(()=>{
                 StatusBar.setStyle({ style:Style.Dark });
             });
@@ -28,7 +28,7 @@ export default function DailyTaskSamvaadComponent() {
                 });
             }
         }
-    },[])
+    },[page])
 
     return (
         <IonModal isOpen={page === 'daily-task-samvaad'}>

@@ -1,6 +1,6 @@
 import React from "react";
 import {IonPage, IonContent, IonIcon, IonRouterLink} from "@ionic/react";
-import {leafOutline, flame, chevronForward} from "ionicons/icons";
+import {chevronForward} from "ionicons/icons";
 import {_babyWeeklyGrowthContentSvg, _getGestationalWeeksFromLMP} from "../apiHelper/CommonHelper";
 import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCComponentDailyTaskComponent";
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
@@ -92,24 +92,6 @@ export default function PregnantDashboardPage() {
                     <PregnantTTCComponentDailyTaskComponent type={"pregnant"} />
                     {/* Quick actions */}
                     <PregnantTTCQuickActionsComponent />
-
-                    {/* Wellness Streak */}
-                    <div className="streak card">
-                        <div className="streak-left">
-                            <div className="circle">
-                                <IonIcon icon={leafOutline} />
-                            </div>
-                            <div className="streak-text">
-                                <span className="muted">3 Of 7 day wellness</span>
-                                <span className="b">streak</span>
-                            </div>
-                        </div>
-                        <div className="streak-right">
-                            <div className="circle solid">
-                                <IonIcon icon={flame} />
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </IonContent>
         </IonPage>
