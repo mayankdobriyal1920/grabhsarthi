@@ -208,7 +208,7 @@ export default function DailyTaskMeditationTaskComponent() {
                 {/* 🔈 Hidden audio: plays on Start, pauses on Pause/close */}
                 <audio
                     ref={audioRef}
-                    src={"https://garbhsarthi.com/api/common/actionToGetAudioStreamApiCall/medition-sound.mp3"}
+                    src={"https://backend.garbhsarthi.com/common/actionToGetAudioStreamApiCall/medition-sound.mp3"}
                     preload="auto"
                     style={{ display: "none" }}
                 />

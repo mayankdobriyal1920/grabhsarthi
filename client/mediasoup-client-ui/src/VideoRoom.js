@@ -9,7 +9,7 @@ import {
 import ParticipantThumbnail from "./ParticipantThumbnail";
 import {useVideoCallGridLayout} from "./hooks/useVideoCallGridLayout";
 
-const SOCKET_URL = "https://garbhsarthi.com";
+const SOCKET_URL = "https://backend.garbhsarthi.com";
 const RECORD_INTERVAL = 1000;
 const userId = Math.random().toString(36).substring(2, 10);
 

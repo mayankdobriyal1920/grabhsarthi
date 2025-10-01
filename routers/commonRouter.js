@@ -366,14 +366,14 @@ commonRouter.post(
 
         const object_url = attachmentFile
             ? object_type === "image"
-                ? `https://garbhsarthi.com/api/common/actionToGetImageApiCall/${attachmentFile.filename}`
+                ? `https://backend.garbhsarthi.com/common/actionToGetImageApiCall/${attachmentFile.filename}`
                 : object_type === "video"
-                    ? `https://garbhsarthi.com/api/common/actionToGetVideoApiCall/${attachmentFile.filename}`
+                    ? `https://backend.garbhsarthi.com/common/actionToGetVideoApiCall/${attachmentFile.filename}`
                     : ""
             : "";
 
         const poster_url = thumbnailFile
-            ? `https://garbhsarthi.com/api/common/actionToGetImageApiCall/${thumbnailFile.filename}`
+            ? `https://backend.garbhsarthi.com/common/actionToGetImageApiCall/${thumbnailFile.filename}`
             : "";
 
         if (!object_type || (!object_url && !message)) {

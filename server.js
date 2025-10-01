@@ -35,6 +35,9 @@ const allowedOrigins = [
     'http://localhost',
     'https://localhost',
     'https://garbhsarthi.com',
+    'https://backend.garbhsarthi.com',
+    'https://trainer.garbhsarthi.com',
+    'https://admin.garbhsarthi.com',
     'https://meet.garbhsarthi.com',
     'https://app.garbhsarthi.com',
 ];
@@ -617,7 +620,7 @@ io.on("connection", (socket) => {
 
 // ---------- HTTP endpoints for room creation and recording ----------
 // Example: assuming you are storing rooms like Map<roomId, Map<socketId, peer>>
-app.post("/api/check-room-status", (req, res) => {
+app.post("/check-room-status", (req, res) => {
     const { roomId } = req.body;
 
     if (!roomId) {
@@ -634,7 +637,7 @@ app.post("/api/check-room-status", (req, res) => {
 
 });
 
-app.post("/api/create-room", (req, res) => {
+app.post("/create-room", (req, res) => {
     const { secret } = req.body;
     if (secret !== TEACHER_SECRET) return res.status(403).json({ error: "Not allowed" });
     const tempFilePath = path.join(UPLOAD_PATH, `TempRecording_${ROOM_ID}.webm.part`);
@@ -659,7 +662,7 @@ app.post("/api/create-room", (req, res) => {
 });
 
 // receive base64 chunk (teacher sends)
-app.post("/api/recording-video-chunks", (req, res) => {
+app.post("/recording-video-chunks", (req, res) => {
     try {
         const { groupId, data } = req.body;
 
@@ -681,7 +684,7 @@ app.post("/api/recording-video-chunks", (req, res) => {
 });
 
 // Merge and save video file
-app.post(`/api/recording-video-finish`, async (req, res) => {
+app.post(`/recording-video-finish`, async (req, res) => {
     try {
         const { groupId, duration } = req.body;
 
@@ -726,7 +729,7 @@ app.post(`/api/recording-video-finish`, async (req, res) => {
     }
 });
 
-app.post("/api/turn-credentials", (req, res) => {
+app.post("/turn-credentials", (req, res) => {
     function generateTurnCredentials(name, secret) {
         const ttl = 3600; // 1 hour validity
         const unixTimeStamp = Math.floor(Date.now() / 1000) + ttl;
@@ -763,11 +766,7 @@ app.post("/api/turn-credentials", (req, res) => {
     });
 });
 
-
 // health
-app.get("/api/health", (req, res) => res.json({ ok: true }));
+app.get("/health", (req, res) => res.json({ ok: true }));
 
-app.use("/api/common", commonRouter);
-
-// ---------- start server (already started when router created) ----------
-console.log("Server module loaded.");
+app.use("/common", commonRouter);

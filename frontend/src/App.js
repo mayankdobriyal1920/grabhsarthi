@@ -74,12 +74,6 @@ const App = () => {
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 1000);
-            if(document.querySelector('.mobile-contain-feed-events')){
-                let leftSide = document.querySelector('.mobile-contain-feed-events')?.getBoundingClientRect()?.left;
-                if(leftSide){
-                    document.documentElement.style.setProperty('--event-page-left-side', `${leftSide}px`);
-                }
-            }
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);

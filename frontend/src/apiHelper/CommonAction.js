@@ -3,7 +3,7 @@ import {createSocketConnection, sendSocketMessage} from "../socket/socket";
 import useStore from "../zustand/useStore";
 import {_generateRandomPastelColor} from "./CommonHelper";
 const api = Axios.create({
-    baseURL: 'https://garbhsarthi.com/api/common/',
+    baseURL: 'https://backend.garbhsarthi.com/common/',
     withCredentials:true
 })
 

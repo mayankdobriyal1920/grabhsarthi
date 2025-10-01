@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-let prodUrl = `https://garbhsarthi.com/api/`;
+let prodUrl = `https://backend.garbhsarthi.com/`;
 
 const api = Axios.create({
     baseURL: prodUrl,

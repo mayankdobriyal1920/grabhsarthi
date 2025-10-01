@@ -1,34 +1,29 @@
-import useBlockBackButton from "../hooks/useBlockBackButton";
-import {useEffect} from "react";
-import {App as CapacitorApp} from "@capacitor/app";
-import {Capacitor} from "@capacitor/core";
-import {useIonAlert} from "@ionic/react";
+import { useEffect } from "react";
+import { App as CapacitorApp } from "@capacitor/app";
+import { Capacitor } from "@capacitor/core";
+import useStore from "../zustand/useStore";
+import { actionToSetCommonActionSheetPopupData } from "../apiHelper/CommonAction";
 
 const AppBackButtonHandler = () => {
-    useBlockBackButton();
-    const [presentAlert] = useIonAlert();
+    const { commonActionSheetPopupData } = useStore();
 
     useEffect(() => {
-        if(Capacitor.isNativePlatform()) {
-            const backButtonListener = CapacitorApp.addListener("backButton", async (data) => {
-                if (!data.canGoBack) {
-                    presentAlert({
-                        header: 'Are you sure?',
-                        cssClass: 'custom_site_alert_toast',
-                        message: 'You want to exit the app.',
-                        buttons: [
-                            {text: 'Cancel', role: 'cancel'},
-                            {text: 'Exit', role: 'confirm', handler: () => CapacitorApp.exitApp()},
-                        ],
-                    });
+        if (Capacitor.isNativePlatform()) {
+            const backButtonListener = CapacitorApp.addListener("backButton", async (event) => {
+                // ✅ If popup is open, close it and block back navigation
+                if (commonActionSheetPopupData?.page) {
+                    actionToSetCommonActionSheetPopupData('');
+                    // ✅ Stop default navigation
+                    event.preventDefault?.();
+                    return null;
                 }
             });
 
             return () => {
-                backButtonListener.remove(); // Ensure cleanup on unmount
+                backButtonListener.remove(); // Cleanup
             };
         }
-    }, []);
+    }, [commonActionSheetPopupData]);
 
     return null;
 };

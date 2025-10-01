@@ -49,6 +49,7 @@ import DailyTaskAffirmationComponent from "../components/DailyTaskAffirmationCom
 import {Capacitor} from "@capacitor/core";
 import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
+import AppBackButtonHandler from "../hooks/AppBackButtonHandler";
 
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
@@ -126,6 +127,9 @@ const AppEntryTabsPage = () => {
                             <Route exact path="/dashboard/subscription" component={SubscriptionPage} />
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
+                        {/*//////// HANDLE BACK BUTTON ////////////*/}
+                        <AppBackButtonHandler/>
+                        {/*//////// HANDLE BACK BUTTON ////////////*/}
                         {commonActionSheetPopupData?.page === "community-post" && (
                             <CommunityPostPage/>
                         )}

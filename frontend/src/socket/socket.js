@@ -8,7 +8,7 @@ import {
 let socketInstance = null;
 let outboundQueue = [];
 const QUEUE_MAX = 200; // prevent unbounded growth
-const SOCKET_URL = "https://garbhsarthi.com";
+const SOCKET_URL = "https://backend.garbhsarthi.com";
 
 // Create (or recreate) the connection.
 // Pass token if your backend expects it.
