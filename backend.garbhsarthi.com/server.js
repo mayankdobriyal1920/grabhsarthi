@@ -19,7 +19,7 @@ import {
 
 const APP_PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
 const ANNOUNCED_HOST = "garbhsarthi.com";
-const UPLOAD_PATH = "/var/www/html/garbhsarthi/public/uploads/recording-upload-data";
+const UPLOAD_PATH = "/var/www/html/garbhsarthi/DATA_STORE_DIRECTORY/recording_upload_data";
 const TEACHER_SECRET = "monika1212";
 // Use a fixed room id (same every time)
 const ROOM_ID = process.env.ROOM_ID || "main-classroom";

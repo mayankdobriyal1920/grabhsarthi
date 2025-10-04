@@ -38,9 +38,9 @@ import crypto from "crypto";
 import moment from "moment-timezone";
 
 const fsp = fs.promises;
-const uploadPath = "/var/www/html/garbhsarthi/public/uploads/community";
-const audioUploadPath = "/var/www/html/garbhsarthi/public/uploads/audio";
-const yogaTaskUploadPath = "/var/www/html/garbhsarthi/public/uploads/yogatasksvids";
+const uploadPath = "/var/www/html/garbhsarthi/DATA_STORE_DIRECTORY/community_posts";
+const audioUploadPath = "/var/www/html/garbhsarthi/DATA_STORE_DIRECTORY/app_audio_data";
+const yogaTaskUploadPath = "/var/www/html/garbhsarthi/DATA_STORE_DIRECTORY/yoga_tasks_videos_img_gif";
 const commonRouter = express.Router();
 
 const razorpayInstance = new Razorpay({

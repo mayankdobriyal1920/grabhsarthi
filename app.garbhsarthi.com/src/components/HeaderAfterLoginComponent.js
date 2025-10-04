@@ -10,7 +10,7 @@ import {
     IonToolbar,
     useIonAlert
 } from "@ionic/react";
-import {menuOutline, notifications} from "ionicons/icons";
+import {logOut, menuOutline} from "ionicons/icons";
 import {useHistory, useLocation} from "react-router-dom";
 import appLogo from "../theme/img/app-small-logo.png";
 import {actionToLogoutUserSession} from "../apiHelper/CommonAction";
@@ -182,15 +182,16 @@ export default function HeaderAfterLoginComponent({pageId,menuRef,currentPath,hi
                             </div>
                             <div className={"page_name_header_container"}>
                                 <div className={"page_name_header"}>{currentPath?.split('/').pop()?.charAt(0)?.toUpperCase() + currentPath?.split('/').pop()?.slice(1)}</div>
-                                <div className={"page_name_header_online"}>6,789 Online</div>
+                                <div className={`page_name_header_online ${userInfo?.role === 2 ? 'pregnant' : 'ttc'}`}>
+                                    {userInfo?.role === 2 ? 'Pregnant' : 'TTC'}
+                                </div>
                             </div>
                         </IonButton>
                     </IonButtons>
                     <IonButtons slot="end" className="with_login-icons">
-                        <IonButton className="header_button">
+                        <IonButton onClick={()=>callFunctionToLogoutUser()} className="header_button">
                             <div className="notification-icon">
-                                <IonIcon icon={notifications}/>
-                                <span className="notification-badge">2</span>
+                                <IonIcon icon={logOut}/>
                             </div>
                         </IonButton>
                     </IonButtons>

@@ -565,8 +565,8 @@ ion-button{
 .profile-setup-page .form-container {
     width: 90%;
     max-width: 400px;
-    margin: 5px auto;
-    padding: 14px;
+    margin: 5px auto!important;
+    padding: 14px!important;
     text-align: center;
     color: var(--gs-text-dark);
 }
@@ -995,7 +995,7 @@ ion-modal.more-sheet-modal ion-content {
     margin-bottom: 10px;
 }
 
-.main_app_header ion-icon { font-size: 22px; color: var(--gs-heading); }
+.main_app_header ion-icon { font-size: 25px; color: var(--gs-pink); }
 
 /* Chips */
 .pregnant-dashboard .chips {
@@ -1116,23 +1116,21 @@ ion-toolbar:last-of-type {
     font-weight: bold;
 }
 .page_name_header_online{
-    font-size: var(--font-size-5);
-    color: var(--gs-text-dark);
+    font-size: var(--font-size-4);
     display: flex;
     align-items: center;
+    line-height: 18px;
+}
+.page_name_header_online.ttc{
+    color: var(--gs-heading);
+}
+.page_name_header_online.pregnant{
+    color: var(--gs-pink);
 }
 
 .dont_text_t_session_progress {
     font-size: var(--font-size-4);
     color: var(--gs-heading);
-}
-.page_name_header_online:before {
-    content: '';
-    border-radius: 50%;
-    width: 9px;
-    margin-right: 5px;
-    height: 9px;
-    background: #00d200;
 }
 
 .progress_bar_div_with_percentage .percentage_bar_main {

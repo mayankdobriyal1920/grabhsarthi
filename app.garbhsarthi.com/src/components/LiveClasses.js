@@ -126,7 +126,7 @@ const LiveClasses = () => {
         if (now.isBefore(start)) {
             return (
                 <div className="join_and_copy_button">
-                    <button className="subscription_page_button_live_class" disabled>
+                    <button className="subscription_page_button_live_class">
                         Upcoming
                     </button>
                 </div>
@@ -157,7 +157,7 @@ const LiveClasses = () => {
         // Completed
         return (
             <div className="join_and_copy_button">
-                <button className="subscription_page_button_live_class" disabled>
+                <button className="subscription_page_button_live_class">
                     Completed
                 </button>
             </div>
