@@ -576,7 +576,6 @@ export const actionToSaveSelectedLiveClassDataDataApiCall = async (
     profile_id
 ) => {
     if (!selected_live_class_id_array?.length) return false;
-
     // Prepare all insert promises
     const insertPromises = selected_live_class_id_array.map((selected_live_class_id) => {
         const insertData = {
