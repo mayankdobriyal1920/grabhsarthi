@@ -1,0 +1,102 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getStoredAuth } from "../services/authService";
+import {
+    actionToGetUserSessionData,
+    actionToLoginTrainerUserProfileByPhoneAndPassword
+} from "../apiHelper/TrainerCommonAction";
+
+export default function TrainerLogin() {
+    const navigate = useNavigate();
+    const [emailAddress, setEmailAddress] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        // if already logged in, go to dashboard
+        const { token } = getStoredAuth();
+        if (token) navigate("/dashboard", { replace: true });
+    }, [navigate]);
+
+    const submit = async (e) => {
+        e.preventDefault();
+        setError("");
+        if (!emailAddress || !password) {
+            setError("Please enter email number and password.");
+            return;
+        }
+        setLoading(true);
+        try {
+
+            const responseData = await actionToLoginTrainerUserProfileByPhoneAndPassword(emailAddress, password);
+            if(responseData?.success === 1) {
+                actionToGetUserSessionData(true);
+            }else{
+                setError(responseData?.message);
+            }
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            setError("An error occurred. Try again.");
+            console.error(err);
+        }
+    };
+
+    return (
+        <div className="container">
+            <div className="row justify-content-center align-items-center vh-75">
+                <div className="col-md-6 col-lg-5">
+                    <div className="card shadow-sm">
+                        <div className="card-body p-4">
+                            <h3 className="card-title mb-2">Trainer Sign In</h3>
+                            <p className="text-muted small">Login with your email and password</p>
+
+                            {error && (
+                                <div className="alert alert-danger py-2" role="alert">
+                                    {error}
+                                </div>
+                            )}
+
+                            <form onSubmit={submit}>
+                                <div className="mb-3">
+                                    <label className="form-label">Email Address</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        value={emailAddress}
+                                        onChange={(e) => setEmailAddress(e.target.value)}
+                                        placeholder="Enter email address..."
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label">Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Enter password"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="d-grid">
+                                    <button className="btn btn-success" type="submit" disabled={loading}>
+                                        {loading ? "Signing in..." : "Sign In"}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div className="text-center mt-3 small text-muted">
+                        Built for Garbh Sarthi trainers — simple and focused.
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

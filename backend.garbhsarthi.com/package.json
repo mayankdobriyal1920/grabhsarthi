@@ -1,0 +1,37 @@
+{
+  "name": "garbhsarthi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.907.0",
+    "@google-apps/meet": "^0.7.0",
+    "@google-cloud/local-auth": "^3.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.2",
+    "fluent-ffmpeg": "^2.1.3",
+    "google-auth-library": "^10.4.0",
+    "googleapis": "^162.0.0",
+    "mediasoup": "^3.18.0",
+    "moment-timezone": "^0.6.0",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^7.0.9",
+    "razorpay": "^2.9.6",
+    "request": "^2.88.2",
+    "socket.io": "^4.8.1",
+    "uuid": "^11.1.0",
+    "zustand": "^5.0.8"
+  }
+}
