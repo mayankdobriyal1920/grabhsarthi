@@ -3013,7 +3013,7 @@ ion-title{
 .main_cycle_calendar_section .legend {
     display: flex;
     gap: 12px;
-    margin-top: 10px;
+    margin-top: 16px;
     flex-wrap: wrap;
 }
 .main_cycle_calendar_section .legend-item {
@@ -3147,12 +3147,15 @@ ion-title{
     font-size: var(--font-size-3);
 }
 
-.heading_and_detail_button .heading_and_detail_button_chevron_icon ion-icon {}
+.heading_and_detail_button .heading_and_detail_button_chevron_icon ion-icon {
+    font-size: var(--font-size-3);
+}
 
 .heading_and_detail_button .heading_and_detail_button_chevron_icon > div {
     display: flex;
     align-items: center;
     gap: 3px;
+    font-size: var(--font-size-3);
 }
 
 .heading_and_detail_button h2 {
@@ -3552,4 +3555,41 @@ a[disabled], button[disabled], html input[disabled] {
     margin-left: auto;
     color: var(--gs-pink);
     font-size: var(--font-size-3);
+}
+
+.calendar-month-nav {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    margin: 14px -2px;
+}
+
+.calendar-month-nav .calendar-prev-btn {
+    background: no-repeat;
+    font-size: var(--font-size-2);
+    padding: 0;
+    display: flex;
+}
+
+.calendar-month-nav .calendar-next-btn {
+    background: no-repeat;
+    font-size: var(--font-size-2);
+    display: flex;
+}
+
+.calendar-month-nav .calendar-next-btn ion-icon {
+    margin-left: auto;
+    color: var(--gs-pink);
+}
+
+.calendar-month-nav .calendar-prev-btn ion-icon {
+    margin-right: auto;
+    color: var(--gs-pink);
+}
+
+small {}
+
+.calendar-month-nav .month_nave_name {
+    font-size: var(--font-size-3);
+    text-align: center;
+    color: var(--gs-heading);
 }
