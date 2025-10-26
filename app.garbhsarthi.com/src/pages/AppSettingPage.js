@@ -12,7 +12,7 @@ const ROLE = {
     TTC: 3,
 };
 
-const AppSettingPage = () => {
+const AppSettingPage = ({renderHeaderPage}) => {
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
     const profile = userInfo?.profile || {};
@@ -126,6 +126,9 @@ const AppSettingPage = () => {
 
     return (
         <IonPage>
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             <IonContent className="profile-setup-page main-content-page setting_page">
                 <div className="profile_setup_header_container" style={{background:'#ffffff'}}>
                     <div className="toggle-buttons">

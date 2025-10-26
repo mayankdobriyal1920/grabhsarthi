@@ -9,11 +9,14 @@ import {
 import VideoLibrary from "../components/VideoLibrary";
 import LiveClasses from "../components/LiveClasses";
 
-const ClassesPage = () => {
+const ClassesPage = ({renderHeaderPage}) => {
     const [tab, setTab] = useState("video");
 
     return (
         <IonPage>
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             <IonContent fullscreen className="classes-page main-content-page">
                 <div className="dash-wrap classes-page-dashboard">
                     <IonSegment

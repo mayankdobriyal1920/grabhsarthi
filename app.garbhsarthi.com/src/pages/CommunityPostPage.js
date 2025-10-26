@@ -93,6 +93,7 @@ const CommunityPostPage = () => {
             </IonContent>
             {/* Comment Input */}
             <IonFooter className="comment-footer">
+                <IonToolbar>
                 <div className="comment-input-wrap">
                     <input
                         value={newComment}
@@ -104,6 +105,7 @@ const CommunityPostPage = () => {
                         <IonIcon icon={sendOutline} />
                     </IonButton>
                 </div>
+                </IonToolbar>
             </IonFooter>
             {/* Comment Input */}
         </IonModal>

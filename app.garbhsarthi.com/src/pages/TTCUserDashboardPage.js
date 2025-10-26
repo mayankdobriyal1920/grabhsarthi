@@ -8,7 +8,7 @@ import CycleCalendarComponent from "../components/CycleCalendarComponent";
 import PregnantTTCComponentDailyTaskComponent from "../components/PregnantTTCComponentDailyTaskComponent";
 import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActionsComponent";
 
-export default function TTCUserDashboardPage() {
+export default function TTCUserDashboardPage({renderHeaderPage}) {
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
 
@@ -26,6 +26,9 @@ export default function TTCUserDashboardPage() {
 
     return (
         <IonPage>
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             <IonContent
                 fullscreen
                 className="dash --peach-bg pregnant-dashboard ttc-dashboard main-content-page"

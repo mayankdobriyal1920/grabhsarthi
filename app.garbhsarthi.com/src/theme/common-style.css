@@ -10,9 +10,6 @@ body,html,#root{
     outline: none!important;
 }
 
-.main-content-page{
-    --padding-top: 70px!important;
-}
 .with_login-mobile-menu {
     padding: 16px;
     height: 100%;
@@ -159,11 +156,9 @@ body,html,#root{
 }
 
 .with_login-header {
-    background: white !important;
-    border-bottom: 1px solid #dcdcdc;
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.09);
     box-shadow: none !important;
-    height: 70px!important;
-
 }
 
 .with_login-toolbar {
@@ -255,18 +250,23 @@ ion-toolbar.header-common-tab {
     text-align: center;
 }
 
-ion-header,
-ion-tab-bar {
-    transition: transform 0.3s ease-in-out;
+ion-header {
+    max-height: 200px; /* approximate max height of your header */
+    opacity: 1;
+    transform: translateY(0);
+    overflow: hidden;
+    transition:
+            max-height 0.3s ease-in-out,
+            transform 0.3s ease-in-out,
+            opacity 0.3s ease-in-out;
 }
 
-
+/* Hide smoothly */
 ion-header.hide_element {
-    transform: translateY(-100%);
-}
-
-ion-tab-bar.hide_element {
-    transform: translateY(100%);
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px); /* small slide-up effect */
+    pointer-events: none;
 }
 
 ion-button{

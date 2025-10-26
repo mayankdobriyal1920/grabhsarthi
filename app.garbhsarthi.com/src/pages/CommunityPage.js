@@ -10,7 +10,7 @@ import useStore from "../zustand/useStore";
 import {FacebookLoader} from "../components/FacebookLoader";
 import CommunityPageCardComponent from "../components/CommunityPageCardComponent";
 
-export default function CommunityPage({handleScroll}) {
+export default function CommunityPage({handleScroll,renderHeaderPage}) {
     const {communityPostIsInUploadingMode,communityAllPostData} = useStore();
     const {loading,communityPost,totalCount} = communityAllPostData;
     const observerRef = React.useRef(null);
@@ -44,6 +44,9 @@ export default function CommunityPage({handleScroll}) {
 
     return (
         <IonPage className="community-page">
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             {(communityPostIsInUploadingMode?.status) && (
                 <div className={"progress_header_loader_in_c_p"} style={{width:`${communityPostIsInUploadingMode?.progress}%`}}/>
             )}

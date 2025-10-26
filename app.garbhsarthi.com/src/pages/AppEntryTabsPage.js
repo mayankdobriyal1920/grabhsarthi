@@ -6,7 +6,7 @@ import {
     IonTabButton,
     IonIcon,
     IonLabel,
-    IonPage
+    IonPage, useIonAlert, IonLoading
 } from '@ionic/react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 
@@ -34,7 +34,7 @@ import AppSettingPage from "./AppSettingPage";
 import {
     actionToConnectSocketServer,
     actionToGetAllScheduledLiveClass,
-    actionToGetCommunityAllPostData, actionToGetDailyTasksByUserId
+    actionToGetCommunityAllPostData, actionToGetDailyTasksByUserId, actionToLogoutUserSession
 } from "../apiHelper/CommonAction";
 import SubscriptionPage from "./SubscriptionPage";
 import CommunityPostPage from "./CommunityPostPage";
@@ -50,7 +50,11 @@ import {Capacitor} from "@capacitor/core";
 import {NavigationBar} from "@mauricewegner/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
 import AppBackButtonHandler from "../hooks/AppBackButtonHandler";
+import LeftSideMenuComponent from "../components/LeftSideMenuComponent";
 
+const HIDE_AFTER_SCROLLING_DOWN = 24;  // px to hide
+const SHOW_AFTER_SCROLLING_UP   = 80;  // px to show
+const TOP_SAFE_ZONE             = 8;   // always show near top
 const AppEntryTabsPage = () => {
     const [currentPath, setCurrentPath] = useState('/dashboard/home');
     const menuRef = React.useRef(null);
@@ -58,8 +62,71 @@ const AppEntryTabsPage = () => {
     const {userInfo} = userAuthDetail;
     const postedSingleRef = useRef(false);
     const { pathname } = useLocation();
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [presentAlert] = useIonAlert();
+    const [userLogoutLoading, setUserLogoutLoading] = useState(false);
+
+
+    //////// FOR SCROLL HIDE ////////////
     const lastScrollTop = useRef(0);
     const [hideHeader, setHideHeader] = useState(false);
+    const anchorRef = useRef(0);           // reference y for next decision
+    const timeoutRef = useRef(null); // debounce holder
+    const tickingRef = useRef(false);      // rAF throttle
+
+    // optional: avoid redundant state updates
+    const setHiddenSafely = (next) => {
+        setHideHeader(prev => (prev !== next ? next : prev));
+    };
+
+    const handleScroll = (event) => {
+        const raw = event.detail?.scrollTop ?? 0;
+        const y = raw < 0 ? 0 : raw;
+
+        // --- small debounce so we don't react to touch jitter
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = window.setTimeout(() => {
+            // --- throttle decisions to one per frame
+            if (tickingRef.current) return;
+            tickingRef.current = true;
+
+            requestAnimationFrame(() => {
+                // Always show when very close to top (nice UX)
+                if (y <= TOP_SAFE_ZONE) {
+                    setHiddenSafely(false);
+                    anchorRef.current = y;
+                    lastScrollTop.current = y;
+                    tickingRef.current = false;
+                    return;
+                }
+
+                if (!hideHeader) {
+                    // user scrolling DOWN enough? -> hide
+                    if (y - anchorRef.current > HIDE_AFTER_SCROLLING_DOWN) {
+                        setHiddenSafely(true);
+                        anchorRef.current = y; // reset anchor at action point
+                    }
+                } else {
+                    // user scrolling UP enough? -> show
+                    if (anchorRef.current - y > SHOW_AFTER_SCROLLING_UP) {
+                        setHiddenSafely(false);
+                        anchorRef.current = y; // reset anchor at action point
+                    }
+                }
+
+                lastScrollTop.current = y;
+                tickingRef.current = false;
+            });
+        }, 60); // debounce window in ms (40–80 feels good)
+    };
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, []);
+
+    //////// FOR SCROLL HIDE ////////////
 
     useEffect(() => {
         setCurrentPath(pathname);
@@ -79,19 +146,6 @@ const AppEntryTabsPage = () => {
         setHideHeader(false)
     }, [pathname]);
 
-    const handleScroll = (event) => {
-        const scrollTop = event.detail.scrollTop ?? 0;
-        const newScrollTop = scrollTop < 0 ? 0 : scrollTop;
-
-        if (newScrollTop > lastScrollTop.current) {
-            setHideHeader(true);
-        } else if (newScrollTop !== undefined && lastScrollTop.current !== undefined && newScrollTop < lastScrollTop.current) {
-            setHideHeader(false);
-        }
-
-        lastScrollTop.current = newScrollTop;
-    }
-
     useEffect(() => {
        if(!commonActionSheetPopupData?.page){
            actionToGetDailyTasksByUserId();
@@ -104,27 +158,87 @@ const AppEntryTabsPage = () => {
        }
     }, [commonActionSheetPopupData]);
 
+    const callFunctionToLogoutUser = ()=>{
+        presentAlert({
+            header: 'Confirm Logout',
+            cssClass:"confirm_alert_custom",
+            message: 'Are you sure you want to log out?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                },
+                {
+                    text: 'Yes',
+                    handler: () => {
+                        actionToLogoutUserSession(setUserLogoutLoading);
+                    },
+                },
+            ],
+        });
+    }
+
+    const renderHeaderPage = (panelSubHeader = null) => (
+        <HeaderAfterLoginComponent
+            menuRef={menuRef}
+            currentPath={currentPath}
+            callFunctionToLogoutUser={callFunctionToLogoutUser}
+            menuOpen={menuOpen}
+            setMenuOpen={setMenuOpen}
+            panelSubHeader={panelSubHeader}
+            setCurrentPath={setCurrentPath}
+            menuId="main-menu"
+            hideHeader={hideHeader}
+        />
+    );
+
     return (
         <IonTabs>
             <IonRouterOutlet>
                 <Route path="/dashboard/" render={() => (
                     <IonPage>
-                        {/* Common header always visible */}
-                        <HeaderAfterLoginComponent menuRef={menuRef} currentPath={currentPath} hideHeader={hideHeader} setCurrentPath={setCurrentPath} pageId={"main-menu-content"} />
-                        {/* Nested outlet for tab pages */}
+                        {/*///////// LEFT SIDE MOBILE MENU /////////*/}
+                        <LeftSideMenuComponent
+                            menuOpen={menuOpen}
+                            setMenuOpen={setMenuOpen}
+                            setCurrentPath={setCurrentPath}
+                            menuRef={menuRef}
+                            callFunctionToLogoutUser={callFunctionToLogoutUser}
+                            menuId="main-menu"
+                            pageId="main-menu-content"/>
+                        {/*///////// LEFT SIDE MOBILE MENU /////////*/}
                         <IonRouterOutlet id="main-menu-content">
-                            <Route exact path="/dashboard/home" component={
-                                userInfo?.role === 3 ? TTCUserDashboardPage : PregnantDashboardPage
-                            } />
-                            <Route exact path="/dashboard/tracker" component={
-                                userInfo?.role === 3 ? OvulationTrackerPage : BabyTrackerPageForPregnantPage
-                            } />
-                            <Route exact path="/dashboard/classes" component={ClassesPage} />
-                            <Route exact path="/dashboard/community" render={()=>(
-                                <CommunityPage handleScroll={handleScroll}/>
+                            <Route exact path="/dashboard/home" render={()=>(
+                                <>
+                                    {userInfo?.role === 3 ?
+                                        <TTCUserDashboardPage renderHeaderPage={renderHeaderPage}/>
+                                        :
+                                        <PregnantDashboardPage renderHeaderPage={renderHeaderPage}/>
+                                    }
+                                </>
                             )} />
-                            <Route exact path="/dashboard/settings" component={AppSettingPage} />
-                            <Route exact path="/dashboard/subscription" component={SubscriptionPage} />
+                            <Route exact path="/dashboard/tracker" render={()=>(
+                                <>
+                                    {userInfo?.role === 3 ?
+                                        <OvulationTrackerPage renderHeaderPage={renderHeaderPage}/>
+                                        :
+                                        <BabyTrackerPageForPregnantPage renderHeaderPage={renderHeaderPage}/>
+                                    }
+                                </>
+                            )} />
+                            <Route exact path="/dashboard/classes" render={()=>(
+                                <ClassesPage renderHeaderPage={renderHeaderPage}/>
+                            )}/>
+
+                            <Route exact path="/dashboard/community" render={()=>(
+                                <CommunityPage handleScroll={handleScroll} renderHeaderPage={renderHeaderPage}/>
+                            )} />
+                            <Route exact path="/dashboard/settings" render={()=>(
+                                <AppSettingPage renderHeaderPage={renderHeaderPage}/>
+                            )}/>
+                            <Route exact path="/dashboard/subscription" render={()=>(
+                                <SubscriptionPage renderHeaderPage={renderHeaderPage}/>
+                            )}/>
                             <Redirect exact from="/dashboard" to="/dashboard/home" />
                         </IonRouterOutlet>
                         {/*//////// HANDLE BACK BUTTON ////////////*/}
@@ -157,6 +271,7 @@ const AppEntryTabsPage = () => {
                         {commonActionSheetPopupData?.page === "video-page" && (
                             <VideoLibraryCategoryVideosComponent/>
                         )}
+                        <IonLoading className={"loading_loader_spinner_container"} isOpen={userLogoutLoading} message={"Loading..."}/>
                     </IonPage>
                 )} />
             </IonRouterOutlet>

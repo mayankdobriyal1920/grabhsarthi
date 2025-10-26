@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 import CycleCalendarComponent from "../components/CycleCalendarComponent";
 import useStore from "../zustand/useStore";
 
-const OvulationTracker = () => {
+const OvulationTracker = ({renderHeaderPage}) => {
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
     const profile = userInfo?.profile || {};
@@ -326,6 +326,9 @@ const OvulationTracker = () => {
 
     return (
         <IonPage className="ovulation-tracker-page">
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             <IonContent fullscreen className="main-content-page ovulation-dashboard main-content-page">
                 <div className="dash-wrap ovulation-dashboard-wrap">
 

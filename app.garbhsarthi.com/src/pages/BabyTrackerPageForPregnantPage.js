@@ -10,7 +10,7 @@ import useStore from "../zustand/useStore";
 import moment from "moment-timezone";
 import {useLocation} from "react-router-dom";
 
-export default function BabyTrackerPageForPregnantPage() {
+export default function BabyTrackerPageForPregnantPage({renderHeaderPage}) {
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
     const profile = userInfo?.profile || {}
@@ -32,6 +32,9 @@ export default function BabyTrackerPageForPregnantPage() {
 
     return (
         <IonPage>
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             <IonContent
                 fullscreen
                 className="dash --peach-bg pregnant-dashboard main-content-page"

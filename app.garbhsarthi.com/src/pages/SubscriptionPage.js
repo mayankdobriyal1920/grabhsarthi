@@ -11,7 +11,7 @@ import useStore from "../zustand/useStore";
 import {FacebookLoader} from "../components/FacebookLoader";
 const RAZORPAY_KEY_ID='rzp_live_ROGuTtdx8ENMoc';
 
-const SubscriptionPage = () => {
+const SubscriptionPage = ({renderHeaderPage}) => {
 
     const {allSubscriptionPlanData,userAuthDetail} = useStore();
     const {userInfo} = userAuthDetail;
@@ -60,6 +60,9 @@ const SubscriptionPage = () => {
 
     return (
         <IonPage>
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             <IonContent className="subscription-page main-content-page">
                 <div className="subscription-page-inner">
                     {(userInfo?.active_subscription) ?

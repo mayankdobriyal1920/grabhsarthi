@@ -7,7 +7,7 @@ import PregnantTTCQuickActionsComponent from "../components/PregnantTTCQuickActi
 import useStore from "../zustand/useStore";
 import moment from "moment/moment";
 
-export default function PregnantDashboardPage() {
+export default function PregnantDashboardPage({renderHeaderPage}) {
     const { userAuthDetail } = useStore();
     const { userInfo } = userAuthDetail || {};
     const profile = userInfo?.profile || {};
@@ -39,6 +39,9 @@ export default function PregnantDashboardPage() {
 
     return (
         <IonPage>
+            {/*/////// RENDER HEADER PART ////////*/}
+            {renderHeaderPage && renderHeaderPage()}
+            {/*/////// RENDER HEADER PART ////////*/}
             <IonContent fullscreen className="dash --peach-bg pregnant-dashboard main-content-page">
                 <div className="dash-wrap pregnant-dashboard-wrap">
                     {/* Greeting */}
