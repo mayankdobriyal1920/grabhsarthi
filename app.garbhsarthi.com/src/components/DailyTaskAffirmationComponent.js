@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { IonContent, IonIcon, IonModal } from "@ionic/react";
-import { close, heartOutline, sparklesOutline } from "ionicons/icons";
+import {IonContent, IonHeader, IonIcon, IonModal, IonToolbar} from "@ionic/react";
+import {close, fitnessOutline, heartOutline, sparklesOutline, timerOutline} from "ionicons/icons";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import useStore from "../zustand/useStore";
@@ -87,22 +87,25 @@ export default function DailyTaskAffirmationComponent() {
 
     return (
         <IonModal isOpen={page === "daily-task-affirmation"}>
+            <IonHeader className={"main_header_in_task"}>
+                <IonToolbar className={"main_toolbar_in_task header_for_task_section affirmation samvaad"}>
+                    <div className="inner_container_main">
+                        <div className={"main_toolbar_in_task_title"}>Affirmation</div>
+                        <div
+                            onClick={handleGoHomePage}
+                            className="session-info-end-session duration count_sec"
+                        >
+                            <IonIcon icon={close} />
+                            <span>End Session</span>
+                        </div>
+                    </div>
+                </IonToolbar>
+            </IonHeader>
             <IonContent
                 fullscreen
                 scrollEvents={true}
                 className="pregnant-dashboard task_section_container_wrap affirmation_main_container samvaad_main_container"
             >
-                {/* Header */}
-                <div className="header_for_task_section affirmation samvaad">
-                    <h1>Affirmation</h1>
-                    <div
-                        onClick={handleGoHomePage}
-                        className="session-info-end-session duration count_sec"
-                    >
-                        <IonIcon icon={close} />
-                        <span>End Session</span>
-                    </div>
-                </div>
 
                 {/* Body */}
                 <div className="dash-wrap pregnant-dashboard-wrap">

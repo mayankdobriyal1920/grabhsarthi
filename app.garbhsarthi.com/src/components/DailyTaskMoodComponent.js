@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IonContent, IonIcon, IonModal } from "@ionic/react";
+import {IonContent, IonHeader, IonIcon, IonModal, IonToolbar} from "@ionic/react";
 import {
     happyOutline,
     sadOutline,
     heartOutline,
     sparklesOutline,
-    close,
+    close, timerOutline, fitnessOutline,
 } from "ionicons/icons";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar, Style } from "@capacitor/status-bar";
@@ -95,21 +95,24 @@ export default function DailyTaskMoodComponent() {
 
     return (
         <IonModal isOpen={page === "daily-task-mood"}>
+            <IonHeader className={"main_header_in_task"}>
+                <IonToolbar className={"main_toolbar_in_task header_for_task_section mood"}>
+                    <div className="inner_container_main">
+                        <div className={"main_toolbar_in_task_title"}>Your Mood</div>
+                        <div
+                            onClick={handleGoHomePage}
+                            className="session-info-end-session duration count_sec"
+                        >
+                            <IonIcon icon={close} />
+                            <span>End Session</span>
+                        </div>
+                    </div>
+                </IonToolbar>
+            </IonHeader>
             <IonContent
                 fullscreen
                 className="mood_main_container pregnant-dashboard task_section_container_wrap"
             >
-                {/* HEADER */}
-                <div className="header_for_task_section mood">
-                    <h1>Your Mood</h1>
-                    <div
-                        onClick={handleGoHomePage}
-                        className="session-info-end-session duration count_sec"
-                    >
-                        <IonIcon icon={close} />
-                        <span>End Session</span>
-                    </div>
-                </div>
 
                 {/* MOOD SELECTOR */}
                 <div className="mood_selector_grid">

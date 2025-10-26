@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {IonContent, IonIcon, IonModal} from "@ionic/react";
+import {IonContent, IonHeader, IonIcon, IonModal, IonToolbar} from "@ionic/react";
 import {close, fitnessOutline, timerOutline} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";
 import {StatusBar, Style} from "@capacitor/status-bar";
@@ -142,25 +142,28 @@ export default function DailyTaskMeditationTaskComponent() {
 
     return (
         <IonModal isOpen={page === "daily-task-meditation"}>
+            <IonHeader className={"main_header_in_task"}>
+                <IonToolbar className={"main_toolbar_in_task header_for_task_section meditation"}>
+                    <div className="inner_container_main">
+                        <div className={"main_toolbar_in_task_title"}>Meditation</div>
+                        <div className="session-info">
+                            <div className="duration time_sec_c">
+                                <IonIcon icon={timerOutline}/>
+                                <span>~5 mins</span>
+                            </div>
+                            <div className="duration count_sec">
+                                <IonIcon icon={fitnessOutline}/>
+                                <span>Breathing</span>
+                            </div>
+                        </div>
+                        <div onClick={handleGoHomePage} className="session-info-end-session duration count_sec">
+                            <IonIcon icon={close}/>
+                            <span>End Session</span>
+                        </div>
+                    </div>
+                </IonToolbar>
+            </IonHeader>
             <IonContent fullscreen scrollEvents className="pregnant-dashboard task_section_container_wrap meditation_main_container">
-                <div className="header_for_task_section meditation">
-                    <h1>Meditation</h1>
-                    <div className="session-info">
-                        <div className="duration time_sec_c">
-                            <IonIcon icon={timerOutline}/>
-                            <span>~5 mins</span>
-                        </div>
-                        <div className="duration count_sec">
-                            <IonIcon icon={fitnessOutline}/>
-                            <span>Breathing</span>
-                        </div>
-                    </div>
-                    <div onClick={handleGoHomePage} className="session-info-end-session duration count_sec">
-                        <IonIcon icon={close}/>
-                        <span>End Session</span>
-                    </div>
-                </div>
-
                 <div className="dash-wrap pregnant-dashboard-wrap">
                     <div className="timer-container-outer card tasks meditation_task_card start_stop_end_button_container">
                         <div className="timer-container">

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {IonContent, IonIcon, IonModal} from "@ionic/react";
+import {IonContent, IonHeader, IonIcon, IonModal, IonToolbar} from "@ionic/react";
 import pregSamvaadImg from "../theme/img/preg_samvaad.png";
 import {close} from "ionicons/icons";
 import {Capacitor} from "@capacitor/core";
@@ -69,23 +69,27 @@ export default function DailyTaskSamvaadComponent() {
 
     return (
         <IonModal isOpen={page === "daily-task-samvaad"}>
+            <IonHeader className={"main_header_in_task"}>
+                <IonToolbar className={"main_toolbar_in_task header_for_task_section samvaad"}>
+                    <div className="inner_container_main">
+                        <div className={"main_toolbar_in_task_title"}>Garbh Samvaad</div>
+                        <div className="session-info-text-header">
+                            <div className="duration time_sec_c">
+                                {"Let's"} Strengthen your bond today
+                            </div>
+                        </div>
+                        <div onClick={handleGoHomePage} className="session-info-end-session duration count_sec">
+                            <IonIcon icon={close} />
+                            <span>End Session</span>
+                        </div>
+                    </div>
+                </IonToolbar>
+            </IonHeader>
             <IonContent
                 fullscreen
                 scrollEvents={true}
                 className="pregnant-dashboard task_section_container_wrap samvaad_main_container"
             >
-                <div className="header_for_task_section samvaad">
-                    <h1>Garbh Samvaad</h1>
-                    <div className="session-info-text-header">
-                        <div className="duration time_sec_c">
-                            {"Let's"} Strengthen your bond today
-                        </div>
-                    </div>
-                    <div onClick={handleGoHomePage} className="session-info-end-session duration count_sec">
-                        <IonIcon icon={close} />
-                        <span>End Session</span>
-                    </div>
-                </div>
 
                 <div className="dash-wrap pregnant-dashboard-wrap">
                     <div className={"card tasks card_for_garbh_samvaad"}>

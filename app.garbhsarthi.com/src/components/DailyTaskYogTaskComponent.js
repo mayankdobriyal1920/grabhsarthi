@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IonContent, IonIcon, IonModal } from "@ionic/react";
+import {IonContent, IonHeader, IonIcon, IonModal, IonToolbar} from "@ionic/react";
 import { close, fitnessOutline, timerOutline } from "ionicons/icons";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar, Style } from "@capacitor/status-bar";
@@ -176,25 +176,28 @@ export default function DailyTaskYogTaskComponent() {
 
     return (
         <IonModal isOpen={page === "daily-task-yoga"}>
+            <IonHeader className={"main_header_in_task"}>
+                <IonToolbar className={"main_toolbar_in_task header_for_task_section yoga"}>
+                    <div className="inner_container_main">
+                        <div className={"main_toolbar_in_task_title"}>Yoga</div>
+                        <div className="session-info">
+                            <div className="duration time_sec_c">
+                                <IonIcon icon={timerOutline} />
+                                <span>~15 mins</span>
+                            </div>
+                            <div className="duration count_sec">
+                                <IonIcon icon={fitnessOutline} />
+                                <span>{todayYoga.length} poses today</span>
+                            </div>
+                        </div>
+                        <div onClick={handleGoHomePage} className="session-info-end-session duration count_sec">
+                            <IonIcon icon={close} />
+                            <span>End Session</span>
+                        </div>
+                    </div>
+                </IonToolbar>
+            </IonHeader>
             <IonContent fullscreen className="pregnant-dashboard task_section_container_wrap">
-                <div className="header_for_task_section">
-                    <h1>Yoga</h1>
-                    <div className="session-info">
-                        <div className="duration time_sec_c">
-                            <IonIcon icon={timerOutline} />
-                            <span>~15 mins</span>
-                        </div>
-                        <div className="duration count_sec">
-                            <IonIcon icon={fitnessOutline} />
-                            <span>{todayYoga.length} poses today</span>
-                        </div>
-                    </div>
-                    <div onClick={handleGoHomePage} className="session-info-end-session duration count_sec">
-                        <IonIcon icon={close} />
-                        <span>End Session</span>
-                    </div>
-                </div>
-
                 {currentPose && (
                     <div className="dash-wrap pregnant-dashboard-wrap">
                         {/* Pose Image */}
