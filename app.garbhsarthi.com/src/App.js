@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {setupIonicReact, IonApp, IonRouterOutlet, IonLoading} from '@ionic/react';
+import {setupIonicReact, IonApp, IonRouterOutlet} from '@ionic/react';
 import '@ionic/react/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
