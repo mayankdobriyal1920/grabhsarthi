@@ -9,6 +9,7 @@ import mediasoup from "mediasoup";
 import ffmpeg from "fluent-ffmpeg";
 import crypto from "crypto";
 import commonRouter from "./routers/commonRouter.js";
+import adminRouter from "./routers/adminRouter.js";
 import pool from "./models/connection.js";
 import session from "express-session";
 import MySQLStore from "express-mysql-session";
@@ -18,6 +19,7 @@ import {
     actionToPostNewCommentInCommunityPostApiCall,
     actionToUpdateLikeDislikeData
 } from "./models/commonModel.js";
+import adminRouter from "./routers/adminRouter.js";
 
 const APP_PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
 const ANNOUNCED_HOST = "garbhsarthi.com";
@@ -48,6 +50,8 @@ function findTeachers(roomId) {
 // Define allowed origins
 const allowedOrigins = [
     "http://localhost:3000",
+    "http://localhost:4173",
+    "http://localhost:5173",
     "http://localhost",
     "capacitor://localhost",
     "https://localhost",
@@ -805,3 +809,4 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 
 // common routes
 app.use("/common", commonRouter);
+app.use("/admin", adminRouter);

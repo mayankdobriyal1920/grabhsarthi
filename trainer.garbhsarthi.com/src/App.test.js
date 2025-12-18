@@ -6,13 +6,21 @@ jest.mock('react-router-dom', () => ({
   Link: ({ children, ...rest }) => <a {...rest}>{children}</a>,
   Routes: ({ children }) => <div>{children}</div>,
   Route: ({ element }) => element || null,
-  Navigate: ({ to }) => <div>redirect:{to}</div>
-}));
+  Navigate: ({ to }) => <div>redirect:{to}</div>,
+  useNavigate: () => jest.fn(),
+  useParams: () => ({}),
+  useLocation: () => ({ pathname: '/' })
+}), { virtual: true });
 
 // Mock trainer actions to avoid network calls during render
 jest.mock('./apiHelper/TrainerCommonAction', () => ({
   actionToGetUserSessionData: jest.fn(),
   actionToLogoutUserSession: jest.fn()
+}));
+
+// Mock auth service used in TrainerLogin
+jest.mock('./services/authService', () => ({
+  getStoredAuth: () => ({ token: null })
 }));
 
 // Mock Zustand store shape used by App
@@ -23,5 +31,5 @@ jest.mock('./trainerStore/trainerStore', () => () => ({
 
 test('renders app shell', () => {
   render(<App />);
-  expect(screen.getByText(/Garbh Sarthi/i)).toBeInTheDocument();
+  expect(screen.getByText(/Trainer Sign In/i)).toBeInTheDocument();
 });

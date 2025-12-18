@@ -1,0 +1,33 @@
+{
+  "name": "admin-garbhsarthi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint \"src/**/*.{js,jsx}\""
+  },
+  "dependencies": {
+    "@ionic/react": "^8.2.6",
+    "ionicons": "^7.4.0",
+    "axios": "^1.7.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^6.28.0",
+    "react-router-dom": "^6.28.0",
+    "recharts": "^2.12.7",
+    "zustand": "^5.0.8",
+    "clsx": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.11.1",
+    "eslint-plugin-react": "^7.37.2",
+    "vite": "^6.0.1"
+  }
+}
